@@ -1,10 +1,18 @@
-# Algebra Basic Skills Booklet
+# Algebra Booklets
 
-This is an easy, confidence-building booklet for students who need another go at five basic algebra skills. It is written in LaTeX.
+This repo has two printable LaTeX workbooks. Each one has the same layout:
 
-**Print this:** `Algebra-Basic-Skills-Booklet.pdf` (16 A4 pages).
+- a cover with a progress table;
+- two pages per skill: a **Learn** page, then a **Practice** page;
+- **Skill Checks** at the back, which the teacher marks. No Skill Check answers appear anywhere;
+- answers to the practice questions on the last page.
 
-## What's inside
+| Print this | For | Pages |
+|------------|-----|-------|
+| `Algebra-Basic-Skills-Booklet.pdf` | Students who need another go at the basics | 16 |
+| `Algebra-Extension-Workbook.pdf` | Students who did reasonably well and need harder work | 16 |
+
+## Basic Skills booklet
 
 | Page | Contents |
 |------|----------|
@@ -22,14 +30,29 @@ The six skills are:
 5. Factorising into a single bracket
 6. Substitution (replacing letters with numbers, including a few negative values)
 
+## Extension workbook
+
+Six skills, chosen from what students found hard on the test:
+
+1. **Factorising fully**: spotting the highest common factor, including letters, e.g. `12x + 36 = 12(x + 3)` (not `6(2x + 6)`) and `12x² + 30x = 6x(2x + 5)`.
+2. **Substituting negatives**, e.g. `x² − 2x` when `x = −3`.
+3. **Index laws**, including the "Liam says 3⁴ × 3² = 9⁶" question as a worked example, plus practice and Skill Check questions in the same style.
+4. **Equations with brackets**, and writing equations from a story.
+5. **Inequalities**: solving them (including flipping the sign) and showing the answer on a number line.
+6. **Writing linear rules** from a table of values or from a story.
+
+Each skill has 8–12 practice questions. The Skill Checks have 2–4 questions per skill, 18 marks in total.
+
 ## Editing
 
-The questions and notes are in `src/content.py`. The notes are written in LaTeX, with maths in backticks. After editing, rebuild from the repository root:
+The questions and notes are in `src/content.py` (basic) and `src/content_extension.py` (extension). The notes are written in LaTeX, with maths in backticks. After editing, rebuild from the repository root:
 
 ```bash
 python3 src/build.py
 ```
 
-This first checks every practice answer: it must equal its question when tested at random values, and it must be fully simplified or factorised. If any answer is wrong, the build stops. It then writes `booklet/algebra-basic-skills.tex` and runs `pdflatex` to make the PDF. You need a TeX Live install with the `tcolorbox`, `enumitem`, `titlesec` and `fancyhdr` packages; on Debian/Ubuntu that is `texlive-latex-extra`.
+To build just one of them, add `basic` or `extension` to the end of that command.
 
-The generated `.tex` file is also committed, so you can compile or tweak it directly. Changes made only in the `.tex` will be overwritten the next time `build.py` runs.
+This first checks every practice answer. Expressions must equal their question when tested at random values, and must be fully simplified or factorised. Equations, inequalities, tables and story rules are checked by substituting values. If any answer is wrong, the build stops. It then writes the `.tex` files in `booklet/` and runs `pdflatex` to make the PDFs. You need a TeX Live install with the `tcolorbox`, `enumitem`, `titlesec` and `fancyhdr` packages; on Debian/Ubuntu that is `texlive-latex-extra`.
+
+The generated `.tex` files are also committed, so you can compile or tweak them directly. Changes made only in the `.tex` will be overwritten the next time `build.py` runs.

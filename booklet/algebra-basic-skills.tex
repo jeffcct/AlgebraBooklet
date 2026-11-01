@@ -81,6 +81,15 @@
   \textbf{\color{checkcol}Mark: \underline{\hspace{8mm}} / #4}\end{tcolorbox}}
 
 \newcommand{\fillline}[1]{\textcolor{black}{\rule{#1}{0.6pt}}}
+\newcommand{\ansline}[1]{\textcolor{black!45}{\rule{#1\linewidth}{0.6pt}}}
+
+% \pbox[options]{n}{height}{body} -- a practice question of any type
+\newcommand{\pbox}[4][]{\begin{tcolorbox}[base, height=#3, text fill, colframe=black!30, colback=white, boxrule=0.5pt,
+  arc=1.5mm, top=1.5mm, bottom=2mm, #1]\qnum{#2}\hspace{2.5mm}#4\end{tcolorbox}}
+% \kbox[options]{n}{height}{body} -- a skill check question of any type, with a mark box
+\newcommand{\kbox}[4][]{\begin{tcolorbox}[base, height=#3, text fill, colframe=checkcol!70, colback=white, boxrule=0.8pt,
+  arc=1.5mm, left=2mm, right=2mm, top=1.5mm, bottom=2mm, #1]\cnum{#2}\hfill
+  \fcolorbox{checkcol}{white}{\rule{0pt}{4.5mm}\hspace{4.5mm}}\par\vspace{1mm}#4\end{tcolorbox}}
 
 \begin{document}
 
@@ -430,9 +439,9 @@ $a^{2}$ means $a \times  a$. So if $a = 3$, then $a^{2} = 3 \times  3 = 9$ --- \
 \example{$a + 5$\\[1pt]{\normalsize when $a = 3$}}{Replace $a$ with 3\\$3 + 5$}{$= 8$}
 \example{$4b$\\[1pt]{\normalsize when $b = 2$}}{$4b$ means $4 \times  b$\\$4 \times  2$}{$= 8$}
 \example{$2x + 1$\\[1pt]{\normalsize when $x = 5$}}{$2 \times  5 + 1$\\$= 10 + 1$}{$= 11$}
-\example{$ab$\\[1pt]{\normalsize when $a = 3,\  b = 4$}}{$ab$ means $a \times  b$\\$3 \times  4$}{$= 12$}
+\example{$ab$\\[1pt]{\normalsize when $a = 3$, $b = 4$}}{$ab$ means $a \times  b$\\$3 \times  4$}{$= 12$}
 \example{$x^{2}$\\[1pt]{\normalsize when $x = 6$}}{$x^{2}$ means $x \times  x$\\$6 \times  6$}{$= 36$}
-\example{$3a - b$\\[1pt]{\normalsize when $a = 4,\  b = 2$}}{$3 \times  4 - 2$\\$= 12 - 2$}{$= 10$}
+\example{$3a - b$\\[1pt]{\normalsize when $a = 4$, $b = 2$}}{$3 \times  4 - 2$\\$= 12 - 2$}{$= 10$}
 \end{examples}
 
 \begin{rememberbox}
@@ -450,9 +459,9 @@ if $x = -3$, then $2x = 2 \times  (-3) = -6$.
 \qbox{4}{$3m$\enspace{\large when $m = 6$}}{3.45cm}
 \qbox{5}{$2x + 3$\enspace{\large when $x = 4$}}{3.45cm}
 \qbox{6}{$4a - 5$\enspace{\large when $a = 3$}}{3.45cm}
-\qbox{7}{$ab$\enspace{\large when $a = 2,\  b = 5$}}{3.45cm}
+\qbox{7}{$ab$\enspace{\large when $a = 2$, $b = 5$}}{3.45cm}
 \qbox{8}{$x^{2}$\enspace{\large when $x = 5$}}{3.45cm}
-\qbox{9}{$3a + 2b$\enspace{\large when $a = 2,\  b = 3$}}{3.45cm}
+\qbox{9}{$3a + 2b$\enspace{\large when $a = 2$, $b = 3$}}{3.45cm}
 \qbox{10}{$a^{2} + 1$\enspace{\large when $a = 4$}}{3.45cm}
 \qbox{11}{$2x + 5$\enspace{\large when $x = -1$}}{3.45cm}
 \qbox{12}{$4 - 3x$\enspace{\large when $x = -2$}}{3.45cm}
@@ -505,10 +514,11 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \begin{tcbraster}[raster columns=4, raster column skip=3mm]
 \cbox{1}{$4a$\\[1pt]{\normalsize when $a = 5$}}{5.6cm}
 \cbox{2}{$3x + 2$\\[1pt]{\normalsize when $x = 4$}}{5.6cm}
-\cbox{3}{$xy$\\[1pt]{\normalsize when $x = 3,\  y = 6$}}{5.6cm}
+\cbox{3}{$xy$\\[1pt]{\normalsize when $x = 3$, $y = 6$}}{5.6cm}
 \cbox{4}{$y^{2} - 3$\\[1pt]{\normalsize when $y = 5$}}{5.6cm}
 \end{tcbraster}
 \newpage
+\setlength{\multicolsep}{3pt plus 1pt}\titlespacing*{\subsection}{0pt}{6pt}{2pt}
 {\LARGE\bfseries\color{accent} Answers to the Practice Questions}\par\vspace{1mm}
 {\small\color{muted} Terms can be in a different order and still be right --- e.g. $2b + 3a$ is the same as $3a + 2b$.}\par
 \subsection*{1. Collecting Like Terms}
