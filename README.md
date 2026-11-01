@@ -2,22 +2,24 @@
 
 This is an easy, confidence-building booklet for students who need another go at five basic algebra skills. It is written in LaTeX.
 
-**Print this:** `Algebra-Basic-Skills-Booklet.pdf` (24 A4 pages).
+**Print this:** `Algebra-Basic-Skills-Booklet.pdf` (13 A4 pages).
 
 ## What's inside
 
-| # | Skill | Learn | Practice A | Practice B | Skill Check (teacher marks) |
-|---|-------|-------|------------|------------|-----------------------------|
-| 1 | Collecting like terms (a's, b's, x's, x²'s) | notes + 6 worked examples | 12 | 12 | 4 questions |
-| 2 | Multiplying algebra | notes + 6 worked examples | 12 | 12 | 4 questions |
-| 3 | Dividing algebra | notes + 6 worked examples | 12 | 12 | 4 questions |
-| 4 | Expanding single brackets, including negatives | notes + 6 worked examples + sign rules | 12 | 12 | 4 questions |
-| 5 | Factorising into a single bracket | notes + 6 worked examples | 12 | 12 | 4 questions |
+| Page | Contents |
+|------|----------|
+| 1 | Cover: title, name and class lines, and a **My progress** table for each skill's Skill Check mark (out of 4, 20 in total) |
+| 2–11 | Two pages per skill: a **Learn** page (notes and 6 worked examples), then a **Practice** page with 12 questions that get a little harder as they go |
+| 12 | **Skill Checks**: 4 questions for each skill on one page, so it's easy to tear out and mark. There are name, mark and total boxes, and **no Skill Check answers appear anywhere** |
+| 13 | Answers to the practice questions, so students can check their own work |
 
-- **Cover:** a "How to use this booklet" guide and a **My progress** table. The teacher writes each Skill Check score in it (out of 4 per skill, 20 in total).
-- **Skill Checks:** one after each skill. Each has a name line, a "Teacher mark: / 4" box and a mark square for each question. **No Skill Check answers appear anywhere**: they are for the teacher to mark.
-- **Mixed Review:** 20 more practice questions covering all five skills.
-- **Answers to the practice questions** (not the Skill Checks) are at the back, so students can check their own work.
+The five skills are:
+
+1. Collecting like terms (a's, b's, x's, x²'s)
+2. Multiplying algebra
+3. Dividing algebra
+4. Expanding single brackets, including negatives
+5. Factorising into a single bracket
 
 ## Editing
 

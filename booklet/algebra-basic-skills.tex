@@ -69,61 +69,43 @@
 
 % \cbox{n}{question}{height}  -- skill check question, with a mark box
 \newcommand{\cbox}[3]{\begin{tcolorbox}[base, height=#3, text fill, colframe=checkcol!70, colback=white, boxrule=0.8pt,
-  arc=1.5mm, top=2mm, bottom=2.5mm]\cnum{#1}\hspace{2.5mm}{\Large #2}\hfill
-  \fcolorbox{checkcol}{white}{\rule{0pt}{6mm}\hspace{6mm}}\par\vfill
-  {\Large$=$}\hspace{2mm}\textcolor{black!45}{\rule{0.8\linewidth}{0.6pt}}\end{tcolorbox}}
+  arc=1.5mm, left=2mm, right=2mm, top=1.5mm, bottom=2mm]\cnum{#1}\hfill
+  \fcolorbox{checkcol}{white}{\rule{0pt}{4.5mm}\hspace{4.5mm}}\par\vspace{1mm}
+  {\large #2}\par\vfill
+  {\large$=$}\hspace{1mm}\textcolor{black!45}{\rule{0.8\linewidth}{0.6pt}}\end{tcolorbox}}
+
+% \checkhead{n}{title}{instruction}{marks}
+\newcommand{\checkhead}[4]{\begin{tcolorbox}[enhanced, colback=checklight, colframe=checklight, arc=1.5mm,
+  left=2mm, right=2mm, top=0.8mm, bottom=0.8mm, before skip=1.5mm, after skip=1.2mm]
+  \cnum{#1}\hspace{2mm}\textbf{\color{checkcol}#2}\quad #3\hfill
+  \textbf{\color{checkcol}Mark: \underline{\hspace{8mm}} / #4}\end{tcolorbox}}
 
 \newcommand{\fillline}[1]{\textcolor{black}{\rule{#1}{0.6pt}}}
 
 \begin{document}
 
 \thispagestyle{empty}
-\begin{tcolorbox}[enhanced, colback=accent, colframe=accent, arc=3mm, halign=center, top=9mm, bottom=8mm]
+\begin{tcolorbox}[enhanced, colback=accent, colframe=accent, arc=3mm, halign=center, top=12mm, bottom=11mm]
 \color{white}{\small\bfseries B\,A\,S\,I\,C\quad S\,K\,I\,L\,L\,S\quad B\,O\,O\,K\,L\,E\,T}\par\vspace{3mm}
 {\fontsize{34}{40}\selectfont\bfseries Algebra Basic Skills}\par\vspace{3mm}
 {\Large Learn it. Practise it. Show you can do it.}
 \end{tcolorbox}
-\vspace{6mm}
+\vspace{10mm}
 {\large Name: \fillline{9.5cm} \hfill Class: \fillline{3.5cm}}
 
-\vspace{4mm}
-{\Large\bfseries\color{accent} How to use this booklet}
-\begin{tcbraster}[raster columns=1, raster row skip=2mm]
-\begin{tcolorbox}[base, colback=accentlight, colframe=accentlight]
-\stepnum{1}{accent}\hspace{3mm}
-\begin{minipage}[t]{0.88\linewidth}\textbf{Learn.} Read the notes and the worked examples.
-Each example shows every step.\end{minipage}
-\end{tcolorbox}
-\begin{tcolorbox}[base, colback=accentlight, colframe=accentlight]
-\stepnum{2}{accent}\hspace{3mm}
-\begin{minipage}[t]{0.88\linewidth}\textbf{Practise.} Do \textbf{Practice A}, then \textbf{Practice B}.
-Check your answers at the back of the booklet and fix any mistakes.\end{minipage}
-\end{tcolorbox}
-\begin{tcolorbox}[base, colback=checklight, colframe=checklight]
-\stepnum{3}{checkcol}\hspace{3mm}
-\begin{minipage}[t]{0.88\linewidth}\textbf{Skill Check.} When you're ready, do the Skill Check
-\textbf{on your own, without notes}. Your teacher will mark it.\end{minipage}
-\end{tcolorbox}
-\end{tcbraster}
-
-\vspace{3mm}
-{\Large\bfseries\color{accent} My progress}\par\vspace{1mm}
-\renewcommand{\arraystretch}{1.9}
-\begin{tabularx}{\linewidth}{|c|X|c|c|p{2.2cm}|}
+\vspace{12mm}
+{\Large\bfseries\color{accent} My progress}\par\vspace{2mm}
+\renewcommand{\arraystretch}{2.1}
+\begin{tabularx}{\linewidth}{|c|X|c|p{2.4cm}|}
 \hline
-\rowcolor{accentlight} & \textbf{Skill} & \small\textbf{Practice A} & \small\textbf{Practice B} & \small\textbf{Skill Check} \\
-\rowcolor{accentlight} & & \small done & \small done & \small (teacher) \\ \hline
-\textbf{\color{accent}\large 1} & \textbf{Collecting Like Terms}\newline {\small\color{muted}I can add and subtract like terms, e.g. $3a + 4a = 7a$} & \tickbox & \tickbox & \hfill/\,4 \\ \hline
-\textbf{\color{accent}\large 2} & \textbf{Multiplying Algebra}\newline {\small\color{muted}I can multiply terms, e.g. $2a \times  3b = 6ab$ and $x \times  x = x^{2}$} & \tickbox & \tickbox & \hfill/\,4 \\ \hline
-\textbf{\color{accent}\large 3} & \textbf{Dividing Algebra}\newline {\small\color{muted}I can divide terms, e.g. $8x \div  2 = 4x$ and $6ab \div  2a = 3b$} & \tickbox & \tickbox & \hfill/\,4 \\ \hline
-\textbf{\color{accent}\large 4} & \textbf{Expanding Brackets}\newline {\small\color{muted}I can expand brackets, e.g. $3(x + 2) = 3x + 6$ and $-2(x - 4) = -2x + 8$} & \tickbox & \tickbox & \hfill/\,4 \\ \hline
-\textbf{\color{accent}\large 5} & \textbf{Factorising into Brackets}\newline {\small\color{muted}I can factorise, e.g. $2x + 6 = 2(x + 3)$} & \tickbox & \tickbox & \hfill/\,4 \\ \hline
-& \textbf{Mixed Review} \small(extra practice) & \multicolumn{2}{c|}{\tickbox} & \textbf{Total}\hfill/\,20 \\ \hline
+\rowcolor{accentlight} & \textbf{Skill} & \small\textbf{Practice done} & \small\textbf{Skill Check} \\ \hline
+\textbf{\color{accent}\large 1} & \textbf{Collecting Like Terms}\newline {\small\color{muted}I can add and subtract like terms, e.g. $3a + 4a = 7a$} & \tickbox & \hfill/\,4 \\ \hline
+\textbf{\color{accent}\large 2} & \textbf{Multiplying Algebra}\newline {\small\color{muted}I can multiply terms, e.g. $2a \times  3b = 6ab$ and $x \times  x = x^{2}$} & \tickbox & \hfill/\,4 \\ \hline
+\textbf{\color{accent}\large 3} & \textbf{Dividing Algebra}\newline {\small\color{muted}I can divide terms, e.g. $8x \div  2 = 4x$ and $6ab \div  2a = 3b$} & \tickbox & \hfill/\,4 \\ \hline
+\textbf{\color{accent}\large 4} & \textbf{Expanding Brackets}\newline {\small\color{muted}I can expand brackets, e.g. $3(x + 2) = 3x + 6$ and $-2(x - 4) = -2x + 8$} & \tickbox & \hfill/\,4 \\ \hline
+\textbf{\color{accent}\large 5} & \textbf{Factorising into Brackets}\newline {\small\color{muted}I can factorise, e.g. $2x + 6 = 2(x + 3)$} & \tickbox & \hfill/\,4 \\ \hline
+\multicolumn{3}{r|}{\textbf{Skill Check total}} & \hfill/\,20 \\ \cline{4-4}
 \end{tabularx}
-
-\vfill
-{\small\color{muted} The answers to the \textbf{practice} questions are at the back.
-The Skill Checks have no answers in this booklet --- that's where you show what you can do!}
 \newpage
 \banner{1}{Collecting Like Terms}{Learn}{accent}
 \begin{tcolorbox}[enhanced, colback=accentlight, colframe=accent, boxrule=0pt, leftrule=1.5mm, arc=0mm, top=1.5mm, bottom=1.5mm]\textbf{Goal:} I can add and subtract like terms, e.g. $3a + 4a = 7a$\end{tcolorbox}
@@ -170,54 +152,23 @@ Circle or highlight each type of term in a different colour before you add them 
 \end{rememberbox}
 
 \newpage\normalsize
-\banner{1}{Collecting Like Terms}{Practice A}{accent}
+\banner{1}{Collecting Like Terms}{Practice}{accent}
 {\large\textbf{Simplify by collecting like terms.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
 \begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
-\qbox{1}{$a + a$}{3.45cm}
-\qbox{2}{$a + a + a$}{3.45cm}
-\qbox{3}{$2a + 3a$}{3.45cm}
-\qbox{4}{$4x + 5x$}{3.45cm}
-\qbox{5}{$3m + m$}{3.45cm}
-\qbox{6}{$7b - 3b$}{3.45cm}
-\qbox{7}{$6y - y$}{3.45cm}
-\qbox{8}{$10x - 4x$}{3.45cm}
-\qbox{9}{$2p + 3p + p$}{3.45cm}
-\qbox{10}{$8c - 2c$}{3.45cm}
-\qbox{11}{$x^{2} + x^{2}$}{3.45cm}
-\qbox{12}{$3x^{2} + 4x^{2}$}{3.45cm}
+\qbox{1}{$a + a + a$}{3.45cm}
+\qbox{2}{$2a + 3a$}{3.45cm}
+\qbox{3}{$7b - 3b$}{3.45cm}
+\qbox{4}{$6y - y$}{3.45cm}
+\qbox{5}{$2p + 3p + p$}{3.45cm}
+\qbox{6}{$3x^{2} + 4x^{2}$}{3.45cm}
+\qbox{7}{$2a + 3b + 4a$}{3.45cm}
+\qbox{8}{$5x + 2y + x$}{3.45cm}
+\qbox{9}{$4x + 3 + 2x$}{3.45cm}
+\qbox{10}{$5a + 2b - 3a$}{3.45cm}
+\qbox{11}{$x^{2} + 2x + 3x$}{3.45cm}
+\qbox{12}{$2x^{2} + x + x^{2}$}{3.45cm}
 \end{tcbraster}
-\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong before moving on.}
-\newpage
-\banner{1}{Collecting Like Terms}{Practice B}{accent}
-{\large\textbf{Simplify by collecting like terms. Some have two types of term.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
-\begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
-\qbox{1}{$2a + 3b + 4a$}{3.45cm}
-\qbox{2}{$5x + 2y + x$}{3.45cm}
-\qbox{3}{$3a + 2b + a + 4b$}{3.45cm}
-\qbox{4}{$4x + 3 + 2x$}{3.45cm}
-\qbox{5}{$7m - 2m + 3n$}{3.45cm}
-\qbox{6}{$5a + 2b - 3a$}{3.45cm}
-\qbox{7}{$6x + 4 - 2x + 1$}{3.45cm}
-\qbox{8}{$8x - 3x + 2y$}{3.45cm}
-\qbox{9}{$4ab + 2ab$}{3.45cm}
-\qbox{10}{$x^{2} + 2x + 3x$}{3.45cm}
-\qbox{11}{$2x^{2} + x + x^{2}$}{3.45cm}
-\qbox{12}{$3y^{2} + 2y + y^{2} + 4y$}{3.45cm}
-\end{tcbraster}
-\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong before moving on.}
-\newpage
-\banner{1}{Collecting Like Terms}{Skill Check}{checkcol}
-{\large Name: \fillline{8cm}}\hfill
-\fcolorbox{checkcol}{white}{\parbox[c][9mm][c]{4.6cm}{\centering\color{checkcol}\bfseries\large Teacher mark: \underline{\hspace{9mm}} / 4}}
-\par\vspace{2mm}
-{\large\textbf{Simplify by collecting like terms.}} Do this on your own --- no notes. Show your working, and write your final answer on the line.
-\par\vspace{2mm}
-\begin{tcbraster}[raster columns=2, raster column skip=5mm, raster row skip=5mm]
-\cbox{1}{$5a + 2a$}{10.6cm}
-\cbox{2}{$8x - 3x$}{10.6cm}
-\cbox{3}{$4a + 3b + 2a$}{10.6cm}
-\cbox{4}{$x^{2} + 5x + 2x^{2}$}{10.6cm}
-\end{tcbraster}
+\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}
 \newpage
 \banner{2}{Multiplying Algebra}{Learn}{accent}
 \begin{tcolorbox}[enhanced, colback=accentlight, colframe=accent, boxrule=0pt, leftrule=1.5mm, arc=0mm, top=1.5mm, bottom=1.5mm]\textbf{Goal:} I can multiply terms, e.g. $2a \times  3b = 6ab$ and $x \times  x = x^{2}$\end{tcolorbox}
@@ -264,54 +215,23 @@ And $x \times  x$ is $x^{2}$, not $2x$.\\[2pt]
 \end{rememberbox}
 
 \newpage\normalsize
-\banner{2}{Multiplying Algebra}{Practice A}{accent}
+\banner{2}{Multiplying Algebra}{Practice}{accent}
 {\large\textbf{Simplify.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
 \begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
 \qbox{1}{$4 \times  a$}{3.45cm}
-\qbox{2}{$5 \times  x$}{3.45cm}
-\qbox{3}{$a \times  b$}{3.45cm}
-\qbox{4}{$x \times  y$}{3.45cm}
-\qbox{5}{$2 \times  3a$}{3.45cm}
-\qbox{6}{$3x \times  4$}{3.45cm}
-\qbox{7}{$3 \times  5m$}{3.45cm}
-\qbox{8}{$6 \times  2x$}{3.45cm}
-\qbox{9}{$a \times  a$}{3.45cm}
-\qbox{10}{$y \times  y$}{3.45cm}
-\qbox{11}{$2a \times  b$}{3.45cm}
-\qbox{12}{$p \times  q \times  r$}{3.45cm}
+\qbox{2}{$a \times  b$}{3.45cm}
+\qbox{3}{$2 \times  3a$}{3.45cm}
+\qbox{4}{$3x \times  4$}{3.45cm}
+\qbox{5}{$a \times  a$}{3.45cm}
+\qbox{6}{$2a \times  b$}{3.45cm}
+\qbox{7}{$2a \times  3b$}{3.45cm}
+\qbox{8}{$4x \times  2y$}{3.45cm}
+\qbox{9}{$3a \times  a$}{3.45cm}
+\qbox{10}{$2x \times  5x$}{3.45cm}
+\qbox{11}{$4m \times  3m$}{3.45cm}
+\qbox{12}{$x \times  x \times  x$}{3.45cm}
 \end{tcbraster}
-\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong before moving on.}
-\newpage
-\banner{2}{Multiplying Algebra}{Practice B}{accent}
-{\large\textbf{Simplify. Watch out for the same letter twice!}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
-\begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
-\qbox{1}{$2a \times  3b$}{3.45cm}
-\qbox{2}{$4x \times  2y$}{3.45cm}
-\qbox{3}{$5a \times  2b$}{3.45cm}
-\qbox{4}{$2ab \times  3$}{3.45cm}
-\qbox{5}{$3a \times  a$}{3.45cm}
-\qbox{6}{$2x \times  5x$}{3.45cm}
-\qbox{7}{$4m \times  3m$}{3.45cm}
-\qbox{8}{$3x \times  2x$}{3.45cm}
-\qbox{9}{$a \times  2b \times  3$}{3.45cm}
-\qbox{10}{$x \times  x \times  x$}{3.45cm}
-\qbox{11}{$x^{2} \times  x$}{3.45cm}
-\qbox{12}{$2x^{2} \times  3x$}{3.45cm}
-\end{tcbraster}
-\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong before moving on.}
-\newpage
-\banner{2}{Multiplying Algebra}{Skill Check}{checkcol}
-{\large Name: \fillline{8cm}}\hfill
-\fcolorbox{checkcol}{white}{\parbox[c][9mm][c]{4.6cm}{\centering\color{checkcol}\bfseries\large Teacher mark: \underline{\hspace{9mm}} / 4}}
-\par\vspace{2mm}
-{\large\textbf{Simplify.}} Do this on your own --- no notes. Show your working, and write your final answer on the line.
-\par\vspace{2mm}
-\begin{tcbraster}[raster columns=2, raster column skip=5mm, raster row skip=5mm]
-\cbox{1}{$3 \times  5a$}{10.6cm}
-\cbox{2}{$2a \times  4b$}{10.6cm}
-\cbox{3}{$x \times  x$}{10.6cm}
-\cbox{4}{$3x \times  2x$}{10.6cm}
-\end{tcbraster}
+\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}
 \newpage
 \banner{3}{Dividing Algebra}{Learn}{accent}
 \begin{tcolorbox}[enhanced, colback=accentlight, colframe=accent, boxrule=0pt, leftrule=1.5mm, arc=0mm, top=1.5mm, bottom=1.5mm]\textbf{Goal:} I can divide terms, e.g. $8x \div  2 = 4x$ and $6ab \div  2a = 3b$\end{tcolorbox}
@@ -349,54 +269,23 @@ Write $x^{2}$ as $x \times  x$ if it helps you see what cancels.
 \end{rememberbox}
 
 \newpage\normalsize
-\banner{3}{Dividing Algebra}{Practice A}{accent}
+\banner{3}{Dividing Algebra}{Practice}{accent}
 {\large\textbf{Simplify.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
 \begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
 \qbox{1}{$8a \div  2$}{3.45cm}
 \qbox{2}{$12x \div  3$}{3.45cm}
-\qbox{3}{$10b \div  5$}{3.45cm}
-\qbox{4}{$20y \div  4$}{3.45cm}
-\qbox{5}{$9x \div  3$}{3.45cm}
-\qbox{6}{$15p \div  5$}{3.45cm}
-\qbox{7}{$18x \div  9$}{3.45cm}
-\qbox{8}{$6m \div  6$}{3.45cm}
-\qbox{9}{$ab \div  b$}{3.45cm}
-\qbox{10}{$xy \div  x$}{3.45cm}
-\qbox{11}{$5a \div  a$}{3.45cm}
-\qbox{12}{$7x \div  x$}{3.45cm}
+\qbox{3}{$20y \div  4$}{3.45cm}
+\qbox{4}{$6m \div  6$}{3.45cm}
+\qbox{5}{$ab \div  b$}{3.45cm}
+\qbox{6}{$5a \div  a$}{3.45cm}
+\qbox{7}{$6ab \div  2a$}{3.45cm}
+\qbox{8}{$12xy \div  4y$}{3.45cm}
+\qbox{9}{$x^{2} \div  x$}{3.45cm}
+\qbox{10}{$4x^{2} \div  x$}{3.45cm}
+\qbox{11}{$6x^{2} \div  2x$}{3.45cm}
+\qbox{12}{$15a^{2} \div  5a$}{3.45cm}
 \end{tcbraster}
-\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong before moving on.}
-\newpage
-\banner{3}{Dividing Algebra}{Practice B}{accent}
-{\large\textbf{Simplify. Cancel the letters that are on the top and the bottom.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
-\begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
-\qbox{1}{$6ab \div  2a$}{3.45cm}
-\qbox{2}{$12xy \div  4y$}{3.45cm}
-\qbox{3}{$10ab \div  5b$}{3.45cm}
-\qbox{4}{$8xy \div  2x$}{3.45cm}
-\qbox{5}{$14ab \div  7$}{3.45cm}
-\qbox{6}{$x^{2} \div  x$}{3.45cm}
-\qbox{7}{$a^{2} \div  a$}{3.45cm}
-\qbox{8}{$4x^{2} \div  x$}{3.45cm}
-\qbox{9}{$6x^{2} \div  2x$}{3.45cm}
-\qbox{10}{$15a^{2} \div  5a$}{3.45cm}
-\qbox{11}{$20x^{2} \div  4x$}{3.45cm}
-\qbox{12}{$9x^{2} \div  3x$}{3.45cm}
-\end{tcbraster}
-\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong before moving on.}
-\newpage
-\banner{3}{Dividing Algebra}{Skill Check}{checkcol}
-{\large Name: \fillline{8cm}}\hfill
-\fcolorbox{checkcol}{white}{\parbox[c][9mm][c]{4.6cm}{\centering\color{checkcol}\bfseries\large Teacher mark: \underline{\hspace{9mm}} / 4}}
-\par\vspace{2mm}
-{\large\textbf{Simplify.}} Do this on your own --- no notes. Show your working, and write your final answer on the line.
-\par\vspace{2mm}
-\begin{tcbraster}[raster columns=2, raster column skip=5mm, raster row skip=5mm]
-\cbox{1}{$12x \div  4$}{10.6cm}
-\cbox{2}{$ab \div  b$}{10.6cm}
-\cbox{3}{$10ab \div  5a$}{10.6cm}
-\cbox{4}{$8x^{2} \div  2x$}{10.6cm}
-\end{tcbraster}
+\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}
 \newpage
 \banner{4}{Expanding Brackets}{Learn}{accent}
 \begin{tcolorbox}[enhanced, colback=accentlight, colframe=accent, boxrule=0pt, leftrule=1.5mm, arc=0mm, top=1.5mm, bottom=1.5mm]\textbf{Goal:} I can expand brackets, e.g. $3(x + 2) = 3x + 6$ and $-2(x - 4) = -2x + 8$\end{tcolorbox}
@@ -442,54 +331,23 @@ With a negative outside, \textbf{every sign inside changes}: $-2(x - 4) = -2x + 
 \end{rememberbox}
 
 \newpage\normalsize
-\banner{4}{Expanding Brackets}{Practice A}{accent}
-{\large\textbf{Expand.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
+\banner{4}{Expanding Brackets}{Practice}{accent}
+{\large\textbf{Expand. Be careful with the negative signs!}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
 \begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
 \qbox{1}{$2(x + 3)$}{3.45cm}
 \qbox{2}{$3(a + 4)$}{3.45cm}
-\qbox{3}{$5(x + 1)$}{3.45cm}
-\qbox{4}{$6(x + 2)$}{3.45cm}
-\qbox{5}{$4(y - 2)$}{3.45cm}
-\qbox{6}{$2(m - 5)$}{3.45cm}
-\qbox{7}{$3(2x + 1)$}{3.45cm}
-\qbox{8}{$2(4a + 3)$}{3.45cm}
-\qbox{9}{$5(2y - 1)$}{3.45cm}
-\qbox{10}{$x(x + 2)$}{3.45cm}
-\qbox{11}{$a(a + 5)$}{3.45cm}
-\qbox{12}{$x(x - 3)$}{3.45cm}
+\qbox{3}{$4(y - 2)$}{3.45cm}
+\qbox{4}{$3(2x + 1)$}{3.45cm}
+\qbox{5}{$x(x + 2)$}{3.45cm}
+\qbox{6}{$x(x - 3)$}{3.45cm}
+\qbox{7}{$-2(x + 3)$}{3.45cm}
+\qbox{8}{$-4(x - 2)$}{3.45cm}
+\qbox{9}{$-(x + 7)$}{3.45cm}
+\qbox{10}{$2(3 - x)$}{3.45cm}
+\qbox{11}{$-2(3x - 1)$}{3.45cm}
+\qbox{12}{$-x(x + 2)$}{3.45cm}
 \end{tcbraster}
-\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong before moving on.}
-\newpage
-\banner{4}{Expanding Brackets}{Practice B}{accent}
-{\large\textbf{Expand. Be careful with the negative signs!}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
-\begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
-\qbox{1}{$-2(x + 3)$}{3.45cm}
-\qbox{2}{$-3(a + 4)$}{3.45cm}
-\qbox{3}{$-4(x - 2)$}{3.45cm}
-\qbox{4}{$-5(y - 1)$}{3.45cm}
-\qbox{5}{$-(x + 7)$}{3.45cm}
-\qbox{6}{$-(a - 3)$}{3.45cm}
-\qbox{7}{$2(3 - x)$}{3.45cm}
-\qbox{8}{$4(2y - 3)$}{3.45cm}
-\qbox{9}{$-2(3x - 1)$}{3.45cm}
-\qbox{10}{$x(x - 6)$}{3.45cm}
-\qbox{11}{$-x(x + 2)$}{3.45cm}
-\qbox{12}{$-a(a - 4)$}{3.45cm}
-\end{tcbraster}
-\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong before moving on.}
-\newpage
-\banner{4}{Expanding Brackets}{Skill Check}{checkcol}
-{\large Name: \fillline{8cm}}\hfill
-\fcolorbox{checkcol}{white}{\parbox[c][9mm][c]{4.6cm}{\centering\color{checkcol}\bfseries\large Teacher mark: \underline{\hspace{9mm}} / 4}}
-\par\vspace{2mm}
-{\large\textbf{Expand.}} Do this on your own --- no notes. Show your working, and write your final answer on the line.
-\par\vspace{2mm}
-\begin{tcbraster}[raster columns=2, raster column skip=5mm, raster row skip=5mm]
-\cbox{1}{$3(x + 5)$}{10.6cm}
-\cbox{2}{$2(4a - 3)$}{10.6cm}
-\cbox{3}{$x(x - 2)$}{10.6cm}
-\cbox{4}{$-4(x - 3)$}{10.6cm}
-\end{tcbraster}
+\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}
 \newpage
 \banner{5}{Factorising into Brackets}{Learn}{accent}
 \begin{tcolorbox}[enhanced, colback=accentlight, colframe=accent, boxrule=0pt, leftrule=1.5mm, arc=0mm, top=1.5mm, bottom=1.5mm]\textbf{Goal:} I can factorise, e.g. $2x + 6 = 2(x + 3)$\end{tcolorbox}
@@ -529,270 +387,148 @@ Always \textbf{check by expanding} your answer.
 \end{rememberbox}
 
 \newpage\normalsize
-\banner{5}{Factorising into Brackets}{Practice A}{accent}
-{\large\textbf{Factorise.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
+\banner{5}{Factorising into Brackets}{Practice}{accent}
+{\large\textbf{Factorise fully.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
 \begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
 \qbox{1}{$3x + 6$}{3.45cm}
 \qbox{2}{$2a + 8$}{3.45cm}
-\qbox{3}{$5x + 15$}{3.45cm}
-\qbox{4}{$7m + 7$}{3.45cm}
-\qbox{5}{$4y - 12$}{3.45cm}
-\qbox{6}{$2x - 10$}{3.45cm}
-\qbox{7}{$6a + 9$}{3.45cm}
-\qbox{8}{$10x + 15$}{3.45cm}
-\qbox{9}{$x^{2} + 3x$}{3.45cm}
-\qbox{10}{$a^{2} + 5a$}{3.45cm}
-\qbox{11}{$x^{2} - 2x$}{3.45cm}
-\qbox{12}{$y^{2} + y$}{3.45cm}
+\qbox{3}{$4y - 12$}{3.45cm}
+\qbox{4}{$6a + 9$}{3.45cm}
+\qbox{5}{$x^{2} + 3x$}{3.45cm}
+\qbox{6}{$x^{2} - 2x$}{3.45cm}
+\qbox{7}{$8x - 12$}{3.45cm}
+\qbox{8}{$6a - 15$}{3.45cm}
+\qbox{9}{$14 - 7x$}{3.45cm}
+\qbox{10}{$ab + 3a$}{3.45cm}
+\qbox{11}{$3x^{2} + 6x$}{3.45cm}
+\qbox{12}{$2a^{2} - 8a$}{3.45cm}
 \end{tcbraster}
-\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong before moving on.}
+\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}
 \newpage
-\banner{5}{Factorising into Brackets}{Practice B}{accent}
-{\large\textbf{Factorise fully. Take out the biggest factor you can.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
-\begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
-\qbox{1}{$8x - 12$}{3.45cm}
-\qbox{2}{$6a - 15$}{3.45cm}
-\qbox{3}{$12y + 18$}{3.45cm}
-\qbox{4}{$20x - 10$}{3.45cm}
-\qbox{5}{$9m - 6$}{3.45cm}
-\qbox{6}{$14 - 7x$}{3.45cm}
-\qbox{7}{$x^{2} - 7x$}{3.45cm}
-\qbox{8}{$ab + 3a$}{3.45cm}
-\qbox{9}{$3x^{2} + 6x$}{3.45cm}
-\qbox{10}{$2a^{2} - 8a$}{3.45cm}
-\qbox{11}{$5y^{2} + 10y$}{3.45cm}
-\qbox{12}{$4x^{2} - 6x$}{3.45cm}
+\banner{\ding{51}}{Skill Checks}{Teacher marks}{checkcol}
+{\large Name: \fillline{8cm}}\hfill\fcolorbox{checkcol}{white}{\parbox[c][8mm][c]{4.2cm}{\centering\color{checkcol}\bfseries\large Total: \underline{\hspace{9mm}} / 20}}\par\vspace{1mm}
+Do these \textbf{on your own --- no notes}. Show your working, and write your final answer on the line.
+\checkhead{1}{Collecting Like Terms}{Simplify by collecting like terms.}{4}
+\begin{tcbraster}[raster columns=4, raster column skip=3mm]
+\cbox{1}{$5a + 2a$}{2.95cm}
+\cbox{2}{$8x - 3x$}{2.95cm}
+\cbox{3}{$4a + 3b + 2a$}{2.95cm}
+\cbox{4}{$x^{2} + 5x + 2x^{2}$}{2.95cm}
 \end{tcbraster}
-\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong before moving on.}
-\newpage
-\banner{5}{Factorising into Brackets}{Skill Check}{checkcol}
-{\large Name: \fillline{8cm}}\hfill
-\fcolorbox{checkcol}{white}{\parbox[c][9mm][c]{4.6cm}{\centering\color{checkcol}\bfseries\large Teacher mark: \underline{\hspace{9mm}} / 4}}
-\par\vspace{2mm}
-{\large\textbf{Factorise fully.}} Do this on your own --- no notes. Show your working, and write your final answer on the line.
-\par\vspace{2mm}
-\begin{tcbraster}[raster columns=2, raster column skip=5mm, raster row skip=5mm]
-\cbox{1}{$5x + 20$}{10.6cm}
-\cbox{2}{$6a - 9$}{10.6cm}
-\cbox{3}{$x^{2} + 8x$}{10.6cm}
-\cbox{4}{$4y^{2} - 12y$}{10.6cm}
+\checkhead{2}{Multiplying Algebra}{Simplify.}{4}
+\begin{tcbraster}[raster columns=4, raster column skip=3mm]
+\cbox{1}{$3 \times  5a$}{2.95cm}
+\cbox{2}{$2a \times  4b$}{2.95cm}
+\cbox{3}{$x \times  x$}{2.95cm}
+\cbox{4}{$3x \times  2x$}{2.95cm}
 \end{tcbraster}
-\newpage
-\banner{$\star$}{Mixed Review}{Extra practice}{accent}
-{\large\textbf{A mix of all five skills.}} Look carefully --- which skill do you need? {\color{muted}Answers are at the back.}\par\vspace{1mm}
-\begin{tcbraster}[raster columns=3, raster column skip=4mm, raster row skip=3mm]
-\qbox{1}{$5a + 2a$}{3.05cm}
-\qbox{2}{$3 \times  2x$}{3.05cm}
-\qbox{3}{$12y \div  3$}{3.05cm}
-\qbox{4}{$2(x + 5)$}{3.05cm}
-\qbox{5}{$3x + 12$}{3.05cm}
-\qbox{6}{$4x + 3y + 2x$}{3.05cm}
-\qbox{7}{$a \times  4b$}{3.05cm}
-\qbox{8}{$10ab \div  2b$}{3.05cm}
-\qbox{9}{$x(x + 1)$}{3.05cm}
-\qbox{10}{$x^{2} + 7x$}{3.05cm}
-\qbox{11}{$8m - 3m$}{3.05cm}
-\qbox{12}{$5x \times  x$}{3.05cm}
-\qbox{13}{$6x^{2} \div  x$}{3.05cm}
-\qbox{14}{$4(2a - 1)$}{3.05cm}
-\qbox{15}{$5y - 20$}{3.05cm}
-\qbox{16}{$2x^{2} + 3x + x^{2}$}{3.05cm}
-\qbox{17}{$4a \times  2a$}{3.05cm}
-\qbox{18}{$16xy \div  8x$}{3.05cm}
-\qbox{19}{$-3(x - 2)$}{3.05cm}
-\qbox{20}{$6x^{2} + 9x$}{3.05cm}
+\checkhead{3}{Dividing Algebra}{Simplify.}{4}
+\begin{tcbraster}[raster columns=4, raster column skip=3mm]
+\cbox{1}{$12x \div  4$}{2.95cm}
+\cbox{2}{$ab \div  b$}{2.95cm}
+\cbox{3}{$10ab \div  5a$}{2.95cm}
+\cbox{4}{$8x^{2} \div  2x$}{2.95cm}
+\end{tcbraster}
+\checkhead{4}{Expanding Brackets}{Expand.}{4}
+\begin{tcbraster}[raster columns=4, raster column skip=3mm]
+\cbox{1}{$3(x + 5)$}{2.95cm}
+\cbox{2}{$2(4a - 3)$}{2.95cm}
+\cbox{3}{$x(x - 2)$}{2.95cm}
+\cbox{4}{$-4(x - 3)$}{2.95cm}
+\end{tcbraster}
+\checkhead{5}{Factorising into Brackets}{Factorise fully.}{4}
+\begin{tcbraster}[raster columns=4, raster column skip=3mm]
+\cbox{1}{$5x + 20$}{2.95cm}
+\cbox{2}{$6a - 9$}{2.95cm}
+\cbox{3}{$x^{2} + 8x$}{2.95cm}
+\cbox{4}{$4y^{2} - 12y$}{2.95cm}
 \end{tcbraster}
 \newpage
 {\LARGE\bfseries\color{accent} Answers to the Practice Questions}\par\vspace{1mm}
 {\small\color{muted} Terms can be in a different order and still be right --- e.g. $2b + 3a$ is the same as $3a + 2b$.}\par
 \subsection*{1. Collecting Like Terms}
-\textbf{\color{muted}Practice A}
+\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
-\item $2a$
 \item $3a$
 \item $5a$
-\item $9x$
-\item $4m$
 \item $4b$
 \item $5y$
-\item $6x$
 \item $6p$
-\item $6c$
-\item $2x^{2}$
 \item $7x^{2}$
-\end{enumerate}\end{multicols}
-
-\textbf{\color{muted}Practice B}
-\begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $6a + 3b$
 \item $6x + 2y$
-\item $4a + 6b$
 \item $6x + 3$
-\item $5m + 3n$
 \item $2a + 2b$
-\item $4x + 5$
-\item $5x + 2y$
-\item $6ab$
 \item $x^{2} + 5x$
 \item $3x^{2} + x$
-\item $4y^{2} + 6y$
 \end{enumerate}\end{multicols}
 
 \subsection*{2. Multiplying Algebra}
-\textbf{\color{muted}Practice A}
+\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $4a$
-\item $5x$
 \item $ab$
-\item $xy$
 \item $6a$
 \item $12x$
-\item $15m$
-\item $12x$
 \item $a^{2}$
-\item $y^{2}$
 \item $2ab$
-\item $pqr$
-\end{enumerate}\end{multicols}
-
-\textbf{\color{muted}Practice B}
-\begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $6ab$
 \item $8xy$
-\item $10ab$
-\item $6ab$
 \item $3a^{2}$
 \item $10x^{2}$
 \item $12m^{2}$
-\item $6x^{2}$
-\item $6ab$
 \item $x^{3}$
-\item $x^{3}$
-\item $6x^{3}$
 \end{enumerate}\end{multicols}
 
 \subsection*{3. Dividing Algebra}
-\textbf{\color{muted}Practice A}
+\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $4a$
 \item $4x$
-\item $2b$
 \item $5y$
-\item $3x$
-\item $3p$
-\item $2x$
 \item $m$
 \item $a$
-\item $y$
 \item $5$
-\item $7$
-\end{enumerate}\end{multicols}
-
-\textbf{\color{muted}Practice B}
-\begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $3b$
 \item $3x$
-\item $2a$
-\item $4y$
-\item $2ab$
 \item $x$
-\item $a$
 \item $4x$
 \item $3x$
 \item $3a$
-\item $5x$
-\item $3x$
 \end{enumerate}\end{multicols}
 
 \subsection*{4. Expanding Brackets}
-\textbf{\color{muted}Practice A}
+\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $2x + 6$
 \item $3a + 12$
-\item $5x + 5$
-\item $6x + 12$
 \item $4y - 8$
-\item $2m - 10$
 \item $6x + 3$
-\item $8a + 6$
-\item $10y - 5$
 \item $x^{2} + 2x$
-\item $a^{2} + 5a$
 \item $x^{2} - 3x$
-\end{enumerate}\end{multicols}
-
-\textbf{\color{muted}Practice B}
-\begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $-2x - 6$
-\item $-3a - 12$
 \item $-4x + 8$
-\item $-5y + 5$
 \item $-x - 7$
-\item $-a + 3$
 \item $6 - 2x$
-\item $8y - 12$
 \item $-6x + 2$
-\item $x^{2} - 6x$
 \item $-x^{2} - 2x$
-\item $-a^{2} + 4a$
 \end{enumerate}\end{multicols}
 
 \subsection*{5. Factorising into Brackets}
-\textbf{\color{muted}Practice A}
+\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $3(x + 2)$
 \item $2(a + 4)$
-\item $5(x + 3)$
-\item $7(m + 1)$
 \item $4(y - 3)$
-\item $2(x - 5)$
 \item $3(2a + 3)$
-\item $5(2x + 3)$
 \item $x(x + 3)$
-\item $a(a + 5)$
 \item $x(x - 2)$
-\item $y(y + 1)$
-\end{enumerate}\end{multicols}
-
-\textbf{\color{muted}Practice B}
-\begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $4(2x - 3)$
 \item $3(2a - 5)$
-\item $6(2y + 3)$
-\item $10(2x - 1)$
-\item $3(3m - 2)$
 \item $7(2 - x)$
-\item $x(x - 7)$
 \item $a(b + 3)$
 \item $3x(x + 2)$
 \item $2a(a - 4)$
-\item $5y(y + 2)$
-\item $2x(2x - 3)$
-\end{enumerate}\end{multicols}
-
-\subsection*{$\star$ Mixed Review}
-\textbf{\color{muted}}
-\begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
-\item $7a$
-\item $6x$
-\item $4y$
-\item $2x + 10$
-\item $3(x + 4)$
-\item $6x + 3y$
-\item $4ab$
-\item $5a$
-\item $x^{2} + x$
-\item $x(x + 7)$
-\item $5m$
-\item $5x^{2}$
-\item $6x$
-\item $8a - 4$
-\item $5(y - 4)$
-\item $3x^{2} + 3x$
-\item $8a^{2}$
-\item $2y$
-\item $-3x + 6$
-\item $3x(2x + 3)$
 \end{enumerate}\end{multicols}
 
 \end{document}

@@ -24,8 +24,7 @@ LIKE_TERMS = {
     "title": "Collecting Like Terms",
     "can": "I can add and subtract like terms, e.g. `3a + 4a = 7a`",
     "kind": "simplify",
-    "instr": ("Simplify by collecting like terms.",
-              "Simplify by collecting like terms. Some have two types of term."),
+    "instr": "Simplify by collecting like terms.",
     "check_instr": "Simplify by collecting like terms.",
     "learn": r"""
 \textbf{Like terms} have \textbf{exactly the same letter part}. You can only add or
@@ -68,33 +67,19 @@ The sign ($+$ or $-$) in \textbf{front} of a term belongs to that term.
 Circle or highlight each type of term in a different colour before you add them up.
 \end{rememberbox}
 """,
-    "practice_a": [
-        ("a + a", "2a"),
+    "practice": [
         ("a + a + a", "3a"),
         ("2a + 3a", "5a"),
-        ("4x + 5x", "9x"),
-        ("3m + m", "4m"),
         ("7b - 3b", "4b"),
         ("6y - y", "5y"),
-        ("10x - 4x", "6x"),
         ("2p + 3p + p", "6p"),
-        ("8c - 2c", "6c"),
-        ("x^2 + x^2", "2x^2"),
         ("3x^2 + 4x^2", "7x^2"),
-    ],
-    "practice_b": [
         ("2a + 3b + 4a", "6a + 3b"),
         ("5x + 2y + x", "6x + 2y"),
-        ("3a + 2b + a + 4b", "4a + 6b"),
         ("4x + 3 + 2x", "6x + 3"),
-        ("7m - 2m + 3n", "5m + 3n"),
         ("5a + 2b - 3a", "2a + 2b"),
-        ("6x + 4 - 2x + 1", "4x + 5"),
-        ("8x - 3x + 2y", "5x + 2y"),
-        ("4ab + 2ab", "6ab"),
         ("x^2 + 2x + 3x", "x^2 + 5x"),
         ("2x^2 + x + x^2", "3x^2 + x"),
-        ("3y^2 + 2y + y^2 + 4y", "4y^2 + 6y"),
     ],
     "check": [
         "5a + 2a",
@@ -113,7 +98,7 @@ MULTIPLY = {
     "title": "Multiplying Algebra",
     "can": r"I can multiply terms, e.g. `2a × 3b = 6ab` and `x × x = x^2`",
     "kind": "simplify",
-    "instr": ("Simplify.", "Simplify. Watch out for the same letter twice!"),
+    "instr": "Simplify.",
     "check_instr": "Simplify.",
     "learn": r"""
 In algebra we \textbf{don't write the $\times$ sign}. Letters and numbers that are multiplied
@@ -156,33 +141,19 @@ And `x × x` is `x^2`, not `2x`.\\[2pt]
 \textbf{Going further:} `x × x × x = x^3` (\textquotedblleft{}$x$ cubed''), and `x^2 × x = x^3`.
 \end{rememberbox}
 """,
-    "practice_a": [
+    "practice": [
         ("4 × a", "4a"),
-        ("5 × x", "5x"),
         ("a × b", "ab"),
-        ("x × y", "xy"),
         ("2 × 3a", "6a"),
         ("3x × 4", "12x"),
-        ("3 × 5m", "15m"),
-        ("6 × 2x", "12x"),
         ("a × a", "a^2"),
-        ("y × y", "y^2"),
         ("2a × b", "2ab"),
-        ("p × q × r", "pqr"),
-    ],
-    "practice_b": [
         ("2a × 3b", "6ab"),
         ("4x × 2y", "8xy"),
-        ("5a × 2b", "10ab"),
-        ("2ab × 3", "6ab"),
         ("3a × a", "3a^2"),
         ("2x × 5x", "10x^2"),
         ("4m × 3m", "12m^2"),
-        ("3x × 2x", "6x^2"),
-        ("a × 2b × 3", "6ab"),
         ("x × x × x", "x^3"),
-        ("x^2 × x", "x^3"),
-        ("2x^2 × 3x", "6x^3"),
     ],
     "check": [
         "3 × 5a",
@@ -201,7 +172,7 @@ DIVIDE = {
     "title": "Dividing Algebra",
     "can": "I can divide terms, e.g. `8x ÷ 2 = 4x` and `6ab ÷ 2a = 3b`",
     "kind": "simplify",
-    "instr": ("Simplify.", "Simplify. Cancel the letters that are on the top and the bottom."),
+    "instr": "Simplify.",
     "check_instr": "Simplify.",
     "learn": r"""
 Dividing is the opposite of multiplying. A division can also be written as a fraction:
@@ -235,33 +206,19 @@ If \textbf{all} the letters cancel, you are left with just a number, e.g. `5a ÷
 Write `x^2` as `x × x` if it helps you see what cancels.
 \end{rememberbox}
 """,
-    "practice_a": [
+    "practice": [
         ("8a ÷ 2", "4a"),
         ("12x ÷ 3", "4x"),
-        ("10b ÷ 5", "2b"),
         ("20y ÷ 4", "5y"),
-        ("9x ÷ 3", "3x"),
-        ("15p ÷ 5", "3p"),
-        ("18x ÷ 9", "2x"),
         ("6m ÷ 6", "m"),
         ("ab ÷ b", "a"),
-        ("xy ÷ x", "y"),
         ("5a ÷ a", "5"),
-        ("7x ÷ x", "7"),
-    ],
-    "practice_b": [
         ("6ab ÷ 2a", "3b"),
         ("12xy ÷ 4y", "3x"),
-        ("10ab ÷ 5b", "2a"),
-        ("8xy ÷ 2x", "4y"),
-        ("14ab ÷ 7", "2ab"),
         ("x^2 ÷ x", "x"),
-        ("a^2 ÷ a", "a"),
         ("4x^2 ÷ x", "4x"),
         ("6x^2 ÷ 2x", "3x"),
         ("15a^2 ÷ 5a", "3a"),
-        ("20x^2 ÷ 4x", "5x"),
-        ("9x^2 ÷ 3x", "3x"),
     ],
     "check": [
         "12x ÷ 4",
@@ -280,7 +237,7 @@ EXPAND = {
     "title": "Expanding Brackets",
     "can": "I can expand brackets, e.g. `3(x + 2) = 3x + 6` and `-2(x - 4) = -2x + 8`",
     "kind": "simplify",
-    "instr": ("Expand.", "Expand. Be careful with the negative signs!"),
+    "instr": "Expand. Be careful with the negative signs!",
     "check_instr": "Expand.",
     "learn": r"""
 \textbf{Expanding} means getting rid of the brackets by multiplying.
@@ -322,33 +279,19 @@ The outside term multiplies \textbf{every} term inside: `3(x + 2)` is `3x + 6`, 
 With a negative outside, \textbf{every sign inside changes}: `-2(x - 4) = -2x + 8`.
 \end{rememberbox}
 """,
-    "practice_a": [
+    "practice": [
         ("2(x + 3)", "2x + 6"),
         ("3(a + 4)", "3a + 12"),
-        ("5(x + 1)", "5x + 5"),
-        ("6(x + 2)", "6x + 12"),
         ("4(y - 2)", "4y - 8"),
-        ("2(m - 5)", "2m - 10"),
         ("3(2x + 1)", "6x + 3"),
-        ("2(4a + 3)", "8a + 6"),
-        ("5(2y - 1)", "10y - 5"),
         ("x(x + 2)", "x^2 + 2x"),
-        ("a(a + 5)", "a^2 + 5a"),
         ("x(x - 3)", "x^2 - 3x"),
-    ],
-    "practice_b": [
         ("-2(x + 3)", "-2x - 6"),
-        ("-3(a + 4)", "-3a - 12"),
         ("-4(x - 2)", "-4x + 8"),
-        ("-5(y - 1)", "-5y + 5"),
         ("-(x + 7)", "-x - 7"),
-        ("-(a - 3)", "-a + 3"),
         ("2(3 - x)", "6 - 2x"),
-        ("4(2y - 3)", "8y - 12"),
         ("-2(3x - 1)", "-6x + 2"),
-        ("x(x - 6)", "x^2 - 6x"),
         ("-x(x + 2)", "-x^2 - 2x"),
-        ("-a(a - 4)", "-a^2 + 4a"),
     ],
     "check": [
         "3(x + 5)",
@@ -367,7 +310,7 @@ FACTORISE = {
     "title": "Factorising into Brackets",
     "can": "I can factorise, e.g. `2x + 6 = 2(x + 3)`",
     "kind": "factorise",
-    "instr": ("Factorise.", "Factorise fully. Take out the biggest factor you can."),
+    "instr": "Factorise fully.",
     "check_instr": "Factorise fully.",
     "learn": r"""
 \textbf{Factorising} is the \textbf{opposite of expanding}. We put the brackets back in.
@@ -403,33 +346,19 @@ Keep the sign with each term: in `6x - 9` the second term is `-9`, so the bracke
 Always \textbf{check by expanding} your answer.
 \end{rememberbox}
 """,
-    "practice_a": [
+    "practice": [
         ("3x + 6", "3(x + 2)"),
         ("2a + 8", "2(a + 4)"),
-        ("5x + 15", "5(x + 3)"),
-        ("7m + 7", "7(m + 1)"),
         ("4y - 12", "4(y - 3)"),
-        ("2x - 10", "2(x - 5)"),
         ("6a + 9", "3(2a + 3)"),
-        ("10x + 15", "5(2x + 3)"),
         ("x^2 + 3x", "x(x + 3)"),
-        ("a^2 + 5a", "a(a + 5)"),
         ("x^2 - 2x", "x(x - 2)"),
-        ("y^2 + y", "y(y + 1)"),
-    ],
-    "practice_b": [
         ("8x - 12", "4(2x - 3)"),
         ("6a - 15", "3(2a - 5)"),
-        ("12y + 18", "6(2y + 3)"),
-        ("20x - 10", "10(2x - 1)"),
-        ("9m - 6", "3(3m - 2)"),
         ("14 - 7x", "7(2 - x)"),
-        ("x^2 - 7x", "x(x - 7)"),
         ("ab + 3a", "a(b + 3)"),
         ("3x^2 + 6x", "3x(x + 2)"),
         ("2a^2 - 8a", "2a(a - 4)"),
-        ("5y^2 + 10y", "5y(y + 2)"),
-        ("4x^2 - 6x", "2x(2x - 3)"),
     ],
     "check": [
         "5x + 20",
@@ -441,26 +370,3 @@ Always \textbf{check by expanding} your answer.
 
 SECTIONS = [LIKE_TERMS, MULTIPLY, DIVIDE, EXPAND, FACTORISE]
 
-# Mixed review: (section number, question, answer), checked like the rest.
-MIXED = [
-    (1, "5a + 2a", "7a"),
-    (2, "3 × 2x", "6x"),
-    (3, "12y ÷ 3", "4y"),
-    (4, "2(x + 5)", "2x + 10"),
-    (5, "3x + 12", "3(x + 4)"),
-    (1, "4x + 3y + 2x", "6x + 3y"),
-    (2, "a × 4b", "4ab"),
-    (3, "10ab ÷ 2b", "5a"),
-    (4, "x(x + 1)", "x^2 + x"),
-    (5, "x^2 + 7x", "x(x + 7)"),
-    (1, "8m - 3m", "5m"),
-    (2, "5x × x", "5x^2"),
-    (3, "6x^2 ÷ x", "6x"),
-    (4, "4(2a - 1)", "8a - 4"),
-    (5, "5y - 20", "5(y - 4)"),
-    (1, "2x^2 + 3x + x^2", "3x^2 + 3x"),
-    (2, "4a × 2a", "8a^2"),
-    (3, "16xy ÷ 8x", "2y"),
-    (4, "-3(x - 2)", "-3x + 6"),
-    (5, "6x^2 + 9x", "3x(2x + 3)"),
-]

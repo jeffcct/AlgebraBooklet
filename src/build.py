@@ -106,15 +106,12 @@ def check_all():
             errors.append(f"{where}: '{q}' -> '{a}': {p}")
 
     for s in C.SECTIONS:
-        for part in ("practice_a", "practice_b"):
-            for i, (q, a) in enumerate(s[part], 1):
-                check(f"Section {s['num']} {part} Q{i}", q, a, s["kind"])
+        for i, (q, a) in enumerate(s["practice"], 1):
+            check(f"Section {s['num']} practice Q{i}", q, a, s["kind"])
         for i, q in enumerate(s["check"], 1):
             to_python(q)  # skill check questions must at least parse
             if not isinstance(q, str):
                 errors.append(f"Section {s['num']} skill check Q{i}: must be a question only (no answer)")
-    for i, (sec, q, a) in enumerate(C.MIXED, 1):
-        check(f"Mixed Q{i}", q, a, C.SECTIONS[sec - 1]["kind"])
     return count, errors
 
 
@@ -210,9 +207,16 @@ PREAMBLE = r"""% ---------------------------------------------------------------
 
 % \cbox{n}{question}{height}  -- skill check question, with a mark box
 \newcommand{\cbox}[3]{\begin{tcolorbox}[base, height=#3, text fill, colframe=checkcol!70, colback=white, boxrule=0.8pt,
-  arc=1.5mm, top=2mm, bottom=2.5mm]\cnum{#1}\hspace{2.5mm}{\Large #2}\hfill
-  \fcolorbox{checkcol}{white}{\rule{0pt}{6mm}\hspace{6mm}}\par\vfill
-  {\Large$=$}\hspace{2mm}\textcolor{black!45}{\rule{0.8\linewidth}{0.6pt}}\end{tcolorbox}}
+  arc=1.5mm, left=2mm, right=2mm, top=1.5mm, bottom=2mm]\cnum{#1}\hfill
+  \fcolorbox{checkcol}{white}{\rule{0pt}{4.5mm}\hspace{4.5mm}}\par\vspace{1mm}
+  {\large #2}\par\vfill
+  {\large$=$}\hspace{1mm}\textcolor{black!45}{\rule{0.8\linewidth}{0.6pt}}\end{tcolorbox}}
+
+% \checkhead{n}{title}{instruction}{marks}
+\newcommand{\checkhead}[4]{\begin{tcolorbox}[enhanced, colback=checklight, colframe=checklight, arc=1.5mm,
+  left=2mm, right=2mm, top=0.8mm, bottom=0.8mm, before skip=1.5mm, after skip=1.2mm]
+  \cnum{#1}\hspace{2mm}\textbf{\color{checkcol}#2}\quad #3\hfill
+  \textbf{\color{checkcol}Mark: \underline{\hspace{8mm}} / #4}\end{tcolorbox}}
 
 \newcommand{\fillline}[1]{\textcolor{black}{\rule{#1}{0.6pt}}}
 
@@ -223,53 +227,28 @@ PREAMBLE = r"""% ---------------------------------------------------------------
 def cover():
     rows = "\n".join(
         rf"\textbf{{\color{{accent}}\large {s['num']}}} & \textbf{{{s['title']}}}\newline "
-        rf"{{\small\color{{muted}}{rich(s['can'])}}} & \tickbox & \tickbox & \hfill/\,{len(s['check'])} \\ \hline"
+        rf"{{\small\color{{muted}}{rich(s['can'])}}} & \tickbox & \hfill/\,{len(s['check'])} \\ \hline"
         for s in C.SECTIONS)
     total = sum(len(s["check"]) for s in C.SECTIONS)
     return rf"""
 \thispagestyle{{empty}}
-\begin{{tcolorbox}}[enhanced, colback=accent, colframe=accent, arc=3mm, halign=center, top=9mm, bottom=8mm]
+\begin{{tcolorbox}}[enhanced, colback=accent, colframe=accent, arc=3mm, halign=center, top=12mm, bottom=11mm]
 \color{{white}}{{\small\bfseries B\,A\,S\,I\,C\quad S\,K\,I\,L\,L\,S\quad B\,O\,O\,K\,L\,E\,T}}\par\vspace{{3mm}}
 {{\fontsize{{34}}{{40}}\selectfont\bfseries {C.TITLE}}}\par\vspace{{3mm}}
 {{\Large {C.SUBTITLE}}}
 \end{{tcolorbox}}
-\vspace{{6mm}}
+\vspace{{10mm}}
 {{\large Name: \fillline{{9.5cm}} \hfill Class: \fillline{{3.5cm}}}}
 
-\vspace{{4mm}}
-{{\Large\bfseries\color{{accent}} How to use this booklet}}
-\begin{{tcbraster}}[raster columns=1, raster row skip=2mm]
-\begin{{tcolorbox}}[base, colback=accentlight, colframe=accentlight]
-\stepnum{{1}}{{accent}}\hspace{{3mm}}
-\begin{{minipage}}[t]{{0.88\linewidth}}\textbf{{Learn.}} Read the notes and the worked examples.
-Each example shows every step.\end{{minipage}}
-\end{{tcolorbox}}
-\begin{{tcolorbox}}[base, colback=accentlight, colframe=accentlight]
-\stepnum{{2}}{{accent}}\hspace{{3mm}}
-\begin{{minipage}}[t]{{0.88\linewidth}}\textbf{{Practise.}} Do \textbf{{Practice A}}, then \textbf{{Practice B}}.
-Check your answers at the back of the booklet and fix any mistakes.\end{{minipage}}
-\end{{tcolorbox}}
-\begin{{tcolorbox}}[base, colback=checklight, colframe=checklight]
-\stepnum{{3}}{{checkcol}}\hspace{{3mm}}
-\begin{{minipage}}[t]{{0.88\linewidth}}\textbf{{Skill Check.}} When you're ready, do the Skill Check
-\textbf{{on your own, without notes}}. Your teacher will mark it.\end{{minipage}}
-\end{{tcolorbox}}
-\end{{tcbraster}}
-
-\vspace{{3mm}}
-{{\Large\bfseries\color{{accent}} My progress}}\par\vspace{{1mm}}
-\renewcommand{{\arraystretch}}{{1.9}}
-\begin{{tabularx}}{{\linewidth}}{{|c|X|c|c|p{{2.2cm}}|}}
+\vspace{{12mm}}
+{{\Large\bfseries\color{{accent}} My progress}}\par\vspace{{2mm}}
+\renewcommand{{\arraystretch}}{{2.1}}
+\begin{{tabularx}}{{\linewidth}}{{|c|X|c|p{{2.4cm}}|}}
 \hline
-\rowcolor{{accentlight}} & \textbf{{Skill}} & \small\textbf{{Practice A}} & \small\textbf{{Practice B}} & \small\textbf{{Skill Check}} \\
-\rowcolor{{accentlight}} & & \small done & \small done & \small (teacher) \\ \hline
+\rowcolor{{accentlight}} & \textbf{{Skill}} & \small\textbf{{Practice done}} & \small\textbf{{Skill Check}} \\ \hline
 {rows}
-& \textbf{{Mixed Review}} \small(extra practice) & \multicolumn{{2}}{{c|}}{{\tickbox}} & \textbf{{Total}}\hfill/\,{total} \\ \hline
+\multicolumn{{3}}{{r|}}{{\textbf{{Skill Check total}}}} & \hfill/\,{total} \\ \cline{{4-4}}
 \end{{tabularx}}
-
-\vfill
-{{\small\color{{muted}} The answers to the \textbf{{practice}} questions are at the back.
-The Skill Checks have no answers in this booklet --- that's where you show what you can do!}}
 \newpage
 """
 
@@ -287,36 +266,30 @@ def qgrid(items, cols, height):
             f"\n{boxes}\n\\end{{tcbraster}}\n")
 
 
-def practice_page(s, part, label, instr):
-    return (rf"\banner{{{s['num']}}}{{{s['title']}}}{{{label}}}{{accent}}" "\n"
-            rf"{{\large\textbf{{{instr}}}}} {{\color{{muted}}Show your working in each box.}}\par\vspace{{1mm}}" "\n"
-            + qgrid(s[part], 2, "3.45cm")
-            + r"\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong before moving on.}"
+def practice_page(s):
+    return (rf"\banner{{{s['num']}}}{{{s['title']}}}{{Practice}}{{accent}}" "\n"
+            rf"{{\large\textbf{{{s['instr']}}}}} {{\color{{muted}}Show your working in each box.}}\par\vspace{{1mm}}" "\n"
+            + qgrid(s["practice"], 2, "3.45cm")
+            + r"\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}"
             + "\n\\newpage\n")
 
 
-def skill_check_page(s):
-    n = len(s["check"])
-    boxes = "\n".join(rf"\cbox{{{i}}}{{{m(q)}}}{{10.6cm}}" for i, q in enumerate(s["check"], 1))
-    return rf"""\banner{{{s['num']}}}{{{s['title']}}}{{Skill Check}}{{checkcol}}
-{{\large Name: \fillline{{8cm}}}}\hfill
-\fcolorbox{{checkcol}}{{white}}{{\parbox[c][9mm][c]{{4.6cm}}{{\centering\color{{checkcol}}\bfseries\large Teacher mark: \underline{{\hspace{{9mm}}}} / {n}}}}}
-\par\vspace{{2mm}}
-{{\large\textbf{{{s['check_instr']}}}}} Do this on your own --- no notes. Show your working, and write your final answer on the line.
-\par\vspace{{2mm}}
-\begin{{tcbraster}}[raster columns=2, raster column skip=5mm, raster row skip=5mm]
-{boxes}
-\end{{tcbraster}}
-\newpage
-"""
+def skill_checks_page():
+    """All five Skill Checks on one page, so it can be torn out and marked."""
+    total = sum(len(s["check"]) for s in C.SECTIONS)
+    parts = [r"\banner{\ding{51}}{Skill Checks}{Teacher marks}{checkcol}",
+             r"{\large Name: \fillline{8cm}}\hfill"
+             r"\fcolorbox{checkcol}{white}{\parbox[c][8mm][c]{4.2cm}{\centering\color{checkcol}\bfseries\large"
+             rf" Total: \underline{{\hspace{{9mm}}}} / {total}}}}}\par\vspace{{1mm}}",
+             r"Do these \textbf{on your own --- no notes}. Show your working, and write your final answer on the line."]
+    for s in C.SECTIONS:
+        boxes = "\n".join(rf"\cbox{{{i}}}{{{m(q)}}}{{2.95cm}}" for i, q in enumerate(s["check"], 1))
+        parts.append(rf"\checkhead{{{s['num']}}}{{{s['title']}}}{{{s['check_instr']}}}{{{len(s['check'])}}}")
+        parts.append(r"\begin{tcbraster}[raster columns=4, raster column skip=3mm]" "\n" + boxes + "\n\\end{tcbraster}")
+    return "\n".join(parts) + "\n\\newpage\n"
 
 
-def mixed_page():
-    items = [(q, a) for _s, q, a in C.MIXED]
-    return (r"\banner{$\star$}{Mixed Review}{Extra practice}{accent}" "\n"
-            r"{\large\textbf{A mix of all five skills.}} Look carefully --- which skill do you need? "
-            r"{\color{muted}Answers are at the back.}\par\vspace{1mm}" "\n"
-            + qgrid(items, 3, "3.05cm") + "\\newpage\n")
+
 
 
 def answer_block(title, items, start=1):
@@ -332,22 +305,15 @@ def answers():
            + m("2b + 3a") + " is the same as " + m("3a + 2b") + ".}\\par"]
     for s in C.SECTIONS:
         out.append(rf"\subsection*{{{s['num']}. {s['title']}}}")
-        out.append(answer_block("Practice A", s["practice_a"]))
-        out.append(answer_block("Practice B", s["practice_b"]))
-    out.append(r"\subsection*{$\star$ Mixed Review}")
-    out.append(answer_block("", [(q, a) for _s, q, a in C.MIXED]))
+        out.append(answer_block("", s["practice"]))
     return "\n".join(out)
 
 
 def document():
     parts = [PREAMBLE, cover()]
     for s in C.SECTIONS:
-        a_instr, b_instr = s["instr"]
-        parts += [learn_page(s),
-                  practice_page(s, "practice_a", "Practice A", a_instr),
-                  practice_page(s, "practice_b", "Practice B", b_instr),
-                  skill_check_page(s)]
-    parts += [mixed_page(), answers(), "\n\\end{document}\n"]
+        parts += [learn_page(s), practice_page(s)]
+    parts += [skill_checks_page(), answers(), "\n\\end{document}\n"]
     return "".join(parts)
 
 
