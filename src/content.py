@@ -368,5 +368,70 @@ Always \textbf{check by expanding} your answer.
     ],
 }
 
-SECTIONS = [LIKE_TERMS, MULTIPLY, DIVIDE, EXPAND, FACTORISE]
+# ---------------------------------------------------------------------------
+# 6. Substitution
+# Questions are written "expression | values", e.g. "3a + 2b | a = 2, b = 3".
+# ---------------------------------------------------------------------------
+SUBSTITUTE = {
+    "id": "substitute",
+    "num": 6,
+    "title": "Substitution",
+    "can": "I can substitute numbers into expressions, e.g. if `a = 4` then `3a = 12`",
+    "kind": "substitute",
+    "instr": "Find the value of each expression.",
+    "check_instr": "Find the value.",
+    "learn": r"""
+\textbf{Substitution} means \textbf{replacing each letter with a number}, then working out the answer.
+
+\begin{stepsbox}{How to substitute}
+\begin{enumerate}[nosep]
+\item Write the expression out again.
+\item \textbf{Replace each letter} with its number. Put in the hidden $\times$ signs.
+\item \textbf{Work it out.} Do $\times$ and $\div$ before $+$ and $-$ (BEDMAS).
+\end{enumerate}
+\end{stepsbox}
+
+\begin{tipbox}{Watch out for the hidden $\times$}
+`3a` means `3 × a`. So if `a = 4`, then `3a = 3 × 4 = 12` --- \textbf{not} 34!\\
+`a^2` means `a × a`. So if `a = 3`, then `a^2 = 3 × 3 = 9` --- \textbf{not} 6!
+\end{tipbox}
+
+\subsection*{Worked examples}
+\begin{examples}
+\example{a + 5 | a = 3}{Replace `a` with 3\\`3 + 5`}{8}
+\example{4b | b = 2}{`4b` means `4 × b`\\`4 × 2`}{8}
+\example{2x + 1 | x = 5}{`2 × 5 + 1`\\`= 10 + 1`}{11}
+\example{ab | a = 3, b = 4}{`ab` means `a × b`\\`3 × 4`}{12}
+\example{x^2 | x = 6}{`x^2` means `x × x`\\`6 × 6`}{36}
+\example{3a - b | a = 4, b = 2}{`3 × 4 - 2`\\`= 12 - 2`}{10}
+\end{examples}
+
+\begin{rememberbox}
+Put a \textbf{negative} number in brackets when you substitute it:
+if `x = -3`, then `2x = 2 × (-3) = -6`.
+\end{rememberbox}
+""",
+    "practice": [
+        ("x + 7 | x = 3", "10"),
+        ("a - 2 | a = 9", "7"),
+        ("5y | y = 4", "20"),
+        ("3m | m = 6", "18"),
+        ("2x + 3 | x = 4", "11"),
+        ("4a - 5 | a = 3", "7"),
+        ("ab | a = 2, b = 5", "10"),
+        ("x^2 | x = 5", "25"),
+        ("3a + 2b | a = 2, b = 3", "12"),
+        ("a^2 + 1 | a = 4", "17"),
+        ("2x + 5 | x = -1", "3"),
+        ("4 - 3x | x = -2", "10"),
+    ],
+    "check": [
+        "4a | a = 5",
+        "3x + 2 | x = 4",
+        "xy | x = 3, y = 6",
+        "y^2 - 3 | y = 5",
+    ],
+}
+
+SECTIONS = [LIKE_TERMS, MULTIPLY, DIVIDE, EXPAND, FACTORISE, SUBSTITUTE]
 

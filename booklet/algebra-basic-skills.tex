@@ -76,7 +76,7 @@
 
 % \checkhead{n}{title}{instruction}{marks}
 \newcommand{\checkhead}[4]{\begin{tcolorbox}[enhanced, colback=checklight, colframe=checklight, arc=1.5mm,
-  left=2mm, right=2mm, top=0.8mm, bottom=0.8mm, before skip=1.5mm, after skip=1.2mm]
+  left=2mm, right=2mm, top=0.8mm, bottom=0.8mm, before skip=4mm, after skip=2mm]
   \cnum{#1}\hspace{2mm}\textbf{\color{checkcol}#2}\quad #3\hfill
   \textbf{\color{checkcol}Mark: \underline{\hspace{8mm}} / #4}\end{tcolorbox}}
 
@@ -104,7 +104,8 @@
 \textbf{\color{accent}\large 3} & \textbf{Dividing Algebra}\newline {\small\color{muted}I can divide terms, e.g. $8x \div  2 = 4x$ and $6ab \div  2a = 3b$} & \tickbox & \hfill/\,4 \\ \hline
 \textbf{\color{accent}\large 4} & \textbf{Expanding Brackets}\newline {\small\color{muted}I can expand brackets, e.g. $3(x + 2) = 3x + 6$ and $-2(x - 4) = -2x + 8$} & \tickbox & \hfill/\,4 \\ \hline
 \textbf{\color{accent}\large 5} & \textbf{Factorising into Brackets}\newline {\small\color{muted}I can factorise, e.g. $2x + 6 = 2(x + 3)$} & \tickbox & \hfill/\,4 \\ \hline
-\multicolumn{3}{r|}{\textbf{Skill Check total}} & \hfill/\,20 \\ \cline{4-4}
+\textbf{\color{accent}\large 6} & \textbf{Substitution}\newline {\small\color{muted}I can substitute numbers into expressions, e.g. if $a = 4$ then $3a = 12$} & \tickbox & \hfill/\,4 \\ \hline
+\multicolumn{3}{r|}{\textbf{Skill Check total}} & \hfill/\,24 \\ \cline{4-4}
 \end{tabularx}
 \newpage
 \banner{1}{Collecting Like Terms}{Learn}{accent}
@@ -405,43 +406,107 @@ Always \textbf{check by expanding} your answer.
 \end{tcbraster}
 \vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}
 \newpage
+\banner{6}{Substitution}{Learn}{accent}
+\begin{tcolorbox}[enhanced, colback=accentlight, colframe=accent, boxrule=0pt, leftrule=1.5mm, arc=0mm, top=1.5mm, bottom=1.5mm]\textbf{Goal:} I can substitute numbers into expressions, e.g. if $a = 4$ then $3a = 12$\end{tcolorbox}
+\large
+
+\textbf{Substitution} means \textbf{replacing each letter with a number}, then working out the answer.
+
+\begin{stepsbox}{How to substitute}
+\begin{enumerate}[nosep]
+\item Write the expression out again.
+\item \textbf{Replace each letter} with its number. Put in the hidden $\times$ signs.
+\item \textbf{Work it out.} Do $\times$ and $\div$ before $+$ and $-$ (BEDMAS).
+\end{enumerate}
+\end{stepsbox}
+
+\begin{tipbox}{Watch out for the hidden $\times$}
+$3a$ means $3 \times  a$. So if $a = 4$, then $3a = 3 \times  4 = 12$ --- \textbf{not} 34!\\
+$a^{2}$ means $a \times  a$. So if $a = 3$, then $a^{2} = 3 \times  3 = 9$ --- \textbf{not} 6!
+\end{tipbox}
+
+\subsection*{Worked examples}
+\begin{examples}
+\example{$a + 5$\\[1pt]{\normalsize when $a = 3$}}{Replace $a$ with 3\\$3 + 5$}{$= 8$}
+\example{$4b$\\[1pt]{\normalsize when $b = 2$}}{$4b$ means $4 \times  b$\\$4 \times  2$}{$= 8$}
+\example{$2x + 1$\\[1pt]{\normalsize when $x = 5$}}{$2 \times  5 + 1$\\$= 10 + 1$}{$= 11$}
+\example{$ab$\\[1pt]{\normalsize when $a = 3,\  b = 4$}}{$ab$ means $a \times  b$\\$3 \times  4$}{$= 12$}
+\example{$x^{2}$\\[1pt]{\normalsize when $x = 6$}}{$x^{2}$ means $x \times  x$\\$6 \times  6$}{$= 36$}
+\example{$3a - b$\\[1pt]{\normalsize when $a = 4,\  b = 2$}}{$3 \times  4 - 2$\\$= 12 - 2$}{$= 10$}
+\end{examples}
+
+\begin{rememberbox}
+Put a \textbf{negative} number in brackets when you substitute it:
+if $x = -3$, then $2x = 2 \times  (-3) = -6$.
+\end{rememberbox}
+
+\newpage\normalsize
+\banner{6}{Substitution}{Practice}{accent}
+{\large\textbf{Find the value of each expression.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
+\begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
+\qbox{1}{$x + 7$\enspace{\large when $x = 3$}}{3.45cm}
+\qbox{2}{$a - 2$\enspace{\large when $a = 9$}}{3.45cm}
+\qbox{3}{$5y$\enspace{\large when $y = 4$}}{3.45cm}
+\qbox{4}{$3m$\enspace{\large when $m = 6$}}{3.45cm}
+\qbox{5}{$2x + 3$\enspace{\large when $x = 4$}}{3.45cm}
+\qbox{6}{$4a - 5$\enspace{\large when $a = 3$}}{3.45cm}
+\qbox{7}{$ab$\enspace{\large when $a = 2,\  b = 5$}}{3.45cm}
+\qbox{8}{$x^{2}$\enspace{\large when $x = 5$}}{3.45cm}
+\qbox{9}{$3a + 2b$\enspace{\large when $a = 2,\  b = 3$}}{3.45cm}
+\qbox{10}{$a^{2} + 1$\enspace{\large when $a = 4$}}{3.45cm}
+\qbox{11}{$2x + 5$\enspace{\large when $x = -1$}}{3.45cm}
+\qbox{12}{$4 - 3x$\enspace{\large when $x = -2$}}{3.45cm}
+\end{tcbraster}
+\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}
+\newpage
 \banner{\ding{51}}{Skill Checks}{Teacher marks}{checkcol}
-{\large Name: \fillline{8cm}}\hfill\fcolorbox{checkcol}{white}{\parbox[c][8mm][c]{4.2cm}{\centering\color{checkcol}\bfseries\large Total: \underline{\hspace{9mm}} / 20}}\par\vspace{1mm}
+{\large Name: \fillline{8cm}}\hfill\par\vspace{1mm}
 Do these \textbf{on your own --- no notes}. Show your working, and write your final answer on the line.
 \checkhead{1}{Collecting Like Terms}{Simplify by collecting like terms.}{4}
 \begin{tcbraster}[raster columns=4, raster column skip=3mm]
-\cbox{1}{$5a + 2a$}{2.95cm}
-\cbox{2}{$8x - 3x$}{2.95cm}
-\cbox{3}{$4a + 3b + 2a$}{2.95cm}
-\cbox{4}{$x^{2} + 5x + 2x^{2}$}{2.95cm}
+\cbox{1}{$5a + 2a$}{5.6cm}
+\cbox{2}{$8x - 3x$}{5.6cm}
+\cbox{3}{$4a + 3b + 2a$}{5.6cm}
+\cbox{4}{$x^{2} + 5x + 2x^{2}$}{5.6cm}
 \end{tcbraster}
 \checkhead{2}{Multiplying Algebra}{Simplify.}{4}
 \begin{tcbraster}[raster columns=4, raster column skip=3mm]
-\cbox{1}{$3 \times  5a$}{2.95cm}
-\cbox{2}{$2a \times  4b$}{2.95cm}
-\cbox{3}{$x \times  x$}{2.95cm}
-\cbox{4}{$3x \times  2x$}{2.95cm}
+\cbox{1}{$3 \times  5a$}{5.6cm}
+\cbox{2}{$2a \times  4b$}{5.6cm}
+\cbox{3}{$x \times  x$}{5.6cm}
+\cbox{4}{$3x \times  2x$}{5.6cm}
 \end{tcbraster}
 \checkhead{3}{Dividing Algebra}{Simplify.}{4}
 \begin{tcbraster}[raster columns=4, raster column skip=3mm]
-\cbox{1}{$12x \div  4$}{2.95cm}
-\cbox{2}{$ab \div  b$}{2.95cm}
-\cbox{3}{$10ab \div  5a$}{2.95cm}
-\cbox{4}{$8x^{2} \div  2x$}{2.95cm}
+\cbox{1}{$12x \div  4$}{5.6cm}
+\cbox{2}{$ab \div  b$}{5.6cm}
+\cbox{3}{$10ab \div  5a$}{5.6cm}
+\cbox{4}{$8x^{2} \div  2x$}{5.6cm}
 \end{tcbraster}
+\newpage
+\banner{\ding{51}}{Skill Checks}{Continued}{checkcol}
+{\large Name: \fillline{8cm}}\hfill\fcolorbox{checkcol}{white}{\parbox[c][8mm][c]{4.2cm}{\centering\color{checkcol}\bfseries\large Total: \underline{\hspace{9mm}} / 24}}\par\vspace{1mm}
+Do these \textbf{on your own --- no notes}. Show your working, and write your final answer on the line.
 \checkhead{4}{Expanding Brackets}{Expand.}{4}
 \begin{tcbraster}[raster columns=4, raster column skip=3mm]
-\cbox{1}{$3(x + 5)$}{2.95cm}
-\cbox{2}{$2(4a - 3)$}{2.95cm}
-\cbox{3}{$x(x - 2)$}{2.95cm}
-\cbox{4}{$-4(x - 3)$}{2.95cm}
+\cbox{1}{$3(x + 5)$}{5.6cm}
+\cbox{2}{$2(4a - 3)$}{5.6cm}
+\cbox{3}{$x(x - 2)$}{5.6cm}
+\cbox{4}{$-4(x - 3)$}{5.6cm}
 \end{tcbraster}
 \checkhead{5}{Factorising into Brackets}{Factorise fully.}{4}
 \begin{tcbraster}[raster columns=4, raster column skip=3mm]
-\cbox{1}{$5x + 20$}{2.95cm}
-\cbox{2}{$6a - 9$}{2.95cm}
-\cbox{3}{$x^{2} + 8x$}{2.95cm}
-\cbox{4}{$4y^{2} - 12y$}{2.95cm}
+\cbox{1}{$5x + 20$}{5.6cm}
+\cbox{2}{$6a - 9$}{5.6cm}
+\cbox{3}{$x^{2} + 8x$}{5.6cm}
+\cbox{4}{$4y^{2} - 12y$}{5.6cm}
+\end{tcbraster}
+\checkhead{6}{Substitution}{Find the value.}{4}
+\begin{tcbraster}[raster columns=4, raster column skip=3mm]
+\cbox{1}{$4a$\\[1pt]{\normalsize when $a = 5$}}{5.6cm}
+\cbox{2}{$3x + 2$\\[1pt]{\normalsize when $x = 4$}}{5.6cm}
+\cbox{3}{$xy$\\[1pt]{\normalsize when $x = 3,\  y = 6$}}{5.6cm}
+\cbox{4}{$y^{2} - 3$\\[1pt]{\normalsize when $y = 5$}}{5.6cm}
 \end{tcbraster}
 \newpage
 {\LARGE\bfseries\color{accent} Answers to the Practice Questions}\par\vspace{1mm}
@@ -529,6 +594,23 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \item $a(b + 3)$
 \item $3x(x + 2)$
 \item $2a(a - 4)$
+\end{enumerate}\end{multicols}
+
+\subsection*{6. Substitution}
+\textbf{\color{muted}}
+\begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
+\item $10$
+\item $7$
+\item $20$
+\item $18$
+\item $11$
+\item $7$
+\item $10$
+\item $25$
+\item $12$
+\item $17$
+\item $3$
+\item $10$
 \end{enumerate}\end{multicols}
 
 \end{document}

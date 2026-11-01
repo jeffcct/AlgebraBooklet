@@ -94,12 +94,24 @@ def check_factorised(a):
     return problems
 
 
+def split_sub(q):
+    """'3a + 2b | a = 2, b = 3' -> ('3a + 2b', {'a': 2, 'b': 3})"""
+    expr, vals = q.split("|")
+    env = {k.strip(): int(v) for k, v in (pair.split("=") for pair in vals.split(","))}
+    return expr.strip(), env
+
+
 def check_all():
     errors, count = [], 0
 
     def check(where, q, a, kind):
         nonlocal count
         count += 1
+        if kind == "substitute":
+            expr, env = split_sub(q)
+            if not math.isclose(eval(to_python(expr), {}, env), float(a)):
+                errors.append(f"{where}: '{q}' does NOT equal {a}")
+            return
         if not same(q, a):
             errors.append(f"{where}: '{q}' is NOT equal to '{a}'")
         for p in (check_factorised(a) if kind == "factorise" else check_simplified(a)):
@@ -109,7 +121,11 @@ def check_all():
         for i, (q, a) in enumerate(s["practice"], 1):
             check(f"Section {s['num']} practice Q{i}", q, a, s["kind"])
         for i, q in enumerate(s["check"], 1):
-            to_python(q)  # skill check questions must at least parse
+            if s["kind"] == "substitute":
+                expr, env = split_sub(q)
+                eval(to_python(expr), {}, env)  # must parse and have a value for every letter
+            else:
+                to_python(q)  # skill check questions must at least parse
             if not isinstance(q, str):
                 errors.append(f"Section {s['num']} skill check Q{i}: must be a question only (no answer)")
     return count, errors
@@ -128,10 +144,21 @@ def m(expr):
     return f"${mbody(expr)}$"
 
 
+def qtex(q, compact=False):
+    """A question for a box. Substitution questions also show their values."""
+    if "|" not in q:
+        return m(q)
+    expr, vals = (x.strip() for x in q.split("|"))
+    vals = m(vals.replace(",", ",\\ "))
+    if compact:
+        return m(expr) + r"\\[1pt]{\normalsize when " + vals + "}"
+    return m(expr) + r"\enspace{\large when " + vals + "}"
+
+
 def rich(text):
     """Convert \\example{q}{steps}{ans} lines and `maths` in LaTeX notes."""
     def ex(mo):
-        return r"\example{%s}{%s}{%s}" % (m(mo.group(1)), mo.group(2), m("= " + mo.group(3)))
+        return r"\example{%s}{%s}{%s}" % (qtex(mo.group(1), compact=True), mo.group(2), m("= " + mo.group(3)))
     text = re.sub(r"^\\example\{([^{}]*)\}\{(.*)\}\{([^{}]*)\}$", ex, text, flags=re.M)
     return re.sub(r"`([^`]+)`", lambda mo: m(mo.group(1)), text)
 
@@ -214,7 +241,7 @@ PREAMBLE = r"""% ---------------------------------------------------------------
 
 % \checkhead{n}{title}{instruction}{marks}
 \newcommand{\checkhead}[4]{\begin{tcolorbox}[enhanced, colback=checklight, colframe=checklight, arc=1.5mm,
-  left=2mm, right=2mm, top=0.8mm, bottom=0.8mm, before skip=1.5mm, after skip=1.2mm]
+  left=2mm, right=2mm, top=0.8mm, bottom=0.8mm, before skip=4mm, after skip=2mm]
   \cnum{#1}\hspace{2mm}\textbf{\color{checkcol}#2}\quad #3\hfill
   \textbf{\color{checkcol}Mark: \underline{\hspace{8mm}} / #4}\end{tcolorbox}}
 
@@ -261,7 +288,7 @@ def learn_page(s):
 
 
 def qgrid(items, cols, height):
-    boxes = "\n".join(rf"\qbox{{{i}}}{{{m(q)}}}{{{height}}}" for i, (q, _a) in enumerate(items, 1))
+    boxes = "\n".join(rf"\qbox{{{i}}}{{{qtex(q)}}}{{{height}}}" for i, (q, _a) in enumerate(items, 1))
     return (rf"\begin{{tcbraster}}[raster columns={cols}, raster column skip=4mm, raster row skip=3mm]"
             f"\n{boxes}\n\\end{{tcbraster}}\n")
 
@@ -275,21 +302,25 @@ def practice_page(s):
 
 
 def skill_checks_page():
-    """All five Skill Checks on one page, so it can be torn out and marked."""
+    """The Skill Checks, three skills per page, at the back so they can be torn out and marked."""
     total = sum(len(s["check"]) for s in C.SECTIONS)
-    parts = [r"\banner{\ding{51}}{Skill Checks}{Teacher marks}{checkcol}",
-             r"{\large Name: \fillline{8cm}}\hfill"
-             r"\fcolorbox{checkcol}{white}{\parbox[c][8mm][c]{4.2cm}{\centering\color{checkcol}\bfseries\large"
-             rf" Total: \underline{{\hspace{{9mm}}}} / {total}}}}}\par\vspace{{1mm}}",
-             r"Do these \textbf{on your own --- no notes}. Show your working, and write your final answer on the line."]
-    for s in C.SECTIONS:
-        boxes = "\n".join(rf"\cbox{{{i}}}{{{m(q)}}}{{2.95cm}}" for i, q in enumerate(s["check"], 1))
-        parts.append(rf"\checkhead{{{s['num']}}}{{{s['title']}}}{{{s['check_instr']}}}{{{len(s['check'])}}}")
-        parts.append(r"\begin{tcbraster}[raster columns=4, raster column skip=3mm]" "\n" + boxes + "\n\\end{tcbraster}")
-    return "\n".join(parts) + "\n\\newpage\n"
-
-
-
+    per_page = 3
+    pages = [C.SECTIONS[i:i + per_page] for i in range(0, len(C.SECTIONS), per_page)]
+    out = []
+    for n, secs in enumerate(pages):
+        last = n == len(pages) - 1
+        label = "Teacher marks" if n == 0 else "Continued"
+        right = (r"\fcolorbox{checkcol}{white}{\parbox[c][8mm][c]{4.2cm}{\centering\color{checkcol}\bfseries\large"
+                 rf" Total: \underline{{\hspace{{9mm}}}} / {total}}}}}" if last else "")
+        parts = [rf"\banner{{\ding{{51}}}}{{Skill Checks}}{{{label}}}{{checkcol}}",
+                 r"{\large Name: \fillline{8cm}}\hfill" + right + r"\par\vspace{1mm}",
+                 r"Do these \textbf{on your own --- no notes}. Show your working, and write your final answer on the line."]
+        for s in secs:
+            boxes = "\n".join(rf"\cbox{{{i}}}{{{qtex(q, compact=True)}}}{{5.6cm}}" for i, q in enumerate(s["check"], 1))
+            parts.append(rf"\checkhead{{{s['num']}}}{{{s['title']}}}{{{s['check_instr']}}}{{{len(s['check'])}}}")
+            parts.append(r"\begin{tcbraster}[raster columns=4, raster column skip=3mm]" "\n" + boxes + "\n\\end{tcbraster}")
+        out.append("\n".join(parts) + "\n\\newpage\n")
+    return "".join(out)
 
 
 def answer_block(title, items, start=1):
