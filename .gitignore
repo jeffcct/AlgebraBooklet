@@ -1,0 +1,5 @@
+booklet/*.aux
+booklet/*.log
+booklet/*.out
+booklet/*.pdf
+src/__pycache__/

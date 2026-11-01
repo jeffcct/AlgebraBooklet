@@ -1,42 +1,43 @@
 #!/usr/bin/env python3
-"""Build the student booklet and teacher answer key.
+"""Build the booklet:  python3 src/build.py
 
-    python3 src/build.py          # check answers, write HTML to build/
-    node src/make_pdf.js          # turn build/*.html into PDFs in the repo root
-
-The check step evaluates every question and its answer at lots of random
-values and stops the build if any answer is wrong, isn't simplified, or
-isn't fully factorised.
+1. Checks every practice answer in content.py: it must equal its question
+   (tested at many random values), be simplified, and be fully factorised
+   where that applies. Any problem stops the build.
+2. Writes booklet/algebra-basic-skills.tex from content.py.
+3. Runs pdflatex (twice) to make Algebra-Basic-Skills-Booklet.pdf.
 """
-import html
 import math
 import os
 import random
 import re
+import shutil
+import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 import content as C  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BUILD = os.path.join(ROOT, "build")
+TEX_DIR = os.path.join(ROOT, "booklet")
+TEX_NAME = "algebra-basic-skills"
+PDF_OUT = os.path.join(ROOT, "Algebra-Basic-Skills-Booklet.pdf")
 
 # ---------------------------------------------------------------------------
 # Answer checking
 # ---------------------------------------------------------------------------
 
 def to_python(expr):
-    """'3x^2 + 2(x - 1)' -> '3*x**2 + 2*(x - 1)'. Single-letter variables."""
-    s = expr.replace(" ", "").replace("×", "*").replace("−", "-")
+    """'3x^2 + 2(x - 1)' -> '3*x**2+2*(x-1)'. Variables are single letters."""
+    s = expr.replace(" ", "").replace("×", "*")
     if "÷" in s:
         num, den = s.split("÷")
         s = f"({num})/({den})"
     s = s.replace("^", "**")
     out = []
-    for i, ch in enumerate(s):
+    for ch in s:
         if out:
-            prev = out[-1][-1]
-            # implicit multiplication: 3x, xy, 2(, x(, )(, )x
+            prev = out[-1]
             if (prev.isdigit() or prev.isalpha() or prev == ")") and (ch.isalpha() or ch == "("):
                 out.append("*")
         out.append(ch)
@@ -55,13 +56,12 @@ def same(q, a, trials=40):
 
 
 def terms(expr):
-    """Split '3x^2 - 2x + 5' into ['3x^2', '-2x', '+5'] (no brackets expected)."""
-    return re.findall(r"[+-]?\s*[^+-]+", expr.replace(" ", ""))
+    """'3x^2 - 2x + 5' -> ['3x^2', '-2x', '+5'] (no brackets expected)."""
+    return re.findall(r"[+-]?[^+-]+", expr.replace(" ", ""))
 
 
 def letter_part(term):
-    t = term.lstrip("+-")
-    t = re.sub(r"^\d+", "", t)
+    t = re.sub(r"^[+-]?\d*", "", term)
     powers = {}
     for v, p in re.findall(r"([a-z])(?:\^(\d+))?", t):
         powers[v] = powers.get(v, 0) + int(p or 1)
@@ -75,265 +75,280 @@ def check_simplified(a):
     parts = [letter_part(t) for t in terms(a)]
     if len(parts) != len(set(parts)):
         problems.append("answer has like terms that weren't collected")
-    for t in terms(a):
-        if re.match(r"^[+-]?1[a-z]", t):
-            problems.append("answer writes a coefficient of 1")
+    if any(re.match(r"^[+-]?1[a-z]", t) for t in terms(a)):
+        problems.append("answer writes a coefficient of 1")
     return problems
 
 
-def check_factorised(q, a):
+def check_factorised(a):
     problems = []
-    if "(" not in a:
-        problems.append("answer has no brackets")
-    m = re.fullmatch(r"(\d*[a-z]?)\((.*)\)", a.replace(" ", ""))
-    if m:  # common-factor form k(...)
-        inside = terms(m.group(2))
-        coeffs = [int(re.match(r"[+-]?(\d*)", t).group(1) or 1) for t in inside]
-        if math.gcd(*coeffs) != 1:
-            problems.append("number factor left inside the bracket")
-        letter_sets = [set(re.findall(r"[a-z]", t)) for t in inside]
-        if set.intersection(*letter_sets):
-            problems.append("letter factor left inside the bracket")
+    mo = re.fullmatch(r"(-?\d*[a-z]?)\((.*)\)", a.replace(" ", ""))
+    if not mo:
+        return ["answer is not in the form  factor(bracket)"]
+    inside = terms(mo.group(2))
+    coeffs = [int(re.match(r"[+-]?(\d*)", t).group(1) or 1) for t in inside]
+    if math.gcd(*coeffs) != 1:
+        problems.append("a number factor is left inside the bracket")
+    if set.intersection(*[set(re.findall(r"[a-z]", t)) for t in inside]):
+        problems.append("a letter factor is left inside the bracket")
     return problems
 
 
 def check_all():
-    errors = []
-    count = 0
+    errors, count = [], 0
 
     def check(where, q, a, kind):
         nonlocal count
         count += 1
         if not same(q, a):
             errors.append(f"{where}: '{q}' is NOT equal to '{a}'")
-        probs = check_factorised(q, a) if kind == "factorise" else check_simplified(a)
-        for p in probs:
+        for p in (check_factorised(a) if kind == "factorise" else check_simplified(a)):
             errors.append(f"{where}: '{q}' -> '{a}': {p}")
 
     for s in C.SECTIONS:
-        for part in ("practice_a", "practice_b", "check"):
+        for part in ("practice_a", "practice_b"):
             for i, (q, a) in enumerate(s[part], 1):
-                check(f"S{s['num']} {part} Q{i}", q, a, s["kind"])
+                check(f"Section {s['num']} {part} Q{i}", q, a, s["kind"])
+        for i, q in enumerate(s["check"], 1):
+            to_python(q)  # skill check questions must at least parse
+            if not isinstance(q, str):
+                errors.append(f"Section {s['num']} skill check Q{i}: must be a question only (no answer)")
     for i, (sec, q, a) in enumerate(C.MIXED, 1):
         check(f"Mixed Q{i}", q, a, C.SECTIONS[sec - 1]["kind"])
     return count, errors
 
 
 # ---------------------------------------------------------------------------
-# HTML rendering
+# LaTeX rendering
 # ---------------------------------------------------------------------------
 
+def mbody(expr):
+    s = expr.replace("×", r"\times ").replace("÷", r"\div ")
+    return re.sub(r"\^(\d+)", r"^{\1}", s)
+
+
 def m(expr):
-    """Typeset a plain-text expression."""
-    out = []
-    i = 0
-    while i < len(expr):
-        ch = expr[i]
-        if ch == "^":
-            j = i + 1
-            while j < len(expr) and expr[j].isdigit():
-                j += 1
-            out.append(f"<sup>{expr[i+1:j]}</sup>")
-            i = j
-            continue
-        if ch.isalpha() and ch.isascii():
-            out.append(f"<i>{ch}</i>")
-        elif ch == "-":
-            out.append("−")
-        else:
-            out.append(html.escape(ch))
-        i += 1
-    return f'<span class="m">{"".join(out)}</span>'
+    return f"${mbody(expr)}$"
 
 
 def rich(text):
-    """Replace `maths` in HTML notes with typeset maths."""
+    """Convert \\example{q}{steps}{ans} lines and `maths` in LaTeX notes."""
+    def ex(mo):
+        return r"\example{%s}{%s}{%s}" % (m(mo.group(1)), mo.group(2), m("= " + mo.group(3)))
+    text = re.sub(r"^\\example\{([^{}]*)\}\{(.*)\}\{([^{}]*)\}$", ex, text, flags=re.M)
     return re.sub(r"`([^`]+)`", lambda mo: m(mo.group(1)), text)
 
 
-def esc(t):
-    return html.escape(t)
+PREAMBLE = r"""% ------------------------------------------------------------------
+% Algebra Basic Skills booklet.
+% GENERATED by src/build.py from src/content.py -- edit content.py and
+% re-run the build, so every practice answer gets re-checked.
+% ------------------------------------------------------------------
+\documentclass[12pt,a4paper]{article}
+\usepackage[a4paper,top=1.4cm,bottom=1.8cm,left=1.5cm,right=1.5cm,footskip=0.8cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[scaled=0.95]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem,multicol,array,tabularx,pifont,fancyhdr,titlesec}
 
+\definecolor{accent}{HTML}{1D6B8C}
+\definecolor{accentlight}{HTML}{E3F0F6}
+\definecolor{checkcol}{HTML}{8A3B12}
+\definecolor{checklight}{HTML}{F6E7DE}
+\definecolor{muted}{HTML}{56616B}
+\definecolor{good}{HTML}{2E7D32}
+\definecolor{warm}{HTML}{FFF6DD}
+\definecolor{warmedge}{HTML}{E3B341}
 
-def page(body, cls=""):
-    return f'<section class="page {cls}">{body}</section>'
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\newcommand{\cmark}{\textcolor{good}{\ding{51}}}
+\newcommand{\xmark}{\textcolor{red!70!black}{\ding{55}}}
+\newcommand{\tickbox}{{\Large$\square$}}
+\titleformat*{\subsection}{\large\bfseries\color{accent}}
+\titlespacing*{\subsection}{0pt}{8pt}{4pt}
 
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{muted}Algebra Basic Skills}
+\fancyfoot[R]{\footnotesize\color{muted}Page \thepage}
 
-def section_banner(s, label):
-    return (f'<div class="banner"><span class="bn">{s["num"]}</span>'
-            f'<span class="bt">{esc(s["title"])}</span><span class="bl">{label}</span></div>')
+% --- boxes -----------------------------------------------------------------
+\tcbset{base/.style={enhanced, arc=2mm, boxrule=0.8pt, left=3mm, right=3mm, top=1.5mm, bottom=1.5mm}}
+\newtcolorbox{tipbox}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1.}\ }}
+\newtcolorbox{stepsbox}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1}\par}}
+\newtcolorbox{rememberbox}{base, fontupper=\large, colframe=warmedge, colback=warm, before upper={\textbf{Remember:}\ }}
+\newenvironment{examples}{\begin{tcbraster}[raster columns=3, raster equal height=rows,
+  raster column skip=2.5mm, raster row skip=2.5mm, raster before skip=2mm, raster after skip=3mm]}{\end{tcbraster}}
+\newcommand{\example}[3]{\begin{tcolorbox}[base, colframe=black!25, colback=white, boxrule=0.5pt, arc=1.5mm]
+  {\Large #1}\par\vspace{-2pt}{\color{black!25}\rule{\linewidth}{0.4pt}}\par
+  {\normalsize\color{black!75}#2}\par\vspace{2pt}
+  {\Large\color{good}\boldmath #3}\end{tcolorbox}}
 
+\newcommand{\stepnum}[2]{\tikz[baseline=(n.base)]\node[circle,fill=#2,text=white,inner sep=0pt,
+  minimum size=8mm,font=\large\bfseries](n){#1};}
+\newcommand{\qnum}[1]{\tikz[baseline=(n.base)]\node[circle,fill=accentlight,text=accent,inner sep=0pt,
+  minimum size=6mm,font=\small\bfseries](n){#1};}
+\newcommand{\cnum}[1]{\tikz[baseline=(n.base)]\node[circle,fill=checklight,text=checkcol,inner sep=0pt,
+  minimum size=6.5mm,font=\small\bfseries](n){#1};}
 
-def question_grid(items, cls, start=1, numbered_prefix=""):
-    cells = []
-    for i, (q, _a) in enumerate(items, start):
-        cells.append(
-            f'<div class="q"><div class="qhead"><span class="qn">{numbered_prefix}{i}</span>'
-            f'<span class="qq">{m(q)}</span></div>'
-            f'<div class="work"></div><div class="ans"><span>=</span><span class="line"></span></div></div>')
-    return f'<div class="qgrid {cls}">{"".join(cells)}</div>'
+% \banner{number}{title}{label}{colour}
+\newcommand{\banner}[4]{\begin{tcolorbox}[enhanced, colback=#4, colframe=#4, arc=2mm,
+  left=3mm, right=3mm, top=2mm, bottom=2mm, after skip=3mm]
+  \color{white}\tikz[baseline=(n.base)]\node[circle,fill=white,text=#4,inner sep=0pt,
+  minimum size=8.5mm,font=\Large\bfseries](n){#1};\hspace{3mm}{\LARGE\bfseries #2}\hfill
+  \colorbox{white!20!#4}{\bfseries\MakeUppercase{#3}}\end{tcolorbox}}
+
+% \qbox{n}{question}{height}
+\newcommand{\qbox}[3]{\begin{tcolorbox}[base, height=#3, text fill, colframe=black!30, colback=white, boxrule=0.5pt,
+  arc=1.5mm, top=1.5mm, bottom=2mm]\qnum{#1}\hspace{2.5mm}{\Large #2}\par\vfill
+  {\Large$=$}\hspace{2mm}\textcolor{black!45}{\rule{0.8\linewidth}{0.6pt}}\end{tcolorbox}}
+
+% \cbox{n}{question}{height}  -- skill check question, with a mark box
+\newcommand{\cbox}[3]{\begin{tcolorbox}[base, height=#3, text fill, colframe=checkcol!70, colback=white, boxrule=0.8pt,
+  arc=1.5mm, top=2mm, bottom=2.5mm]\cnum{#1}\hspace{2.5mm}{\Large #2}\hfill
+  \fcolorbox{checkcol}{white}{\rule{0pt}{6mm}\hspace{6mm}}\par\vfill
+  {\Large$=$}\hspace{2mm}\textcolor{black!45}{\rule{0.8\linewidth}{0.6pt}}\end{tcolorbox}}
+
+\newcommand{\fillline}[1]{\textcolor{black}{\rule{#1}{0.6pt}}}
+
+\begin{document}
+"""
 
 
 def cover():
-    rows = "".join(
-        f'<tr><td class="sn">{s["num"]}</td><td><b>{esc(s["title"])}</b><br>'
-        f'<span class="small">{rich(s["can"])}</span></td>'
-        f'<td class="tick">☐</td><td class="tick">☐</td><td class="score">&nbsp;&nbsp;&nbsp;&nbsp;/ 8</td></tr>'
+    rows = "\n".join(
+        rf"\textbf{{\color{{accent}}\large {s['num']}}} & \textbf{{{s['title']}}}\newline "
+        rf"{{\small\color{{muted}}{rich(s['can'])}}} & \tickbox & \tickbox & \hfill/\,{len(s['check'])} \\ \hline"
         for s in C.SECTIONS)
-    body = f"""
-<div class="cover-top">
-  <div class="cover-kicker">Basic Skills Booklet</div>
-  <h1>{esc(C.TITLE)}</h1>
-  <div class="cover-sub">{esc(C.SUBTITLE)}</div>
-</div>
-<div class="namebox">
-  <div>Name: <span class="fill"></span></div>
-  <div>Class: <span class="fill short"></span></div>
-</div>
+    total = sum(len(s["check"]) for s in C.SECTIONS)
+    return rf"""
+\thispagestyle{{empty}}
+\begin{{tcolorbox}}[enhanced, colback=accent, colframe=accent, arc=3mm, halign=center, top=9mm, bottom=8mm]
+\color{{white}}{{\small\bfseries B\,A\,S\,I\,C\quad S\,K\,I\,L\,L\,S\quad B\,O\,O\,K\,L\,E\,T}}\par\vspace{{3mm}}
+{{\fontsize{{34}}{{40}}\selectfont\bfseries {C.TITLE}}}\par\vspace{{3mm}}
+{{\Large {C.SUBTITLE}}}
+\end{{tcolorbox}}
+\vspace{{6mm}}
+{{\large Name: \fillline{{9.5cm}} \hfill Class: \fillline{{3.5cm}}}}
 
-<h2>How to use this booklet</h2>
-<div class="how">
-  <div class="how-step"><div class="how-n">1</div><div><b>Learn</b><br>Read the notes and the worked
-  examples. Each example shows every step.</div></div>
-  <div class="how-step"><div class="how-n">2</div><div><b>Practise</b><br>Do <b>Practice A</b>, then
-  <b>Practice B</b>. Check your answers at the back of the booklet and fix any mistakes.</div></div>
-  <div class="how-step"><div class="how-n">3</div><div><b>Skill Check</b><br>When you're ready, do the
-  Skill Check <b>on your own, without notes</b>. Your teacher will mark it.</div></div>
-</div>
+\vspace{{4mm}}
+{{\Large\bfseries\color{{accent}} How to use this booklet}}
+\begin{{tcbraster}}[raster columns=1, raster row skip=2mm]
+\begin{{tcolorbox}}[base, colback=accentlight, colframe=accentlight]
+\stepnum{{1}}{{accent}}\hspace{{3mm}}
+\begin{{minipage}}[t]{{0.88\linewidth}}\textbf{{Learn.}} Read the notes and the worked examples.
+Each example shows every step.\end{{minipage}}
+\end{{tcolorbox}}
+\begin{{tcolorbox}}[base, colback=accentlight, colframe=accentlight]
+\stepnum{{2}}{{accent}}\hspace{{3mm}}
+\begin{{minipage}}[t]{{0.88\linewidth}}\textbf{{Practise.}} Do \textbf{{Practice A}}, then \textbf{{Practice B}}.
+Check your answers at the back of the booklet and fix any mistakes.\end{{minipage}}
+\end{{tcolorbox}}
+\begin{{tcolorbox}}[base, colback=checklight, colframe=checklight]
+\stepnum{{3}}{{checkcol}}\hspace{{3mm}}
+\begin{{minipage}}[t]{{0.88\linewidth}}\textbf{{Skill Check.}} When you're ready, do the Skill Check
+\textbf{{on your own, without notes}}. Your teacher will mark it.\end{{minipage}}
+\end{{tcolorbox}}
+\end{{tcbraster}}
 
-<h2>My progress</h2>
-<table class="progress">
-<tr><th></th><th>Skill</th><th>Practice A<br>done</th><th>Practice B<br>done</th><th>Skill Check<br><span class="small">(teacher)</span></th></tr>
+\vspace{{3mm}}
+{{\Large\bfseries\color{{accent}} My progress}}\par\vspace{{1mm}}
+\renewcommand{{\arraystretch}}{{1.9}}
+\begin{{tabularx}}{{\linewidth}}{{|c|X|c|c|p{{2.2cm}}|}}
+\hline
+\rowcolor{{accentlight}} & \textbf{{Skill}} & \small\textbf{{Practice A}} & \small\textbf{{Practice B}} & \small\textbf{{Skill Check}} \\
+\rowcolor{{accentlight}} & & \small done & \small done & \small (teacher) \\ \hline
 {rows}
-<tr class="total"><td></td><td><b>Mixed Review</b> (extra practice)</td><td class="tick" colspan="2">☐</td><td class="score">Total&nbsp;&nbsp;&nbsp;&nbsp;/ 40</td></tr>
-</table>
-<p class="small center">Tip: the answers to all the <b>practice</b> questions are at the back. The Skill Checks are not —
-that's where you show what you can do!</p>
+& \textbf{{Mixed Review}} \small(extra practice) & \multicolumn{{2}}{{c|}}{{\tickbox}} & \textbf{{Total}}\hfill/\,{total} \\ \hline
+\end{{tabularx}}
+
+\vfill
+{{\small\color{{muted}} The answers to the \textbf{{practice}} questions are at the back.
+The Skill Checks have no answers in this booklet --- that's where you show what you can do!}}
+\newpage
 """
-    return page(body, "cover")
 
 
 def learn_page(s):
-    return page(section_banner(s, "Learn") + f'<div class="can">🎯 {rich(s["can"])}</div>'
-                + f'<div class="learn">{rich(s["learn"])}</div>', "learn-page")
+    return (rf"\banner{{{s['num']}}}{{{s['title']}}}{{Learn}}{{accent}}" "\n"
+            rf"\begin{{tcolorbox}}[enhanced, colback=accentlight, colframe=accent, boxrule=0pt, leftrule=1.5mm, arc=0mm, top=1.5mm, bottom=1.5mm]"
+            rf"\textbf{{Goal:}} {rich(s['can'])}\end{{tcolorbox}}" "\n"
+            + "\\large\n" + rich(s["learn"]) + "\n\\newpage\\normalsize\n")
+
+
+def qgrid(items, cols, height):
+    boxes = "\n".join(rf"\qbox{{{i}}}{{{m(q)}}}{{{height}}}" for i, (q, _a) in enumerate(items, 1))
+    return (rf"\begin{{tcbraster}}[raster columns={cols}, raster column skip=4mm, raster row skip=3mm]"
+            f"\n{boxes}\n\\end{{tcbraster}}\n")
 
 
 def practice_page(s, part, label, instr):
-    items = s[part]
-    cls = "wide" if s["id"] in ("expand", "factorise") else ""
-    if len(items) <= 8:
-        cls += " roomy"
-    body = (section_banner(s, label)
-            + f'<p class="instr">{esc(instr)} <span class="small">Show your working in the space.</span></p>'
-            + question_grid(items, cls)
-            + '<p class="check-note">✔ Check your answers at the back. Fix any you got wrong before moving on.</p>')
-    return page(body, "practice-page")
+    return (rf"\banner{{{s['num']}}}{{{s['title']}}}{{{label}}}{{accent}}" "\n"
+            rf"{{\large\textbf{{{instr}}}}} {{\color{{muted}}Show your working in each box.}}\par\vspace{{1mm}}" "\n"
+            + qgrid(s[part], 2, "3.45cm")
+            + r"\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong before moving on.}"
+            + "\n\\newpage\n")
 
 
 def skill_check_page(s):
-    cells = []
-    for i, (q, _a) in enumerate(s["check"], 1):
-        cells.append(
-            f'<div class="sc"><div class="sc-head"><span class="qn">{i}</span>{m(q)}'
-            f'<span class="markbox"></span></div><div class="sc-work"></div>'
-            f'<div class="ans"><span>=</span><span class="line"></span></div></div>')
-    body = f"""
-{section_banner(s, "Skill Check")}
-<div class="sc-top">
-  <div>Name: <span class="fill"></span></div>
-  <div class="teacher">Teacher mark:<span class="big-score"></span>/ 8</div>
-</div>
-<p class="instr"><b>{esc(C.CHECK_INSTRUCTIONS[s["id"]])}</b> Do this on your own — no notes.
-Show your working. Write your final answer on the line.</p>
-<div class="scgrid">{"".join(cells)}</div>
+    n = len(s["check"])
+    boxes = "\n".join(rf"\cbox{{{i}}}{{{m(q)}}}{{10.6cm}}" for i, q in enumerate(s["check"], 1))
+    return rf"""\banner{{{s['num']}}}{{{s['title']}}}{{Skill Check}}{{checkcol}}
+{{\large Name: \fillline{{8cm}}}}\hfill
+\fcolorbox{{checkcol}}{{white}}{{\parbox[c][9mm][c]{{4.6cm}}{{\centering\color{{checkcol}}\bfseries\large Teacher mark: \underline{{\hspace{{9mm}}}} / {n}}}}}
+\par\vspace{{2mm}}
+{{\large\textbf{{{s['check_instr']}}}}} Do this on your own --- no notes. Show your working, and write your final answer on the line.
+\par\vspace{{2mm}}
+\begin{{tcbraster}}[raster columns=2, raster column skip=5mm, raster row skip=5mm]
+{boxes}
+\end{{tcbraster}}
+\newpage
 """
-    return page(body, "check-page")
 
 
 def mixed_page():
-    items = [(q, a) for _sec, q, a in C.MIXED]
-    body = ('<div class="banner"><span class="bn">★</span><span class="bt">Mixed Review</span>'
-            '<span class="bl">Extra practice</span></div>'
-            '<p class="instr">A mix of all five skills. Look at each question carefully — which skill do you need? '
-            '<span class="small">Answers are at the back.</span></p>'
-            + question_grid(items, "wide mixed"))
-    return page(body, "practice-page")
+    items = [(q, a) for _s, q, a in C.MIXED]
+    return (r"\banner{$\star$}{Mixed Review}{Extra practice}{accent}" "\n"
+            r"{\large\textbf{A mix of all five skills.}} Look carefully --- which skill do you need? "
+            r"{\color{muted}Answers are at the back.}\par\vspace{1mm}" "\n"
+            + qgrid(items, 3, "3.05cm") + "\\newpage\n")
 
 
-def answer_list(items, start=1):
-    return "<ol class='alist' start='%d'>%s</ol>" % (
-        start, "".join(f"<li>{m(a)}</li>" for _q, a in items))
+def answer_block(title, items, start=1):
+    lis = "\n".join(rf"\item {m(a)}" for _q, a in items)
+    return (rf"\textbf{{\color{{muted}}{title}}}" "\n"
+            r"\begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=" + str(start) + "]\n"
+            + lis + "\n\\end{enumerate}\\end{multicols}\n")
 
 
-def answers_pages():
-    blocks = []
+def answers():
+    out = [r"{\LARGE\bfseries\color{accent} Answers to the Practice Questions}\par\vspace{1mm}",
+           r"{\small\color{muted} Terms can be in a different order and still be right --- e.g. "
+           + m("2b + 3a") + " is the same as " + m("3a + 2b") + ".}\\par"]
     for s in C.SECTIONS:
-        blocks.append(
-            f'<div class="ablock"><h3>{s["num"]}. {esc(s["title"])}</h3>'
-            f'<div class="acols"><div><h4>Practice A</h4>{answer_list(s["practice_a"])}</div>'
-            f'<div><h4>Practice B</h4>{answer_list(s["practice_b"])}</div></div></div>')
-    mixed = [(q, a) for _s, q, a in C.MIXED]
-    blocks.append(f'<div class="ablock"><h3>★ Mixed Review</h3>'
-                  f'<div class="acols"><div>{answer_list(mixed[:10])}</div>'
-                  f'<div>{answer_list(mixed[10:], 11)}</div></div></div>')
-    body = ('<h2 class="ahead">Answers to the Practice Questions</h2>'
-            '<p class="small">Terms can be in a different order and still be right — for example '
-            f'{m("2b + 3a")} is the same as {m("3a + 2b")}, and {m("(x + 3)(x + 2)")} is the same as {m("(x + 2)(x + 3)")}.</p>'
-            + "".join(blocks))
-    return page(body, "answers-page")
+        out.append(rf"\subsection*{{{s['num']}. {s['title']}}}")
+        out.append(answer_block("Practice A", s["practice_a"]))
+        out.append(answer_block("Practice B", s["practice_b"]))
+    out.append(r"\subsection*{$\star$ Mixed Review}")
+    out.append(answer_block("", [(q, a) for _s, q, a in C.MIXED]))
+    return "\n".join(out)
 
 
-CSS_LINK = '<link rel="stylesheet" href="booklet.css">'
-
-
-def doc(title, pages):
-    return f"""<!DOCTYPE html>
-<html lang="en-NZ"><head><meta charset="utf-8"><title>{esc(title)}</title>{CSS_LINK}</head>
-<body>{"".join(pages)}</body></html>
-"""
-
-
-def student_booklet():
-    pages = [cover()]
+def document():
+    parts = [PREAMBLE, cover()]
     for s in C.SECTIONS:
-        a_instr, b_instr = C.PRACTICE_INSTRUCTIONS[s["id"]]
-        pages += [learn_page(s),
+        a_instr, b_instr = s["instr"]
+        parts += [learn_page(s),
                   practice_page(s, "practice_a", "Practice A", a_instr),
                   practice_page(s, "practice_b", "Practice B", b_instr),
                   skill_check_page(s)]
-    pages += [mixed_page(), answers_pages()]
-    return doc(f"{C.TITLE} — Student Booklet", pages)
-
-
-MARKING_NOTES = {
-    "like-terms": "Accept terms in any order (e.g. 2b + 8a). The answer must be fully simplified (e.g. 3b, not b + 2b).",
-    "multiply": "Accept letters in any order (e.g. 3ba). Q6–8 need the square: x × x = x², not 2x or x × x.",
-    "divide": "Accept the answer written as a simplified fraction only if it has been fully cancelled (e.g. 4x, not 12x²/3x).",
-    "expand": "Accept terms in any order. Q7–8: accept the unsimplified four-term answer (e.g. x² + 3x + 2x + 6) at your discretion as partial evidence; full mark needs the like terms collected.",
-    "factorise": "Accept brackets in either order. Q4 must be fully factorised: 2(3y + 5). Students can check by expanding.",
-}
-
-
-def teacher_key():
-    blocks = []
-    for s in C.SECTIONS:
-        rows = "".join(f"<tr><td>{i}</td><td>{m(q)}</td><td><b>{m(a)}</b></td></tr>"
-                       for i, (q, a) in enumerate(s["check"], 1))
-        blocks.append(
-            f'<div class="kblock"><h3>Skill Check {s["num"]}: {esc(s["title"])} <span class="small">(8 marks, 1 per question)</span></h3>'
-            f'<table class="key"><tr><th>Q</th><th>Question</th><th>Answer</th></tr>{rows}</table>'
-            f'<p class="small"><b>Marking:</b> {esc(MARKING_NOTES[s["id"]])}</p></div>')
-    key_page = page('<h1 class="khead">Teacher Answer Key — Skill Checks</h1>'
-                    '<p>Each Skill Check is out of 8 (1 mark per question, for the correct final answer). '
-                    'Record the mark in the box at the top of the Skill Check page and in the student\'s '
-                    '<i>My progress</i> table on the cover. A suggested pass mark for each skill is <b>6 / 8</b>.</p>'
-                    + "".join(blocks), "key-page")
-    rec_rows = "".join("<tr>" + "<td></td>" * 7 + "</tr>" for _ in range(28))
-    record = page('<h1 class="khead">Class Record</h1>'
-                  '<table class="record"><tr><th>Student</th>'
-                  + "".join(f"<th>{s['num']}. {esc(s['title'])}<br>/ 8</th>" for s in C.SECTIONS)
-                  + "<th>Total<br>/ 40</th></tr>" + rec_rows + "</table>", "record-page")
-    return doc(f"{C.TITLE} — Teacher Answer Key", [key_page, record, answers_pages()])
+    parts += [mixed_page(), answers(), "\n\\end{document}\n"]
+    return "".join(parts)
 
 
 def main():
@@ -343,16 +358,28 @@ def main():
         for e in errors:
             print("  -", e)
         sys.exit(1)
-    print(f"Checked {n} questions: every answer is correct, simplified and fully factorised.")
-    os.makedirs(BUILD, exist_ok=True)
-    with open(os.path.join(BUILD, "student-booklet.html"), "w") as f:
-        f.write(student_booklet())
-    with open(os.path.join(BUILD, "teacher-answer-key.html"), "w") as f:
-        f.write(teacher_key())
-    with open(os.path.join(os.path.dirname(__file__), "booklet.css")) as src, \
-         open(os.path.join(BUILD, "booklet.css"), "w") as dst:
-        dst.write(src.read())
-    print("Wrote build/student-booklet.html and build/teacher-answer-key.html")
+    print(f"Checked {n} practice answers: all correct, simplified and fully factorised.")
+
+    os.makedirs(TEX_DIR, exist_ok=True)
+    tex_path = os.path.join(TEX_DIR, TEX_NAME + ".tex")
+    with open(tex_path, "w") as f:
+        f.write(document())
+    print("Wrote", os.path.relpath(tex_path, ROOT))
+
+    if "--tex-only" in sys.argv:
+        return
+    for _ in range(2):
+        r = subprocess.run(["pdflatex", "-interaction=nonstopmode", "-halt-on-error", TEX_NAME + ".tex"],
+                           cwd=TEX_DIR, capture_output=True, text=True)
+        if r.returncode != 0:
+            print(r.stdout[-3000:])
+            sys.exit("pdflatex failed")
+    shutil.copy(os.path.join(TEX_DIR, TEX_NAME + ".pdf"), PDF_OUT)
+    log = open(os.path.join(TEX_DIR, TEX_NAME + ".log"), errors="replace").read()
+    warn = [l for l in log.splitlines() if "Overfull" in l or "LaTeX Warning" in l]
+    print("Wrote", os.path.relpath(PDF_OUT, ROOT), f"({len(warn)} LaTeX warnings)")
+    for w in warn[:15]:
+        print("   ", w)
 
 
 if __name__ == "__main__":

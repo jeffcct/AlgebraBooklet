@@ -1,18 +1,15 @@
-"""All booklet content: learning notes, practice questions, skill checks.
+r"""All booklet content: learning notes, practice questions, skill checks.
 
-Maths is written in plain text inside backticks in the HTML notes, and as plain
-strings in the question lists. build.py turns it into nicely typeset HTML:
-  - letters become italic variables
-  - ^2 becomes a superscript
-  - '-' becomes a proper minus sign
-Use × for multiply and ÷ for divide.
+Maths is written as plain text, e.g. "3x^2 - 2x", "2a × 3b", "12x ÷ 4".
+In the LaTeX notes (the "learn" strings) put maths inside backticks:
+`3a + 4a = 7a`. build.py turns both into LaTeX maths.
 
-Every question is (question, answer). build.py checks every answer is
-algebraically equal to its question before it builds anything.
+Practice questions are (question, answer) pairs. build.py checks every
+answer is equal to its question, simplified, and (for factorising) fully
+factorised, before it writes the booklet.
 
-Question "kinds" tell the checker how to compare:
-  simplify  - the answer must equal the question expression
-  factorise - same check, the question is the expanded form
+Skill Check questions are questions ONLY. Their answers are deliberately
+not stored or printed anywhere: the teacher marks them.
 """
 
 TITLE = "Algebra Basic Skills"
@@ -27,53 +24,49 @@ LIKE_TERMS = {
     "title": "Collecting Like Terms",
     "can": "I can add and subtract like terms, e.g. `3a + 4a = 7a`",
     "kind": "simplify",
-    "learn": """
-<p><b>Like terms</b> have <b>exactly the same letter part</b>. You can only add or
-subtract like terms.</p>
+    "instr": ("Simplify by collecting like terms.",
+              "Simplify by collecting like terms. Some have two types of term."),
+    "check_instr": "Simplify by collecting like terms.",
+    "learn": r"""
+\textbf{Like terms} have \textbf{exactly the same letter part}. You can only add or
+subtract like terms.
 
-<table class="like-table">
-<tr><th>Like terms ✔</th><th>NOT like terms ✘</th></tr>
-<tr><td>`3a` and `5a`</td><td>`3a` and `5b` (different letters)</td></tr>
-<tr><td>`x` and `7x`</td><td>`x` and `7` (one has no letter)</td></tr>
-<tr><td>`2x^2` and `x^2`</td><td>`x^2` and `x` (`x^2` is not the same as `x`)</td></tr>
-<tr><td>`4ab` and `ab`</td><td>`ab` and `a`</td></tr>
-</table>
+\medskip
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|l|l|}
+\hline
+\rowcolor{accentlight}\textbf{Like terms \cmark} & \textbf{NOT like terms \xmark} \\ \hline
+`3a` and `5a` & `3a` and `5b` \quad (different letters) \\ \hline
+`x` and `7x` & `x` and `7` \quad (one has no letter) \\ \hline
+`2x^2` and `x^2` & `x^2` and `x` \quad (`x^2` is not the same as `x`) \\ \hline
+`4ab` and `ab` & `ab` and `a` \\ \hline
+\end{tabular}
+\end{center}
 
-<div class="tip"><b>Think of the letters as objects.</b>
-3 apples + 4 apples = 7 apples, so `3a + 4a = 7a`.<br>
-But 3 apples + 2 bananas is just 3 apples + 2 bananas, so `3a + 2b` stays as `3a + 2b`.</div>
+\begin{tipbox}{Think of the letters as objects}
+3 apples + 4 apples = 7 apples, so `3a + 4a = 7a`.\\
+But 3 apples + 2 bananas can't be joined, so `3a + 2b` stays as `3a + 2b`.
+\end{tipbox}
 
-<div class="tip"><b>A letter on its own means 1 of it.</b> `a` is the same as `1a`. So `a + a + a = 3a`.</div>
+\begin{tipbox}{A letter on its own means 1 of it}
+`a` is the same as `1a`. So `a + a + a = 3a`.
+\end{tipbox}
 
-<h3>Worked examples</h3>
-<div class="examples">
-<div class="example"><div class="ex-q">`3a + 4a`</div>
-<div class="ex-s">3 lots of `a` plus 4 lots of `a`</div>
-<div class="ex-a">`= 7a`</div></div>
+\subsection*{Worked examples}
+\begin{examples}
+\example{3a + 4a}{3 lots of `a` plus 4 lots of `a`}{7a}
+\example{6x - 2x}{6 take away 2 is 4}{4x}
+\example{5y - y}{`y` means `1y`, and `5 - 1 = 4`}{4y}
+\example{2a + 3b + 4a + b}{The `a`'s: `2a + 4a = 6a`\\The `b`'s: `3b + b = 4b`}{6a + 4b}
+\example{x^2 + 3x + 2x^2}{The `x^2`'s: `x^2 + 2x^2 = 3x^2`\\The `x`'s: just `3x`}{3x^2 + 3x}
+\example{7m + 2 - 3m}{The `m`'s: `7m - 3m = 4m`\\The numbers: just `2`}{4m + 2}
+\end{examples}
 
-<div class="example"><div class="ex-q">`6x - 2x`</div>
-<div class="ex-s">6 take away 2 is 4</div>
-<div class="ex-a">`= 4x`</div></div>
-
-<div class="example"><div class="ex-q">`5y - y`</div>
-<div class="ex-s">`y` means `1y`, and 5 − 1 = 4</div>
-<div class="ex-a">`= 4y`</div></div>
-
-<div class="example"><div class="ex-q">`2a + 3b + 4a + b`</div>
-<div class="ex-s">The `a`'s: `2a + 4a = 6a`<br>The `b`'s: `3b + b = 4b`</div>
-<div class="ex-a">`= 6a + 4b`</div></div>
-
-<div class="example"><div class="ex-q">`x^2 + 3x + 2x^2`</div>
-<div class="ex-s">The `x^2`'s: `x^2 + 2x^2 = 3x^2`<br>The `x`'s: just `3x`</div>
-<div class="ex-a">`= 3x^2 + 3x`</div></div>
-
-<div class="example"><div class="ex-q">`7m + 2 - 3m`</div>
-<div class="ex-s">The `m`'s: `7m - 3m = 4m`<br>The numbers: just `2`</div>
-<div class="ex-a">`= 4m + 2`</div></div>
-</div>
-
-<div class="remember"><b>Remember:</b> the sign (+ or −) in <b>front</b> of a term belongs to that
-term. Highlight or circle each type of term in a different colour before you add them up.</div>
+\begin{rememberbox}
+The sign ($+$ or $-$) in \textbf{front} of a term belongs to that term.
+Circle or highlight each type of term in a different colour before you add them up.
+\end{rememberbox}
 """,
     "practice_a": [
         ("a + a", "2a"),
@@ -104,14 +97,10 @@ term. Highlight or circle each type of term in a different colour before you add
         ("3y^2 + 2y + y^2 + 4y", "4y^2 + 6y"),
     ],
     "check": [
-        ("4a + 3a", "7a"),
-        ("9x - 5x", "4x"),
-        ("b + b + b", "3b"),
-        ("3a + 2b + 5a", "8a + 2b"),
-        ("6x + 4y - 2x", "4x + 4y"),
-        ("2x^2 + 5x^2", "7x^2"),
-        ("x^2 + 4x + 3x", "x^2 + 7x"),
-        ("3x^2 + 2x + x^2 + 5x", "4x^2 + 7x"),
+        "5a + 2a",
+        "8x - 3x",
+        "4a + 3b + 2a",
+        "x^2 + 5x + 2x^2",
     ],
 }
 
@@ -122,57 +111,50 @@ MULTIPLY = {
     "id": "multiply",
     "num": 2,
     "title": "Multiplying Algebra",
-    "can": "I can multiply terms, e.g. `2a × 3b = 6ab` and `x × x = x^2`",
+    "can": r"I can multiply terms, e.g. `2a × 3b = 6ab` and `x × x = x^2`",
     "kind": "simplify",
-    "learn": """
-<p>In algebra we <b>don't write the × sign</b>. Letters and numbers that are multiplied
-are just written next to each other, <b>number first</b>.</p>
+    "instr": ("Simplify.", "Simplify. Watch out for the same letter twice!"),
+    "check_instr": "Simplify.",
+    "learn": r"""
+In algebra we \textbf{don't write the $\times$ sign}. Letters and numbers that are multiplied
+are written next to each other, \textbf{number first}.
 
-<table class="like-table">
-<tr><th>We write…</th><th>…it means</th></tr>
-<tr><td>`3a`</td><td>`3 × a`</td></tr>
-<tr><td>`ab`</td><td>`a × b`</td></tr>
-<tr><td>`5xy`</td><td>`5 × x × y`</td></tr>
-<tr><td>`x^2`</td><td>`x × x` (say "x squared")</td></tr>
-</table>
+\medskip
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|c|l|}
+\hline
+\rowcolor{accentlight}\textbf{We write\ldots} & \textbf{\ldots it means} \\ \hline
+`3a` & `3 × a` \\ \hline
+`ab` & `a × b` \\ \hline
+`5xy` & `5 × x × y` \\ \hline
+`x^2` & `x × x` \quad (say \textquotedblleft{}$x$ squared'') \\ \hline
+\end{tabular}
+\end{center}
 
-<div class="steps-box"><b>How to multiply terms</b>
-<ol>
-<li><b>Multiply the numbers</b> together.</li>
-<li><b>Write the letters</b> after the number (in alphabetical order).</li>
-<li>If the <b>same letter</b> appears twice, write it as a <b>square</b>: `x × x = x^2`.</li>
-</ol></div>
+\begin{stepsbox}{How to multiply terms}
+\begin{enumerate}[nosep]
+\item \textbf{Multiply the numbers} together.
+\item \textbf{Write the letters} after the number, in alphabetical order.
+\item If the \textbf{same letter} appears twice, write it as a \textbf{square}: `x × x = x^2`.
+\end{enumerate}
+\end{stepsbox}
 
-<h3>Worked examples</h3>
-<div class="examples">
-<div class="example"><div class="ex-q">`4 × a`</div>
-<div class="ex-s">Number first, then the letter</div>
-<div class="ex-a">`= 4a`</div></div>
+\subsection*{Worked examples}
+\begin{examples}
+\example{4 × a}{Number first, then the letter}{4a}
+\example{a × b}{Write the letters together}{ab}
+\example{2a × 4}{Numbers: `2 × 4 = 8`\\Letters: `a`}{8a}
+\example{2a × 3b}{Numbers: `2 × 3 = 6`\\Letters: `a` and `b`}{6ab}
+\example{x × x}{The same letter twice is \textquotedblleft{}squared''}{x^2}
+\example{3x × 2x}{Numbers: `3 × 2 = 6`\\Letters: `x × x = x^2`}{6x^2}
+\end{examples}
 
-<div class="example"><div class="ex-q">`a × b`</div>
-<div class="ex-s">Write the letters together</div>
-<div class="ex-a">`= ab`</div></div>
-
-<div class="example"><div class="ex-q">`2a × 4`</div>
-<div class="ex-s">Numbers: 2 × 4 = 8<br>Letters: `a`</div>
-<div class="ex-a">`= 8a`</div></div>
-
-<div class="example"><div class="ex-q">`2a × 3b`</div>
-<div class="ex-s">Numbers: 2 × 3 = 6<br>Letters: `a` and `b`</div>
-<div class="ex-a">`= 6ab`</div></div>
-
-<div class="example"><div class="ex-q">`x × x`</div>
-<div class="ex-s">The same letter twice is "squared"</div>
-<div class="ex-a">`= x^2`</div></div>
-
-<div class="example"><div class="ex-q">`3x × 2x`</div>
-<div class="ex-s">Numbers: 3 × 2 = 6<br>Letters: `x × x = x^2`</div>
-<div class="ex-a">`= 6x^2`</div></div>
-</div>
-
-<div class="remember"><b>Remember:</b> when you <b>multiply</b>, the numbers multiply (`3 × 2 = 6`) —
-don't add them! And `x × x` is `x^2`, not `2x`.<br>
-<b>Going further:</b> `x × x × x = x^3` ("x cubed"), and `x^2 × x = x^3`.</div>
+\begin{rememberbox}
+When you \textbf{multiply}, the numbers multiply (`3 × 2 = 6`) --- don't add them!
+And `x × x` is `x^2`, not `2x`.\\[2pt]
+\textbf{Going further:} `x × x × x = x^3` (\textquotedblleft{}$x$ cubed''), and `x^2 × x = x^3`.
+\end{rememberbox}
 """,
     "practice_a": [
         ("4 × a", "4a"),
@@ -203,14 +185,10 @@ don't add them! And `x × x` is `x^2`, not `2x`.<br>
         ("2x^2 × 3x", "6x^3"),
     ],
     "check": [
-        ("3 × 4a", "12a"),
-        ("m × n", "mn"),
-        ("4x × 3", "12x"),
-        ("a × 3b", "3ab"),
-        ("2a × 5b", "10ab"),
-        ("x × x", "x^2"),
-        ("3y × 2y", "6y^2"),
-        ("2x × 4x", "8x^2"),
+        "3 × 5a",
+        "2a × 4b",
+        "x × x",
+        "3x × 2x",
     ],
 }
 
@@ -223,49 +201,39 @@ DIVIDE = {
     "title": "Dividing Algebra",
     "can": "I can divide terms, e.g. `8x ÷ 2 = 4x` and `6ab ÷ 2a = 3b`",
     "kind": "simplify",
-    "learn": """
-<p>Dividing is the opposite of multiplying. A division can also be written as a fraction:
-`6a ÷ 2` is the same as <span class="frac"><span>`6a`</span><span>`2`</span></span>.</p>
+    "instr": ("Simplify.", "Simplify. Cancel the letters that are on the top and the bottom."),
+    "check_instr": "Simplify.",
+    "learn": r"""
+Dividing is the opposite of multiplying. A division can also be written as a fraction:
+`6a ÷ 2` is the same as $\dfrac{6a}{2}$.
 
-<div class="steps-box"><b>How to divide terms</b>
-<ol>
-<li><b>Divide the numbers.</b></li>
-<li><b>Cancel any letter</b> that is on the top <b>and</b> the bottom.</li>
-<li>Write down what is left.</li>
-</ol></div>
+\begin{stepsbox}{How to divide terms}
+\begin{enumerate}[nosep]
+\item \textbf{Divide the numbers.}
+\item \textbf{Cancel any letter} that is on the top \textbf{and} the bottom.
+\item Write down what is left.
+\end{enumerate}
+\end{stepsbox}
 
-<div class="tip"><b>Why can letters cancel?</b> Anything divided by itself is 1. Just like `5 ÷ 5 = 1`,
-`a ÷ a = 1`. So <span class="frac"><span>`ab`</span><span>`a`</span></span> = `b`.</div>
+\begin{tipbox}{Why can letters cancel?}
+Anything divided by itself is 1. Just like `5 ÷ 5 = 1`, `a ÷ a = 1`.
+So $\dfrac{ab}{a} = b$.
+\end{tipbox}
 
-<h3>Worked examples</h3>
-<div class="examples">
-<div class="example"><div class="ex-q">`6a ÷ 2`</div>
-<div class="ex-s">Numbers: 6 ÷ 2 = 3<br>Letters: `a` stays</div>
-<div class="ex-a">`= 3a`</div></div>
+\subsection*{Worked examples}
+\begin{examples}
+\example{6a ÷ 2}{Numbers: `6 ÷ 2 = 3`\\Letters: `a` stays}{3a}
+\example{ab ÷ a}{The `a` cancels\\`b` is left}{b}
+\example{8x ÷ x}{The `x` cancels\\`8` is left}{8}
+\example{12ab ÷ 4a}{Numbers: `12 ÷ 4 = 3`\\`a` cancels, `b` is left}{3b}
+\example{x^2 ÷ x}{`x^2` is `x × x`\\One `x` cancels, one is left}{x}
+\example{6x^2 ÷ 3x}{Numbers: `6 ÷ 3 = 2`\\Letters: `x^2 ÷ x = x`}{2x}
+\end{examples}
 
-<div class="example"><div class="ex-q">`ab ÷ a`</div>
-<div class="ex-s">The `a` cancels<br>`b` is left</div>
-<div class="ex-a">`= b`</div></div>
-
-<div class="example"><div class="ex-q">`8x ÷ x`</div>
-<div class="ex-s">The `x` cancels<br>8 is left</div>
-<div class="ex-a">`= 8`</div></div>
-
-<div class="example"><div class="ex-q">`12ab ÷ 4a`</div>
-<div class="ex-s">Numbers: 12 ÷ 4 = 3<br>`a` cancels, `b` is left</div>
-<div class="ex-a">`= 3b`</div></div>
-
-<div class="example"><div class="ex-q">`x^2 ÷ x`</div>
-<div class="ex-s">`x^2` is `x × x`<br>One `x` cancels, one is left</div>
-<div class="ex-a">`= x`</div></div>
-
-<div class="example"><div class="ex-q">`6x^2 ÷ 3x`</div>
-<div class="ex-s">Numbers: 6 ÷ 3 = 2<br>Letters: `x^2 ÷ x = x`</div>
-<div class="ex-a">`= 2x`</div></div>
-</div>
-
-<div class="remember"><b>Remember:</b> if <b>all</b> the letters cancel you are left with just a
-number, e.g. `5a ÷ a = 5`. Write `x^2` as `x × x` if it helps you see what cancels.</div>
+\begin{rememberbox}
+If \textbf{all} the letters cancel, you are left with just a number, e.g. `5a ÷ a = 5`.
+Write `x^2` as `x × x` if it helps you see what cancels.
+\end{rememberbox}
 """,
     "practice_a": [
         ("8a ÷ 2", "4a"),
@@ -296,67 +264,63 @@ number, e.g. `5a ÷ a = 5`. Write `x^2` as `x × x` if it helps you see what can
         ("9x^2 ÷ 3x", "3x"),
     ],
     "check": [
-        ("10a ÷ 2", "5a"),
-        ("16x ÷ 4", "4x"),
-        ("xy ÷ y", "x"),
-        ("9a ÷ a", "9"),
-        ("8ab ÷ 4a", "2b"),
-        ("y^2 ÷ y", "y"),
-        ("12x^2 ÷ 3x", "4x"),
-        ("20ab ÷ 5b", "4a"),
+        "12x ÷ 4",
+        "ab ÷ b",
+        "10ab ÷ 5a",
+        "8x^2 ÷ 2x",
     ],
 }
 
 # ---------------------------------------------------------------------------
-# 4. Expanding brackets
+# 4. Expanding brackets (single brackets only, including negatives)
 # ---------------------------------------------------------------------------
 EXPAND = {
     "id": "expand",
     "num": 4,
     "title": "Expanding Brackets",
-    "can": "I can expand brackets, e.g. `3(x + 2) = 3x + 6`",
+    "can": "I can expand brackets, e.g. `3(x + 2) = 3x + 6` and `-2(x - 4) = -2x + 8`",
     "kind": "simplify",
-    "learn": """
-<p><b>Expanding</b> means getting rid of the brackets by multiplying.
-A number or letter right in front of a bracket means <b>multiply everything inside</b> the bracket by it.</p>
+    "instr": ("Expand.", "Expand. Be careful with the negative signs!"),
+    "check_instr": "Expand.",
+    "learn": r"""
+\textbf{Expanding} means getting rid of the brackets by multiplying.
+A number or letter right in front of a bracket means \textbf{multiply everything inside}
+the bracket by it.
 
-<h3>Part 1: One bracket</h3>
-<div class="steps-box"><b>Multiply the outside by EVERY term inside.</b> Draw arrows so you don't miss one!
-<div class="arrow-demo">`3(x + 2)`&nbsp;&nbsp;→&nbsp;&nbsp;`3 × x` and `3 × 2`&nbsp;&nbsp;→&nbsp;&nbsp;`3x + 6`</div></div>
+\begin{stepsbox}{Multiply the outside by EVERY term inside}
+Draw arrows so you don't miss one:
+\[ 3(x + 2) \;\;\longrightarrow\;\; 3 \times x \;\text{ and }\; 3 \times 2 \;\;\longrightarrow\;\; 3x + 6 \]
+\end{stepsbox}
 
-<div class="examples">
-<div class="example"><div class="ex-q">`4(a + 5)`</div>
-<div class="ex-s">`4 × a = 4a`<br>`4 × 5 = 20`</div>
-<div class="ex-a">`= 4a + 20`</div></div>
+\subsection*{Worked examples}
+\begin{examples}
+\example{4(a + 5)}{`4 × a = 4a`\\`4 × 5 = 20`}{4a + 20}
+\example{2(x - 3)}{`2 × x = 2x`\\`2 × (-3) = -6`}{2x - 6}
+\example{x(x + 5)}{`x × x = x^2`\\`x × 5 = 5x`}{x^2 + 5x}
+\end{examples}
 
-<div class="example"><div class="ex-q">`2(x - 3)`</div>
-<div class="ex-s">`2 × x = 2x`<br>`2 × 3 = 6`, keep the minus</div>
-<div class="ex-a">`= 2x - 6`</div></div>
+\subsection*{Negative numbers outside the bracket}
+When the number outside is \textbf{negative}, use the sign rules:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|c|c|}
+\hline
+\rowcolor{accentlight} \textbf{Signs} & \textbf{Answer} \\ \hline
+same signs: \; $+ \times +$ \; or \; $- \times -$ & \textbf{positive} $(+)$ \\ \hline
+different signs: \; $+ \times -$ \; or \; $- \times +$ & \textbf{negative} $(-)$ \\ \hline
+\end{tabular}
+\end{center}
 
-<div class="example"><div class="ex-q">`x(x + 5)`</div>
-<div class="ex-s">`x × x = x^2`<br>`x × 5 = 5x`</div>
-<div class="ex-a">`= x^2 + 5x`</div></div>
-</div>
+\begin{examples}
+\example{-2(x + 3)}{`-2 × x = -2x`\\`-2 × 3 = -6`}{-2x - 6}
+\example{-3(x - 4)}{`-3 × x = -3x`\\`-3 × (-4) = +12`}{-3x + 12}
+\example{-(x - 5)}{A minus on its own means `-1`\\`-1 × x = -x`,\; `-1 × (-5) = +5`}{-x + 5}
+\end{examples}
 
-<h3>Part 2: Two brackets</h3>
-<p>Everything in the first bracket multiplies everything in the second bracket.
-A <b>grid</b> makes it easy to keep track. Example: `(x + 2)(x + 3)`</p>
-<div class="grid-wrap">
-<table class="grid">
-<tr><th>×</th><th>`x`</th><th>`+3`</th></tr>
-<tr><th>`x`</th><td>`x^2`</td><td>`3x`</td></tr>
-<tr><th>`+2`</th><td>`2x`</td><td>`6`</td></tr>
-</table>
-<div class="grid-notes">
-<p>1. Put one bracket on top and one down the side.</p>
-<p>2. Multiply to fill each box.</p>
-<p>3. Add up all four boxes: `x^2 + 3x + 2x + 6`</p>
-<p>4. Collect the like terms in the middle:</p>
-<p class="big">`(x + 2)(x + 3) = x^2 + 5x + 6`</p>
-</div></div>
-
-<div class="remember"><b>Remember:</b> the outside term multiplies <b>every</b> term inside —
-`3(x + 2)` is `3x + 6`, <b>not</b> `3x + 2`. With two brackets, you should always get <b>4</b> boxes.</div>
+\begin{rememberbox}
+The outside term multiplies \textbf{every} term inside: `3(x + 2)` is `3x + 6`, \textbf{not} `3x + 2`.
+With a negative outside, \textbf{every sign inside changes}: `-2(x - 4) = -2x + 8`.
+\end{rememberbox}
 """,
     "practice_a": [
         ("2(x + 3)", "2x + 6"),
@@ -373,29 +337,29 @@ A <b>grid</b> makes it easy to keep track. Example: `(x + 2)(x + 3)`</p>
         ("x(x - 3)", "x^2 - 3x"),
     ],
     "practice_b": [
-        ("(x + 1)(x + 2)", "x^2 + 3x + 2"),
-        ("(x + 3)(x + 4)", "x^2 + 7x + 12"),
-        ("(x + 2)(x + 5)", "x^2 + 7x + 10"),
-        ("(x + 1)(x + 6)", "x^2 + 7x + 6"),
-        ("(x + 2)(x + 4)", "x^2 + 6x + 8"),
-        ("(x + 5)(x + 1)", "x^2 + 6x + 5"),
-        ("(x + 3)(x + 3)", "x^2 + 6x + 9"),
-        ("(x + 4)(x + 5)", "x^2 + 9x + 20"),
+        ("-2(x + 3)", "-2x - 6"),
+        ("-3(a + 4)", "-3a - 12"),
+        ("-4(x - 2)", "-4x + 8"),
+        ("-5(y - 1)", "-5y + 5"),
+        ("-(x + 7)", "-x - 7"),
+        ("-(a - 3)", "-a + 3"),
+        ("2(3 - x)", "6 - 2x"),
+        ("4(2y - 3)", "8y - 12"),
+        ("-2(3x - 1)", "-6x + 2"),
+        ("x(x - 6)", "x^2 - 6x"),
+        ("-x(x + 2)", "-x^2 - 2x"),
+        ("-a(a - 4)", "-a^2 + 4a"),
     ],
     "check": [
-        ("4(x + 2)", "4x + 8"),
-        ("3(a - 5)", "3a - 15"),
-        ("2(3x + 1)", "6x + 2"),
-        ("5(2a + 3)", "10a + 15"),
-        ("x(x + 7)", "x^2 + 7x"),
-        ("y(y - 4)", "y^2 - 4y"),
-        ("(x + 2)(x + 3)", "x^2 + 5x + 6"),
-        ("(x + 1)(x + 4)", "x^2 + 5x + 4"),
+        "3(x + 5)",
+        "2(4a - 3)",
+        "x(x - 2)",
+        "-4(x - 3)",
     ],
 }
 
 # ---------------------------------------------------------------------------
-# 5. Factorising
+# 5. Factorising (single brackets only, including negatives)
 # ---------------------------------------------------------------------------
 FACTORISE = {
     "id": "factorise",
@@ -403,50 +367,41 @@ FACTORISE = {
     "title": "Factorising into Brackets",
     "can": "I can factorise, e.g. `2x + 6 = 2(x + 3)`",
     "kind": "factorise",
-    "learn": """
-<p><b>Factorising</b> is the <b>opposite of expanding</b>. We put the brackets back in.</p>
-<div class="arrow-demo center">`2(x + 3)` &nbsp;&nbsp;— expand →&nbsp;&nbsp; `2x + 6`
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `2x + 6` &nbsp;&nbsp;— factorise →&nbsp;&nbsp; `2(x + 3)`</div>
+    "instr": ("Factorise.", "Factorise fully. Take out the biggest factor you can."),
+    "check_instr": "Factorise fully.",
+    "learn": r"""
+\textbf{Factorising} is the \textbf{opposite of expanding}. We put the brackets back in.
+\begin{center}
+\colorbox{accentlight}{\begin{minipage}{0.8\linewidth}\centering\large\vspace{4pt}
+`2(x + 3)` \;$\xrightarrow{\text{ expand }}$\; `2x + 6`
+\qquad\qquad
+`2x + 6` \;$\xrightarrow{\text{ factorise }}$\; `2(x + 3)`
+\vspace{4pt}\end{minipage}}
+\end{center}
 
-<h3>Part 1: Take out a common factor</h3>
-<div class="steps-box"><ol>
-<li>Find the <b>biggest number</b> (and/or <b>letter</b>) that goes into <b>both</b> terms.
-    Write it outside the bracket.</li>
-<li><b>Divide</b> each term by it. Write the answers inside the bracket.</li>
-<li><b>Check</b> by expanding — you should get back to the question.</li>
-</ol></div>
+\begin{stepsbox}{How to factorise}
+\begin{enumerate}[nosep]
+\item Find the \textbf{biggest number} (and/or \textbf{letter}) that goes into \textbf{every} term.
+      Write it outside the bracket.
+\item \textbf{Divide} each term by it. Write the answers inside the bracket.
+\item \textbf{Check} by expanding --- you should get back to the question.
+\end{enumerate}
+\end{stepsbox}
 
-<div class="examples">
-<div class="example"><div class="ex-q">`5a + 10`</div>
-<div class="ex-s">5 goes into both<br>`5a ÷ 5 = a`, `10 ÷ 5 = 2`</div>
-<div class="ex-a">`= 5(a + 2)`</div></div>
+\subsection*{Worked examples}
+\begin{examples}
+\example{5a + 10}{5 goes into both\\`5a ÷ 5 = a`,\; `10 ÷ 5 = 2`}{5(a + 2)}
+\example{6x - 9}{3 goes into both\\`6x ÷ 3 = 2x`,\; `-9 ÷ 3 = -3`}{3(2x - 3)}
+\example{x^2 + 4x}{`x` goes into both\\`x^2 ÷ x = x`,\; `4x ÷ x = 4`}{x(x + 4)}
+\example{3x^2 + 6x}{`3x` goes into both\\`3x^2 ÷ 3x = x`,\; `6x ÷ 3x = 2`}{3x(x + 2)}
+\example{14 - 7x}{7 goes into both\\`14 ÷ 7 = 2`,\; `-7x ÷ 7 = -x`}{7(2 - x)}
+\example{8x - 12}{4 is the \textbf{biggest}\\(2 works, but isn't the biggest)}{4(2x - 3)}
+\end{examples}
 
-<div class="example"><div class="ex-q">`6x - 9`</div>
-<div class="ex-s">3 goes into both<br>`6x ÷ 3 = 2x`, `9 ÷ 3 = 3`</div>
-<div class="ex-a">`= 3(2x - 3)`</div></div>
-
-<div class="example"><div class="ex-q">`x^2 + 4x`</div>
-<div class="ex-s">`x` goes into both<br>`x^2 ÷ x = x`, `4x ÷ x = 4`</div>
-<div class="ex-a">`= x(x + 4)`</div></div>
-</div>
-
-<h3>Part 2: Two brackets</h3>
-<p>To factorise `x^2 + 5x + 6`, find <b>two numbers</b> that
-<b>multiply</b> to the last number (6) and <b>add</b> to the middle number (5).</p>
-<div class="grid-wrap">
-<table class="pairs">
-<tr><th>Multiply to 6</th><th>Add to…</th></tr>
-<tr><td>1 × 6</td><td>1 + 6 = 7 ✘</td></tr>
-<tr class="hit"><td>2 × 3</td><td>2 + 3 = 5 ✔</td></tr>
-</table>
-<div class="grid-notes">
-<p>The two numbers are 2 and 3, so they go in the brackets:</p>
-<p class="big">`x^2 + 5x + 6 = (x + 2)(x + 3)`</p>
-<p>Check by expanding: `(x + 2)(x + 3) = x^2 + 3x + 2x + 6 = x^2 + 5x + 6` ✔</p>
-</div></div>
-
-<div class="remember"><b>Remember:</b> always <b>check by expanding</b> your answer. The brackets
-can go in either order: `(x + 3)(x + 2)` is also correct.</div>
+\begin{rememberbox}
+Keep the sign with each term: in `6x - 9` the second term is `-9`, so the bracket has a minus: `3(2x - 3)`.
+Always \textbf{check by expanding} your answer.
+\end{rememberbox}
 """,
     "practice_a": [
         ("3x + 6", "3(x + 2)"),
@@ -463,46 +418,30 @@ can go in either order: `(x + 3)(x + 2)` is also correct.</div>
         ("y^2 + y", "y(y + 1)"),
     ],
     "practice_b": [
-        ("x^2 + 3x + 2", "(x + 1)(x + 2)"),
-        ("x^2 + 4x + 3", "(x + 1)(x + 3)"),
-        ("x^2 + 6x + 8", "(x + 2)(x + 4)"),
-        ("x^2 + 5x + 4", "(x + 1)(x + 4)"),
-        ("x^2 + 7x + 10", "(x + 2)(x + 5)"),
-        ("x^2 + 7x + 12", "(x + 3)(x + 4)"),
-        ("x^2 + 8x + 15", "(x + 3)(x + 5)"),
-        ("x^2 + 6x + 9", "(x + 3)(x + 3)"),
+        ("8x - 12", "4(2x - 3)"),
+        ("6a - 15", "3(2a - 5)"),
+        ("12y + 18", "6(2y + 3)"),
+        ("20x - 10", "10(2x - 1)"),
+        ("9m - 6", "3(3m - 2)"),
+        ("14 - 7x", "7(2 - x)"),
+        ("x^2 - 7x", "x(x - 7)"),
+        ("ab + 3a", "a(b + 3)"),
+        ("3x^2 + 6x", "3x(x + 2)"),
+        ("2a^2 - 8a", "2a(a - 4)"),
+        ("5y^2 + 10y", "5y(y + 2)"),
+        ("4x^2 - 6x", "2x(2x - 3)"),
     ],
     "check": [
-        ("4x + 8", "4(x + 2)"),
-        ("5m + 5", "5(m + 1)"),
-        ("3a - 9", "3(a - 3)"),
-        ("6y + 10", "2(3y + 5)"),
-        ("x^2 + 6x", "x(x + 6)"),
-        ("a^2 - 4a", "a(a - 4)"),
-        ("x^2 + 5x + 6", "(x + 2)(x + 3)"),
-        ("x^2 + 6x + 5", "(x + 1)(x + 5)"),
+        "5x + 20",
+        "6a - 9",
+        "x^2 + 8x",
+        "4y^2 - 12y",
     ],
 }
 
 SECTIONS = [LIKE_TERMS, MULTIPLY, DIVIDE, EXPAND, FACTORISE]
 
-# Instructions shown at the top of each practice set
-PRACTICE_INSTRUCTIONS = {
-    "like-terms": ("Simplify by collecting like terms.", "Simplify by collecting like terms. Some have two types of term."),
-    "multiply": ("Simplify.", "Simplify. Watch for the same letter twice!"),
-    "divide": ("Simplify.", "Simplify. Cancel the letters that are on top and bottom."),
-    "expand": ("Expand.", "Expand and simplify. Use the grid to help."),
-    "factorise": ("Factorise.", "Factorise into two brackets."),
-}
-CHECK_INSTRUCTIONS = {
-    "like-terms": "Simplify by collecting like terms.",
-    "multiply": "Simplify.",
-    "divide": "Simplify.",
-    "expand": "Expand (and simplify where needed).",
-    "factorise": "Factorise fully.",
-}
-
-# Mixed review: one section number + question/answer each, so it can be checked too.
+# Mixed review: (section number, question, answer), checked like the rest.
 MIXED = [
     (1, "5a + 2a", "7a"),
     (2, "3 × 2x", "6x"),
@@ -522,6 +461,6 @@ MIXED = [
     (1, "2x^2 + 3x + x^2", "3x^2 + 3x"),
     (2, "4a × 2a", "8a^2"),
     (3, "16xy ÷ 8x", "2y"),
-    (4, "(x + 1)(x + 3)", "x^2 + 4x + 3"),
-    (5, "x^2 + 4x + 4", "(x + 2)(x + 2)"),
+    (4, "-3(x - 2)", "-3x + 6"),
+    (5, "6x^2 + 9x", "3x(2x + 3)"),
 ]

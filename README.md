@@ -1,37 +1,32 @@
 # Algebra Basic Skills Booklet
 
-This is an easy, confidence-building booklet that re-teaches five basic algebra skills. It is for students who need another go at them after a test.
+This is an easy, confidence-building booklet for students who need another go at five basic algebra skills. It is written in LaTeX.
 
-**Print these:**
+**Print this:** `Algebra-Basic-Skills-Booklet.pdf` (24 A4 pages).
 
-- `Algebra-Basic-Skills-Booklet.pdf` is the student booklet (24 A4 pages).
-- `Algebra-Basic-Skills-Teacher-Answer-Key.pdf` has the Skill Check answers, marking notes and a class record sheet. Don't hand it out to students.
-
-## What's in the student booklet
+## What's inside
 
 | # | Skill | Learn | Practice A | Practice B | Skill Check (teacher marks) |
 |---|-------|-------|------------|------------|-----------------------------|
-| 1 | Collecting like terms (a's, b's, x's, x²'s) | notes + 6 worked examples | 12 | 12 | 8 marks |
-| 2 | Multiplying algebra | notes + 6 worked examples | 12 | 12 | 8 marks |
-| 3 | Dividing algebra | notes + 6 worked examples | 12 | 12 | 8 marks |
-| 4 | Expanding brackets (single, then simple double) | notes + grid method | 12 | 8 | 8 marks |
-| 5 | Factorising into brackets (common factor, then simple quadratics) | notes + "multiply/add" table | 12 | 8 | 8 marks |
+| 1 | Collecting like terms (a's, b's, x's, x²'s) | notes + 6 worked examples | 12 | 12 | 4 questions |
+| 2 | Multiplying algebra | notes + 6 worked examples | 12 | 12 | 4 questions |
+| 3 | Dividing algebra | notes + 6 worked examples | 12 | 12 | 4 questions |
+| 4 | Expanding single brackets, including negatives | notes + 6 worked examples + sign rules | 12 | 12 | 4 questions |
+| 5 | Factorising into a single bracket | notes + 6 worked examples | 12 | 12 | 4 questions |
 
-- The cover page has a "How to use this booklet" guide and a **My progress** table. The teacher writes each Skill Check score (out of 8, total out of 40) there.
-- A **Mixed Review** page has 20 more questions across all five skills.
-- The **practice answers are at the back**, so students can check their own work. The Skill Check answers are **only** in the teacher key.
-- The questions are kept easy. Practice A is one-step questions, and Practice B adds one small extra step. Every number in the double-bracket and quadratic questions is positive.
+- **Cover:** a "How to use this booklet" guide and a **My progress** table. The teacher writes each Skill Check score in it (out of 4 per skill, 20 in total).
+- **Skill Checks:** one after each skill. Each has a name line, a "Teacher mark: / 4" box and a mark square for each question. **No Skill Check answers appear anywhere**: they are for the teacher to mark.
+- **Mixed Review:** 20 more practice questions covering all five skills.
+- **Answers to the practice questions** (not the Skill Checks) are at the back, so students can check their own work.
 
 ## Editing
 
-All the text and questions are in `src/content.py`. To rebuild after editing, run these from the repository root:
+The questions and notes are in `src/content.py`. The notes are written in LaTeX, with maths in backticks. After editing, rebuild from the repository root:
 
 ```bash
 python3 src/build.py
 ```
 
-```bash
-node src/make_pdf.js
-```
+This first checks every practice answer: it must equal its question when tested at random values, and it must be fully simplified or factorised. If any answer is wrong, the build stops. It then writes `booklet/algebra-basic-skills.tex` and runs `pdflatex` to make the PDF. You need a TeX Live install with the `tcolorbox`, `enumitem`, `titlesec` and `fancyhdr` packages; on Debian/Ubuntu that is `texlive-latex-extra`.
 
-`build.py` checks every answer before it builds anything. It tests each answer against its question at random values, and confirms the answer is simplified (or fully factorised). If any answer is wrong, it stops with an error. `make_pdf.js` uses Playwright/Chromium to print `build/*.html` to PDF.
+The generated `.tex` file is also committed, so you can compile or tweak it directly. Changes made only in the `.tex` will be overwritten the next time `build.py` runs.
