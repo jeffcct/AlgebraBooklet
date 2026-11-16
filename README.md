@@ -1,6 +1,6 @@
-# Algebra Booklets
+# Maths Booklets
 
-This repo has two printable LaTeX workbooks. Each one has the same layout:
+This repo has three printable LaTeX workbooks. Each one has the same layout:
 
 - a cover with a progress table;
 - two pages per skill: a **Learn** page, then a **Practice** page;
@@ -11,6 +11,7 @@ This repo has two printable LaTeX workbooks. Each one has the same layout:
 |------------|-----|-------|
 | `Algebra-Basic-Skills-Booklet.pdf` | Students who need another go at the basics | 16 |
 | `Algebra-Extension-Workbook.pdf` | Students who did reasonably well and need harder work | 16 |
+| `Statistics-Workbook.pdf` | Statistics basics, pitched at an easy level | 16 |
 
 ## Basic Skills booklet
 
@@ -43,15 +44,37 @@ Six skills, chosen from what students found hard on the test:
 
 Each skill has 8–12 practice questions. The Skill Checks have 2–4 questions per skill, 18 marks in total.
 
+## Statistics workbook
+
+Six sections:
+
+1. **Data sources and types**: primary vs secondary data; categorical, discrete numerical and continuous numerical data.
+2. **Data displays**: recognising pie charts, bar graphs, histograms, pictographs and line graphs, and choosing the right one.
+3. **Scatter plots**: describing a point in context (e.g. "Point A is a person who is 184 cm tall and has an arm span of 150 cm") and describing the strength and direction.
+4. **Lines of best fit**: drawing one and using it to make predictions.
+5. **Mean, median and mode**.
+6. **Range and quartiles**: range, LQ, UQ and IQR.
+
+The median and quartiles are taught with the class's dash method. Students draw dashes over the ordered numbers until they reach the median, then cross out dashes in each half until they reach the LQ and UQ. The median is left out of both halves.
+
+The build checks every answer against the data:
+
+- averages, quartiles and IQR are recalculated;
+- each scatter plot's stated strength is checked against its correlation;
+- predictions must be close to the least-squares line;
+- the answer to "describe point A" is generated from the plotted point.
+
+The small strength plots are generated so they clearly show their stated strength.
+
 ## Editing
 
-The questions and notes are in `src/content.py` (basic) and `src/content_extension.py` (extension). The notes are written in LaTeX, with maths in backticks. After editing, rebuild from the repository root:
+The questions and notes are in `src/content.py` (basic), `src/content_extension.py` (extension) and `src/content_statistics.py` (statistics, with the graph drawing and statistics checks in `src/stats.py`). The notes are written in LaTeX, with maths in backticks. After editing, rebuild from the repository root:
 
 ```bash
 python3 src/build.py
 ```
 
-To build just one of them, add `basic` or `extension` to the end of that command.
+To build just one of them, add `basic`, `extension` or `statistics` to the end of that command.
 
 This first checks every practice answer. Expressions must equal their question when tested at random values, and must be fully simplified or factorised. Equations, inequalities, tables and story rules are checked by substituting values. If any answer is wrong, the build stops. It then writes the `.tex` files in `booklet/` and runs `pdflatex` to make the PDFs. You need a TeX Live install with the `tcolorbox`, `enumitem`, `titlesec` and `fancyhdr` packages; on Debian/Ubuntu that is `texlive-latex-extra`.
 

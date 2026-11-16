@@ -20,6 +20,7 @@ import sys
 import importlib
 
 sys.path.insert(0, os.path.dirname(__file__))
+import stats  # noqa: E402  (statistics question types)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEX_DIR = os.path.join(ROOT, "booklet")
@@ -29,6 +30,8 @@ BOOKLETS = {
               "pdf": "Algebra-Basic-Skills-Booklet.pdf"},
     "extension": {"module": "content_extension", "tex": "algebra-extension",
                   "pdf": "Algebra-Extension-Workbook.pdf"},
+    "statistics": {"module": "content_statistics", "tex": "statistics",
+                   "pdf": "Statistics-Workbook.pdf"},
 }
 C = None  # the content module of the booklet being built
 
@@ -159,6 +162,11 @@ def check_rule(a, pts):
     return [f"'{a}' gives the wrong output for input {i} (expected {o})" for i, o in bad]
 
 
+def marks(s, items="check"):
+    """Marks for a section's Skill Check: one per question, or one per part for multi-part questions."""
+    return sum(stats.marks(it) if it["type"] in stats.TYPES else 1 for it in (norm(s, i) for i in s[items]))
+
+
 def norm(s, item):
     """Every question becomes a dict with a 'type'. Plain strings/tuples use the section's kind."""
     if isinstance(item, str):
@@ -170,6 +178,8 @@ def norm(s, item):
 
 def check_item(it):
     t = it["type"]
+    if t in stats.TYPES:
+        return stats.check(it)
     if t == "expr":
         q, a = it["q"], it["a"]
         if it["kind"] == "substitute":
@@ -198,6 +208,8 @@ def check_question_only(it):
     if any(k in it for k in ("a", "eq", "sol", "pts")):
         return ["Skill Check questions must not include an answer"]
     t = it["type"]
+    if t in stats.TYPES:
+        return stats.check_question(it)
     if t == "expr":
         if it["kind"] == "substitute":
             expr, env = split_sub(it["q"])
@@ -402,9 +414,9 @@ PREAMBLE = r"""% ---------------------------------------------------------------
 def cover():
     rows = "\n".join(
         rf"\textbf{{\color{{accent}}\large {s['num']}}} & \textbf{{{s['title']}}}\newline "
-        rf"{{\small\color{{muted}}{rich(s['can'])}}} & \tickbox & \hfill/\,{len(s['check'])} \\ \hline"
+        rf"{{\small\color{{muted}}{rich(s['can'])}}} & \tickbox & \hfill/\,{marks(s)} \\ \hline"
         for s in C.SECTIONS)
-    total = sum(len(s["check"]) for s in C.SECTIONS)
+    total = sum(marks(s) for s in C.SECTIONS)
     kicker = "\\quad ".join("\\,".join(word) for word in getattr(C, "KICKER", "BASIC SKILLS BOOKLET").split())
     return rf"""
 \thispagestyle{{empty}}
@@ -449,6 +461,8 @@ def solve_var(q):
 def body(it, compact):
     """The inside of a question box (after the question number)."""
     t = it["type"]
+    if t in stats.TYPES:
+        return stats.body(it, compact)
     big = r"\large" if compact else r"\Large"
     txt = r"\normalsize" if compact else r"\large"
     if t == "solve":
@@ -487,17 +501,19 @@ def practice_grid(s):
     items = [norm(s, it) for it in s["practice"]]
     if all(it["type"] == "expr" for it in items):
         return qgrid([(it["q"], it["a"]) for it in items], 2, "3.45cm")
-    heights = {**PRACTICE_H, **s.get("practice_h", {})}
+    heights = {**PRACTICE_H, **stats.PRACTICE_H, **s.get("practice_h", {})}
+    cols = s.get("practice_cols", 2)
     boxes = []
     for i, it in enumerate(items, 1):
-        t, h = it["type"], heights[it["type"]]
+        t = it["type"]
+        h = it.get("h", heights[t])
         if t == "expr":
             boxes.append(rf"\qbox{{{i}}}{{{qtex(it['q'])}}}{{{h}}}")
         else:
-            span = PRACTICE_SPAN.get(t, 1)
+            span = it.get("span") or {**PRACTICE_SPAN, **stats.PRACTICE_SPAN}.get(t, 1) * (cols // 2)
             opt = f"[raster multicolumn={span}]" if span > 1 else ""
             boxes.append(rf"\pbox{opt}{{{i}}}{{{h}}}{{{body(it, compact=False)}}}")
-    return (r"\begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]"
+    return (rf"\begin{{tcbraster}}[raster columns={cols}, raster column skip=4mm, raster row skip=3mm]"
             "\n" + "\n".join(boxes) + "\n\\end{tcbraster}\n")
 
 
@@ -517,15 +533,15 @@ def check_grid(s):
         if it["type"] == "expr":
             boxes.append(rf"\cbox{{{i}}}{{{qtex(it['q'], compact=True)}}}{{{h}}}")
         else:
-            span = CHECK_SPAN.get(it["type"], 2)
+            span = it.get("check_span") or {**CHECK_SPAN, **stats.CHECK_SPAN}.get(it["type"], 2)
             opt = f"[raster multicolumn={span}]" if span > 1 else ""
-            boxes.append(rf"\kbox{opt}{{{i}}}{{{h}}}{{{body(it, compact=True)}}}")
+            boxes.append(rf"\kbox{opt}{{{i}}}{{{it.get('h', h)}}}{{{body(it, compact=True)}}}")
     return r"\begin{tcbraster}[raster columns=4, raster column skip=3mm]" "\n" + "\n".join(boxes) + "\n\\end{tcbraster}"
 
 
 def skill_checks_page():
     """The Skill Checks, three skills per page, at the back so they can be torn out and marked."""
-    total = sum(len(s["check"]) for s in C.SECTIONS)
+    total = sum(marks(s) for s in C.SECTIONS)
     per_page = 3
     pages = [C.SECTIONS[i:i + per_page] for i in range(0, len(C.SECTIONS), per_page)]
     out = []
@@ -538,7 +554,7 @@ def skill_checks_page():
                  r"{\large Name: \fillline{8cm}}\hfill" + right + r"\par\vspace{1mm}",
                  r"Do these \textbf{on your own --- no notes}. Show your working, and write your final answer on the line."]
         for s in secs:
-            parts.append(rf"\checkhead{{{s['num']}}}{{{s['title']}}}{{{s['check_instr']}}}{{{len(s['check'])}}}")
+            parts.append(rf"\checkhead{{{s['num']}}}{{{s['title']}}}{{{s['check_instr']}}}{{{marks(s)}}}")
             parts.append(check_grid(s))
         out.append("\n".join(parts) + "\n\\newpage\n")
     return "".join(out)
@@ -553,6 +569,8 @@ def answer_block(title, items, start=1):
 
 def answer_tex(it):
     t = it["type"]
+    if t in stats.TYPES:
+        return stats.answer(it)
     if t == "word":
         return m(it["eq"]) + ", so " + m(it["sol"])
     if t == "written":
@@ -569,7 +587,7 @@ def section_answers(s):
     if all(it["type"] == "expr" for it in items):
         return answer_block("", [(it["q"], it["a"]) for it in items])
     # consecutive runs of the same layout: short answers 4 across, number lines 2 across, sentences full width
-    layout = {"written": 1, "word": 1, "ineq": 2}
+    layout = {"written": 1, "word": 1, "ineq": 2, **stats.ANSWER_COLS}
     out, i = [], 0
     while i < len(items):
         cols = layout.get(items[i]["type"], 4)
@@ -616,7 +634,7 @@ def build(name):
         for e in errors:
             print("  -", e)
         sys.exit(1)
-    print(f"Checked {n} practice answers: all correct (and simplified / fully factorised where that applies).")
+    print(f"Checked {n} practice answers: all correct.")
 
     os.makedirs(TEX_DIR, exist_ok=True)
     tex_path = os.path.join(TEX_DIR, tex_name + ".tex")
