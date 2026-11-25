@@ -10,7 +10,7 @@ This repo has three printable LaTeX workbooks. Each one has the same layout:
 | Print this | For | Pages |
 |------------|-----|-------|
 | `Algebra-Basic-Skills-Booklet.pdf` | Students who need another go at the basics | 16 |
-| `Algebra-Extension-Workbook.pdf` | Students who did reasonably well and need harder work | 16 |
+| `Algebra-Extension-Workbook.pdf` | Students who did reasonably well and need harder work | 21 |
 | `Statistics-Workbook.pdf` | Statistics basics, pitched at an easy level | 16 |
 
 ## Basic Skills booklet
@@ -33,16 +33,18 @@ The six skills are:
 
 ## Extension workbook
 
-Six skills, chosen from what students found hard on the test:
+Eight skills, chosen from what students found hard on the test:
 
 1. **Factorising fully**: spotting the highest common factor, including letters, e.g. `12x + 36 = 12(x + 3)` (not `6(2x + 6)`) and `12x² + 30x = 6x(2x + 5)`.
 2. **Substituting negatives**, e.g. `x² − 2x` when `x = −3`.
 3. **Index laws**, including the "Liam says 3⁴ × 3² = 9⁶" question as a worked example, plus practice and Skill Check questions in the same style.
-4. **Equations with brackets**, and writing equations from a story.
-5. **Inequalities**: solving them (including flipping the sign) and showing the answer on a number line.
-6. **Writing linear rules** from a table of values or from a story.
+4. **Solving equations**: two-step equations with negatives and fractions, e.g. `4x − 7 = −19`, `12 − 2x = 4`, `x/3 + 2 = 6`.
+5. **Equations with brackets**, and writing equations from a story.
+6. **x on both sides**, e.g. `5x + 3 = 2x + 15`, `3x − 4 = 7x + 8` and `3(x + 2) = x + 14`.
+7. **Inequalities**: solving them (including flipping the sign) and showing the answer on a number line.
+8. **Writing linear rules** from a table of values or from a story.
 
-Each skill has 8–12 practice questions. The Skill Checks have 2–4 questions per skill, 18 marks in total.
+Each skill has 8–12 practice questions. The Skill Checks have 2–4 questions per skill, 26 marks in total, over three pages.
 
 ## Statistics workbook
 

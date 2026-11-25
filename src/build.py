@@ -302,10 +302,13 @@ def rich(text):
             continue
         (q, steps, ans), end = brace_args(text, mo.end(), 3)
         q = q if "\\" in q else qtex(q, compact=True)
-        ans = ans if "\\" in ans else m("= " + ans)
+        ans = ans if "\\" in ans else m(ans if "=" in ans else "= " + ans)
         out += [text[pos:mo.start()], r"\example{%s}{%s}{%s}" % (q, steps, ans)]
         pos = end
     text = "".join(out) + text[pos:]
+    # a tip title that is a question gets no extra full stop
+    text = re.sub(r"\\begin\{tipbox\}\{([^{}]*\?)\}(.*?)\\end\{tipbox\}",
+                  r"\\begin{tipboxq}{\1}\2\\end{tipboxq}", text, flags=re.S)
 
     def nl(mo):
         lo, hi, b, op, w = mo.group(1).split()
@@ -355,6 +358,7 @@ PREAMBLE = r"""% ---------------------------------------------------------------
 % --- boxes -----------------------------------------------------------------
 \tcbset{base/.style={enhanced, arc=2mm, boxrule=0.8pt, left=3mm, right=3mm, top=1.5mm, bottom=1.5mm}}
 \newtcolorbox{tipbox}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1.}\ }}
+\newtcolorbox{tipboxq}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1}\ }}
 \newtcolorbox{stepsbox}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1}\par}}
 \newtcolorbox{rememberbox}{base, fontupper=\large, colframe=warmedge, colback=warm, before upper={\textbf{Remember:}\ }}
 \newenvironment{examples}{\begin{tcbraster}[raster columns=3, raster equal height=rows,
@@ -562,7 +566,7 @@ def skill_checks_page():
 
 def answer_block(title, items, start=1):
     lis = "\n".join(rf"\item {m(a)}" for _q, a in items)
-    return (rf"\textbf{{\color{{muted}}{title}}}" "\n"
+    return ((rf"\textbf{{\color{{muted}}{title}}}" "\n" if title else "") +
             r"\begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=" + str(start) + "]\n"
             + lis + "\n\\end{enumerate}\\end{multicols}\n")
 
@@ -602,7 +606,8 @@ def section_answers(s):
 
 
 def answers():
-    out = [r"\setlength{\multicolsep}{3pt plus 1pt}\titlespacing*{\subsection}{0pt}{6pt}{2pt}",
+    out = [r"\setlength{\multicolsep}{3pt plus 1pt}\titlespacing*{\subsection}{0pt}{5pt}{1pt}"
+           + getattr(C, "ANSWER_SIZE", ""),
            r"{\LARGE\bfseries\color{accent} Answers to the Practice Questions}\par\vspace{1mm}",
            r"{\small\color{muted} Terms can be in a different order and still be right --- e.g. "
            + m("2b + 3a") + " is the same as " + m("3a + 2b") + ".}\\par"]

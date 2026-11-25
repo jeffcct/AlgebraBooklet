@@ -39,6 +39,7 @@
 % --- boxes -----------------------------------------------------------------
 \tcbset{base/.style={enhanced, arc=2mm, boxrule=0.8pt, left=3mm, right=3mm, top=1.5mm, bottom=1.5mm}}
 \newtcolorbox{tipbox}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1.}\ }}
+\newtcolorbox{tipboxq}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1}\ }}
 \newtcolorbox{stepsbox}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1}\par}}
 \newtcolorbox{rememberbox}{base, fontupper=\large, colframe=warmedge, colback=warm, before upper={\textbf{Remember:}\ }}
 \newenvironment{examples}{\begin{tcbraster}[raster columns=3, raster equal height=rows,
@@ -258,10 +259,10 @@ $6a \div  2$ is the same as $\dfrac{6a}{2}$.
 \end{enumerate}
 \end{stepsbox}
 
-\begin{tipbox}{Why can letters cancel?}
+\begin{tipboxq}{Why can letters cancel?}
 Anything divided by itself is 1. Just like $5 \div  5 = 1$, $a \div  a = 1$.
 So $\dfrac{ab}{a} = b$.
-\end{tipbox}
+\end{tipboxq}
 
 \subsection*{Worked examples}
 \begin{examples}
@@ -518,11 +519,10 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \cbox{4}{$y^{2} - 3$\\[1pt]{\normalsize when $y = 5$}}{5.6cm}
 \end{tcbraster}
 \newpage
-\setlength{\multicolsep}{3pt plus 1pt}\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\setlength{\multicolsep}{3pt plus 1pt}\titlespacing*{\subsection}{0pt}{5pt}{1pt}
 {\LARGE\bfseries\color{accent} Answers to the Practice Questions}\par\vspace{1mm}
 {\small\color{muted} Terms can be in a different order and still be right --- e.g. $2b + 3a$ is the same as $3a + 2b$.}\par
 \subsection*{1. Collecting Like Terms}
-\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $3a$
 \item $5a$
@@ -539,7 +539,6 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \end{enumerate}\end{multicols}
 
 \subsection*{2. Multiplying Algebra}
-\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $4a$
 \item $ab$
@@ -556,7 +555,6 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \end{enumerate}\end{multicols}
 
 \subsection*{3. Dividing Algebra}
-\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $4a$
 \item $4x$
@@ -573,7 +571,6 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \end{enumerate}\end{multicols}
 
 \subsection*{4. Expanding Brackets}
-\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $2x + 6$
 \item $3a + 12$
@@ -590,7 +587,6 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \end{enumerate}\end{multicols}
 
 \subsection*{5. Factorising into Brackets}
-\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $3(x + 2)$
 \item $2(a + 4)$
@@ -607,7 +603,6 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \end{enumerate}\end{multicols}
 
 \subsection*{6. Substitution}
-\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $10$
 \item $7$

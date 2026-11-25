@@ -19,6 +19,7 @@ section's "kind", or dicts with a "type":
 TITLE = "Algebra Extension"
 SUBTITLE = "Take your algebra to the next level."
 KICKER = "EXTENSION WORKBOOK"
+ANSWER_SIZE = r"\small"  # eight sections of answers need to fit on one page
 
 # ---------------------------------------------------------------------------
 # 1. Factorising fully
@@ -236,11 +237,77 @@ Watch out for these common mistakes:
 }
 
 # ---------------------------------------------------------------------------
-# 4. Equations with brackets, and writing equations
+# 4. Solving equations (two-step, with negatives)
+# ---------------------------------------------------------------------------
+SOLVE = {
+    "id": "solve",
+    "num": 4,
+    "title": "Solving Equations",
+    "can": "I can solve two-step equations, e.g. `4x - 7 = -19` gives `x = -3`",
+    "kind": "solve",
+    "instr": "Solve each equation. Check your answer by substituting it back in.",
+    "check_instr": "Solve.",
+    "learn": r"""
+An equation is like a \textbf{balance}: whatever you do to one side, you must do to the \textbf{other side} too.
+To get `x` on its own, \textbf{undo} what has been done to it, in \textbf{reverse order}.
+
+\begin{stepsbox}{How to solve a two-step equation}
+\begin{enumerate}[nosep]
+\item \textbf{Undo the $+$ or $-$ first}: add or subtract the same number on both sides.
+\item \textbf{Then undo the $\times$ or $\div$}: divide or multiply both sides by the same number.
+\item \textbf{Check:} substitute your answer back into the \textbf{original} equation.
+\end{enumerate}
+\end{stepsbox}
+
+\subsection*{Worked examples}
+\begin{examples}
+\example{3x + 5 = 20}{Subtract 5: `3x = 15`\\Divide by 3}{x = 5}
+\example{4x - 7 = -19}{Add 7: `4x = -12`\\Divide by 4}{x = -3}
+\example{x/3 + 2 = 6}{Subtract 2: `x/3 = 4`\\Multiply by 3}{x = 12}
+\example{-5x + 3 = 18}{Subtract 3: `-5x = 15`\\Divide by `-5`}{x = -3}
+\example{12 - 2x = 4}{Subtract 12: `-2x = -8`\\Divide by `-2`}{x = 4}
+\example{2x + 9 = 4}{Subtract 9: `2x = -5`\\Divide by 2}{x = -2.5}
+\end{examples}
+
+\begin{tipbox}{Watch the signs}
+In `12 - 2x = 4` the `x` term is `-2x`, so you divide by `-2`, not 2.
+A negative divided by a negative is \textbf{positive}: `-8 ÷ (-2) = 4`.
+\end{tipbox}
+
+\begin{rememberbox}
+Always \textbf{check}: for `4x - 7 = -19`, try `x = -3`: `4 × (-3) - 7 = -12 - 7 = -19` \cmark.
+Answers can be negative or decimals --- that's fine.
+\end{rememberbox}
+""",
+    "practice": [
+        {"type": "solve", "q": "2x + 7 = 19", "a": "x = 6"},
+        {"type": "solve", "q": "5x - 3 = 32", "a": "x = 7"},
+        {"type": "solve", "q": "4x + 11 = 3", "a": "x = -2"},
+        {"type": "solve", "q": "3x - 8 = -20", "a": "x = -4"},
+        {"type": "solve", "q": "x/4 + 3 = 8", "a": "x = 20"},
+        {"type": "solve", "q": "x/2 - 5 = 1", "a": "x = 12"},
+        {"type": "solve", "q": "15 - 3x = 6", "a": "x = 3"},
+        {"type": "solve", "q": "20 - 4x = 32", "a": "x = -3"},
+        {"type": "solve", "q": "-2x + 5 = 17", "a": "x = -6"},
+        {"type": "solve", "q": "7 - x = 10", "a": "x = -3"},
+        {"type": "solve", "q": "x/5 - 2 = -4", "a": "x = -10"},
+        {"type": "solve", "q": "6x + 4 = 1", "a": "x = -0.5"},
+    ],
+    "check": [
+        {"type": "solve", "q": "3x + 4 = 25"},
+        {"type": "solve", "q": "5x - 6 = -21"},
+        {"type": "solve", "q": "18 - 2x = 8"},
+        {"type": "solve", "q": "x/3 + 4 = 1"},
+    ],
+    "check_h": "4.4cm",
+}
+
+# ---------------------------------------------------------------------------
+# 5. Equations with brackets, and writing equations
 # ---------------------------------------------------------------------------
 EQUATIONS = {
     "id": "equations",
-    "num": 4,
+    "num": 5,
     "title": "Equations with Brackets",
     "can": "I can solve equations like `3(x + 4) = 27`, and write equations from a story",
     "kind": "solve",
@@ -303,11 +370,77 @@ EQUATIONS = {
 }
 
 # ---------------------------------------------------------------------------
-# 5. Inequalities
+# 6. Equations with x on both sides
+# ---------------------------------------------------------------------------
+BOTHSIDES = {
+    "id": "bothsides",
+    "num": 6,
+    "title": r"$x$ on Both Sides",
+    "can": "I can solve equations with `x` on both sides, e.g. `5x + 3 = 2x + 15`",
+    "kind": "solve",
+    "instr": "Solve each equation. Get the x terms on one side first.",
+    "check_instr": "Solve.",
+    "learn": r"""
+When `x` appears on \textbf{both sides}, first get all the `x` terms on \textbf{one side}.
+Then it is an ordinary two-step equation.
+
+\begin{stepsbox}{How to solve it}
+\begin{enumerate}[nosep]
+\item If there are \textbf{brackets}, expand them first.
+\item \textbf{Subtract the smaller $x$ term} from both sides, so the $x$ term that is left is positive.
+\item Solve the two-step equation that is left, then \textbf{check}.
+\end{enumerate}
+\end{stepsbox}
+
+\subsection*{Worked examples}
+\begin{examples}
+\example{5x + 3 = 2x + 15}{Subtract `2x`: `3x + 3 = 15`\\`3x = 12`}{x = 4}
+\example{6x - 5 = 4x + 7}{Subtract `4x`: `2x - 5 = 7`\\`2x = 12`}{x = 6}
+\example{3x - 4 = 7x + 8}{Subtract `3x`: `-4 = 4x + 8`\\`-12 = 4x`}{x = -3}
+\example{9 - 2x = x + 3}{Add `2x`: `9 = 3x + 3`\\`6 = 3x`}{x = 2}
+\example{3(x + 2) = x + 14}{Expand: `3x + 6 = x + 14`\\Subtract `x`: `2x + 6 = 14`}{x = 4}
+\example{2(x - 3) = 5x + 9}{Expand: `2x - 6 = 5x + 9`\\Subtract `2x`: `-6 = 3x + 9`}{x = -5}
+\end{examples}
+
+\begin{tipbox}{Which side?}
+In `3x - 4 = 7x + 8`, `3x` is smaller than `7x`, so subtract `3x` from both sides.
+The `x` ends up on the right: that's fine. `-12 = 4x` means the same as `4x = -12`.
+\end{tipbox}
+
+\begin{rememberbox}
+Check by substituting into \textbf{both sides}. For `5x + 3 = 2x + 15` with `x = 4`:
+left side `5 × 4 + 3 = 23`, right side `2 × 4 + 15 = 23` \cmark --- both sides match.
+\end{rememberbox}
+""",
+    "practice": [
+        {"type": "solve", "q": "4x + 1 = 2x + 9", "a": "x = 4"},
+        {"type": "solve", "q": "6x + 2 = 3x + 17", "a": "x = 5"},
+        {"type": "solve", "q": "7x - 5 = 3x + 19", "a": "x = 6"},
+        {"type": "solve", "q": "5x + 8 = x + 20", "a": "x = 3"},
+        {"type": "solve", "q": "2x + 9 = 5x - 3", "a": "x = 4"},
+        {"type": "solve", "q": "4x - 1 = 6x + 9", "a": "x = -5"},
+        {"type": "solve", "q": "2x - 7 = 5x + 2", "a": "x = -3"},
+        {"type": "solve", "q": "8 - 3x = 2x + 23", "a": "x = -3"},
+        {"type": "solve", "q": "x + 10 = 4x + 1", "a": "x = 3"},
+        {"type": "solve", "q": "2(x + 4) = x + 11", "a": "x = 3"},
+        {"type": "solve", "q": "3(x - 1) = x + 9", "a": "x = 6"},
+        {"type": "solve", "q": "4(x + 2) = 2(x - 3)", "a": "x = -7"},
+    ],
+    "check": [
+        {"type": "solve", "q": "6x + 1 = 2x + 13"},
+        {"type": "solve", "q": "5x - 2 = 8x + 10"},
+        {"type": "solve", "q": "4(x - 1) = x + 11"},
+        {"type": "solve", "q": "2(x + 5) = 4x - 2"},
+    ],
+    "check_h": "4.4cm",
+}
+
+# ---------------------------------------------------------------------------
+# 7. Inequalities
 # ---------------------------------------------------------------------------
 INEQUALITIES = {
     "id": "inequalities",
-    "num": 5,
+    "num": 7,
     "title": "Inequalities",
     "can": "I can solve an inequality and show it on a number line, e.g. `2x + 3 < 11` gives `x < 4`",
     "kind": "ineq",
@@ -366,11 +499,11 @@ So numbers bigger than `-3` work, and the arrow points right.
 }
 
 # ---------------------------------------------------------------------------
-# 6. Linear rules from tables and stories
+# 8. Linear rules from tables and stories
 # ---------------------------------------------------------------------------
 LINEAR = {
     "id": "linear",
-    "num": 6,
+    "num": 8,
     "title": "Writing Linear Rules",
     "can": "I can write a rule like `y = 2x + 3` from a table of values or a story",
     "kind": "table",
@@ -434,4 +567,4 @@ The \textbf{fixed amount} (a starting fee or starting value) is `c`. The amount 
     "check_h": "5.6cm",
 }
 
-SECTIONS = [FACTORISE, SUBSTITUTE, INDICES, EQUATIONS, INEQUALITIES, LINEAR]
+SECTIONS = [FACTORISE, SUBSTITUTE, INDICES, SOLVE, EQUATIONS, BOTHSIDES, INEQUALITIES, LINEAR]

@@ -39,6 +39,7 @@
 % --- boxes -----------------------------------------------------------------
 \tcbset{base/.style={enhanced, arc=2mm, boxrule=0.8pt, left=3mm, right=3mm, top=1.5mm, bottom=1.5mm}}
 \newtcolorbox{tipbox}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1.}\ }}
+\newtcolorbox{tipboxq}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1}\ }}
 \newtcolorbox{stepsbox}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1}\par}}
 \newtcolorbox{rememberbox}{base, fontupper=\large, colframe=warmedge, colback=warm, before upper={\textbf{Remember:}\ }}
 \newenvironment{examples}{\begin{tcbraster}[raster columns=3, raster equal height=rows,
@@ -461,7 +462,7 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \kbox[raster multicolumn=3]{2}{4.6cm}{\raggedright{\normalsize 13, 4, 9, 6, 15, 7, 12}\par\vspace{2mm}LQ $=$\ \ansline{0.45}\par\vfill UQ $=$\ \ansline{0.45}\par\vfill IQR $=$\ \ansline{0.45}}
 \end{tcbraster}
 \newpage
-\setlength{\multicolsep}{3pt plus 1pt}\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\setlength{\multicolsep}{3pt plus 1pt}\titlespacing*{\subsection}{0pt}{5pt}{1pt}
 {\LARGE\bfseries\color{accent} Answers to the Practice Questions}\par\vspace{1mm}
 {\small\color{muted} Terms can be in a different order and still be right --- e.g. $2b + 3a$ is the same as $3a + 2b$.}\par
 \subsection*{1. Data Sources and Types}

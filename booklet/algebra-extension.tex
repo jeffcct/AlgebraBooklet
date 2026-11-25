@@ -39,6 +39,7 @@
 % --- boxes -----------------------------------------------------------------
 \tcbset{base/.style={enhanced, arc=2mm, boxrule=0.8pt, left=3mm, right=3mm, top=1.5mm, bottom=1.5mm}}
 \newtcolorbox{tipbox}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1.}\ }}
+\newtcolorbox{tipboxq}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1}\ }}
 \newtcolorbox{stepsbox}[1]{base, fontupper=\large, colframe=accent, colback=white, before upper={\textbf{#1}\par}}
 \newtcolorbox{rememberbox}{base, fontupper=\large, colframe=warmedge, colback=warm, before upper={\textbf{Remember:}\ }}
 \newenvironment{examples}{\begin{tcbraster}[raster columns=3, raster equal height=rows,
@@ -111,10 +112,12 @@
 \textbf{\color{accent}\large 1} & \textbf{Factorising Fully}\newline {\small\color{muted}I can take out the highest common factor, e.g. $12x^{2} + 30x = 6x(2x + 5)$} & \tickbox & \hfill/\,4 \\ \hline
 \textbf{\color{accent}\large 2} & \textbf{Substituting Negatives}\newline {\small\color{muted}I can substitute negative numbers, e.g. if $x = -3$ then $x^{2} - 2x = 15$} & \tickbox & \hfill/\,4 \\ \hline
 \textbf{\color{accent}\large 3} & \textbf{Index Laws}\newline {\small\color{muted}I can use the index laws and explain them, e.g. $3^{4} \times  3^{2} = 3^{6}$} & \tickbox & \hfill/\,3 \\ \hline
-\textbf{\color{accent}\large 4} & \textbf{Equations with Brackets}\newline {\small\color{muted}I can solve equations like $3(x + 4) = 27$, and write equations from a story} & \tickbox & \hfill/\,3 \\ \hline
-\textbf{\color{accent}\large 5} & \textbf{Inequalities}\newline {\small\color{muted}I can solve an inequality and show it on a number line, e.g. $2x + 3 < 11$ gives $x < 4$} & \tickbox & \hfill/\,2 \\ \hline
-\textbf{\color{accent}\large 6} & \textbf{Writing Linear Rules}\newline {\small\color{muted}I can write a rule like $y = 2x + 3$ from a table of values or a story} & \tickbox & \hfill/\,2 \\ \hline
-\multicolumn{3}{r|}{\textbf{Skill Check total}} & \hfill/\,18 \\ \cline{4-4}
+\textbf{\color{accent}\large 4} & \textbf{Solving Equations}\newline {\small\color{muted}I can solve two-step equations, e.g. $4x - 7 = -19$ gives $x = -3$} & \tickbox & \hfill/\,4 \\ \hline
+\textbf{\color{accent}\large 5} & \textbf{Equations with Brackets}\newline {\small\color{muted}I can solve equations like $3(x + 4) = 27$, and write equations from a story} & \tickbox & \hfill/\,3 \\ \hline
+\textbf{\color{accent}\large 6} & \textbf{$x$ on Both Sides}\newline {\small\color{muted}I can solve equations with $x$ on both sides, e.g. $5x + 3 = 2x + 15$} & \tickbox & \hfill/\,4 \\ \hline
+\textbf{\color{accent}\large 7} & \textbf{Inequalities}\newline {\small\color{muted}I can solve an inequality and show it on a number line, e.g. $2x + 3 < 11$ gives $x < 4$} & \tickbox & \hfill/\,2 \\ \hline
+\textbf{\color{accent}\large 8} & \textbf{Writing Linear Rules}\newline {\small\color{muted}I can write a rule like $y = 2x + 3$ from a table of values or a story} & \tickbox & \hfill/\,2 \\ \hline
+\multicolumn{3}{r|}{\textbf{Skill Check total}} & \hfill/\,26 \\ \cline{4-4}
 \end{tabularx}
 \newpage
 \banner{1}{Factorising Fully}{Learn}{accent}
@@ -287,7 +290,61 @@ Watch out for these common mistakes:
 \end{tcbraster}
 \vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}
 \newpage
-\banner{4}{Equations with Brackets}{Learn}{accent}
+\banner{4}{Solving Equations}{Learn}{accent}
+\begin{tcolorbox}[enhanced, colback=accentlight, colframe=accent, boxrule=0pt, leftrule=1.5mm, arc=0mm, top=1.5mm, bottom=1.5mm]\textbf{Goal:} I can solve two-step equations, e.g. $4x - 7 = -19$ gives $x = -3$\end{tcolorbox}
+\large
+
+An equation is like a \textbf{balance}: whatever you do to one side, you must do to the \textbf{other side} too.
+To get $x$ on its own, \textbf{undo} what has been done to it, in \textbf{reverse order}.
+
+\begin{stepsbox}{How to solve a two-step equation}
+\begin{enumerate}[nosep]
+\item \textbf{Undo the $+$ or $-$ first}: add or subtract the same number on both sides.
+\item \textbf{Then undo the $\times$ or $\div$}: divide or multiply both sides by the same number.
+\item \textbf{Check:} substitute your answer back into the \textbf{original} equation.
+\end{enumerate}
+\end{stepsbox}
+
+\subsection*{Worked examples}
+\begin{examples}
+\example{$3x + 5 = 20$}{Subtract 5: $3x = 15$\\Divide by 3}{$x = 5$}
+\example{$4x - 7 = -19$}{Add 7: $4x = -12$\\Divide by 4}{$x = -3$}
+\example{$\frac{x}{3} + 2 = 6$}{Subtract 2: $\frac{x}{3} = 4$\\Multiply by 3}{$x = 12$}
+\example{$-5x + 3 = 18$}{Subtract 3: $-5x = 15$\\Divide by $-5$}{$x = -3$}
+\example{$12 - 2x = 4$}{Subtract 12: $-2x = -8$\\Divide by $-2$}{$x = 4$}
+\example{$2x + 9 = 4$}{Subtract 9: $2x = -5$\\Divide by 2}{$x = -2.5$}
+\end{examples}
+
+\begin{tipbox}{Watch the signs}
+In $12 - 2x = 4$ the $x$ term is $-2x$, so you divide by $-2$, not 2.
+A negative divided by a negative is \textbf{positive}: $-8 \div  (-2) = 4$.
+\end{tipbox}
+
+\begin{rememberbox}
+Always \textbf{check}: for $4x - 7 = -19$, try $x = -3$: $4 \times  (-3) - 7 = -12 - 7 = -19$ \cmark.
+Answers can be negative or decimals --- that's fine.
+\end{rememberbox}
+
+\newpage\normalsize
+\banner{4}{Solving Equations}{Practice}{accent}
+{\large\textbf{Solve each equation. Check your answer by substituting it back in.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
+\begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
+\pbox{1}{3.3cm}{{\Large $2x + 7 = 19$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{2}{3.3cm}{{\Large $5x - 3 = 32$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{3}{3.3cm}{{\Large $4x + 11 = 3$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{4}{3.3cm}{{\Large $3x - 8 = -20$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{5}{3.3cm}{{\Large $\frac{x}{4} + 3 = 8$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{6}{3.3cm}{{\Large $\frac{x}{2} - 5 = 1$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{7}{3.3cm}{{\Large $15 - 3x = 6$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{8}{3.3cm}{{\Large $20 - 4x = 32$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{9}{3.3cm}{{\Large $-2x + 5 = 17$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{10}{3.3cm}{{\Large $7 - x = 10$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{11}{3.3cm}{{\Large $\frac{x}{5} - 2 = -4$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{12}{3.3cm}{{\Large $6x + 4 = 1$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\end{tcbraster}
+\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}
+\newpage
+\banner{5}{Equations with Brackets}{Learn}{accent}
 \begin{tcolorbox}[enhanced, colback=accentlight, colframe=accent, boxrule=0pt, leftrule=1.5mm, arc=0mm, top=1.5mm, bottom=1.5mm]\textbf{Goal:} I can solve equations like $3(x + 4) = 27$, and write equations from a story\end{tcolorbox}
 \large
 
@@ -295,9 +352,9 @@ Watch out for these common mistakes:
 \textbf{Method 2 --- divide first.} If the number outside divides the other side exactly, divide first.
 
 \begin{examples}
-\example{$3(x + 4) = 27$}{Expand: $3x + 12 = 27$\\$3x = 15$}{$= x = 5$}
-\example{$3(x + 4) = 27$}{Divide by 3: $x + 4 = 9$\\Take 4 from both sides}{$= x = 5$}
-\example{$2(3x - 1) = 19$}{Expand: $6x - 2 = 19$\\$6x = 21$}{$= x = 3.5$}
+\example{$3(x + 4) = 27$}{Expand: $3x + 12 = 27$\\$3x = 15$}{$x = 5$}
+\example{$3(x + 4) = 27$}{Divide by 3: $x + 4 = 9$\\Take 4 from both sides}{$x = 5$}
+\example{$2(3x - 1) = 19$}{Expand: $6x - 2 = 19$\\$6x = 21$}{$x = 3.5$}
 \end{examples}
 \textbf{Check} by substituting your answer back in: $3(5 + 4) = 3 \times  9 = 27$ \cmark
 
@@ -311,13 +368,13 @@ Watch out for these common mistakes:
 \end{stepsbox}
 
 \begin{examples}
-\example{\text{Sione's number}}{Thinks of a number $n$, adds 5, then multiplies by 4. The answer is 36.\\$4(n + 5) = 36$}{$= n = 4$}
-\example{\text{Rectangle}}{Width 5 cm, length $(x + 3)$ cm, area 45 cm².\\$5(x + 3) = 45$}{$= x = 6$}
-\example{\text{Pizza}}{3 friends each buy a pizza (\$$p$) and a \$4 drink. Total \$45.\\$3(p + 4) = 45$}{$= p = 11$}
+\example{\text{Sione's number}}{Thinks of a number $n$, adds 5, then multiplies by 4. The answer is 36.\\$4(n + 5) = 36$}{$n = 4$}
+\example{\text{Rectangle}}{Width 5 cm, length $(x + 3)$ cm, area 45 cm².\\$5(x + 3) = 45$}{$x = 6$}
+\example{\text{Pizza}}{3 friends each buy a pizza (\$$p$) and a \$4 drink. Total \$45.\\$3(p + 4) = 45$}{$p = 11$}
 \end{examples}
 
 \newpage\normalsize
-\banner{4}{Equations with Brackets}{Practice}{accent}
+\banner{5}{Equations with Brackets}{Practice}{accent}
 {\large\textbf{Solve each equation. For the stories, write an equation and then solve it.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
 \begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
 \pbox{1}{3.3cm}{{\Large $2(x + 3) = 14$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
@@ -332,7 +389,61 @@ Watch out for these common mistakes:
 \end{tcbraster}
 \vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}
 \newpage
-\banner{5}{Inequalities}{Learn}{accent}
+\banner{6}{$x$ on Both Sides}{Learn}{accent}
+\begin{tcolorbox}[enhanced, colback=accentlight, colframe=accent, boxrule=0pt, leftrule=1.5mm, arc=0mm, top=1.5mm, bottom=1.5mm]\textbf{Goal:} I can solve equations with $x$ on both sides, e.g. $5x + 3 = 2x + 15$\end{tcolorbox}
+\large
+
+When $x$ appears on \textbf{both sides}, first get all the $x$ terms on \textbf{one side}.
+Then it is an ordinary two-step equation.
+
+\begin{stepsbox}{How to solve it}
+\begin{enumerate}[nosep]
+\item If there are \textbf{brackets}, expand them first.
+\item \textbf{Subtract the smaller $x$ term} from both sides, so the $x$ term that is left is positive.
+\item Solve the two-step equation that is left, then \textbf{check}.
+\end{enumerate}
+\end{stepsbox}
+
+\subsection*{Worked examples}
+\begin{examples}
+\example{$5x + 3 = 2x + 15$}{Subtract $2x$: $3x + 3 = 15$\\$3x = 12$}{$x = 4$}
+\example{$6x - 5 = 4x + 7$}{Subtract $4x$: $2x - 5 = 7$\\$2x = 12$}{$x = 6$}
+\example{$3x - 4 = 7x + 8$}{Subtract $3x$: $-4 = 4x + 8$\\$-12 = 4x$}{$x = -3$}
+\example{$9 - 2x = x + 3$}{Add $2x$: $9 = 3x + 3$\\$6 = 3x$}{$x = 2$}
+\example{$3(x + 2) = x + 14$}{Expand: $3x + 6 = x + 14$\\Subtract $x$: $2x + 6 = 14$}{$x = 4$}
+\example{$2(x - 3) = 5x + 9$}{Expand: $2x - 6 = 5x + 9$\\Subtract $2x$: $-6 = 3x + 9$}{$x = -5$}
+\end{examples}
+
+\begin{tipboxq}{Which side?}
+In $3x - 4 = 7x + 8$, $3x$ is smaller than $7x$, so subtract $3x$ from both sides.
+The $x$ ends up on the right: that's fine. $-12 = 4x$ means the same as $4x = -12$.
+\end{tipboxq}
+
+\begin{rememberbox}
+Check by substituting into \textbf{both sides}. For $5x + 3 = 2x + 15$ with $x = 4$:
+left side $5 \times  4 + 3 = 23$, right side $2 \times  4 + 15 = 23$ \cmark --- both sides match.
+\end{rememberbox}
+
+\newpage\normalsize
+\banner{6}{$x$ on Both Sides}{Practice}{accent}
+{\large\textbf{Solve each equation. Get the x terms on one side first.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
+\begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
+\pbox{1}{3.3cm}{{\Large $4x + 1 = 2x + 9$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{2}{3.3cm}{{\Large $6x + 2 = 3x + 17$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{3}{3.3cm}{{\Large $7x - 5 = 3x + 19$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{4}{3.3cm}{{\Large $5x + 8 = x + 20$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{5}{3.3cm}{{\Large $2x + 9 = 5x - 3$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{6}{3.3cm}{{\Large $4x - 1 = 6x + 9$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{7}{3.3cm}{{\Large $2x - 7 = 5x + 2$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{8}{3.3cm}{{\Large $8 - 3x = 2x + 23$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{9}{3.3cm}{{\Large $x + 10 = 4x + 1$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{10}{3.3cm}{{\Large $2(x + 4) = x + 11$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{11}{3.3cm}{{\Large $3(x - 1) = x + 9$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\pbox{12}{3.3cm}{{\Large $4(x + 2) = 2(x - 3)$}\par\vfill{\Large $x =$}\hspace{2mm}\ansline{0.7}}
+\end{tcbraster}
+\vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}
+\newpage
+\banner{7}{Inequalities}{Learn}{accent}
 \begin{tcolorbox}[enhanced, colback=accentlight, colframe=accent, boxrule=0pt, leftrule=1.5mm, arc=0mm, top=1.5mm, bottom=1.5mm]\textbf{Goal:} I can solve an inequality and show it on a number line, e.g. $2x + 3 < 11$ gives $x < 4$\end{tcolorbox}
 \large
 
@@ -371,7 +482,7 @@ So numbers bigger than $-3$ work, and the arrow points right.
 \end{rememberbox}
 
 \newpage\normalsize
-\banner{5}{Inequalities}{Practice}{accent}
+\banner{7}{Inequalities}{Practice}{accent}
 {\large\textbf{Solve each inequality, then show the answer on the number line.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
 \begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
 \pbox{1}{5.0cm}{{\Large $x + 4 > 7$}\par\vfill Answer:\ \ansline{0.4}\par\vspace{4mm}\centering \begin{tikzpicture}[x=0.349cm, baseline=-1mm]\draw[thick,<->,>=stealth] (-10.6,0) -- (10.6,0);\foreach \k in {-10,...,10} \draw (\k,0.09) -- (\k,-0.09);\foreach \k in {-10,-8,...,10} \node[below=-1pt, font=\scriptsize] at (\k,-0.09) {$\k$};\end{tikzpicture}}
@@ -385,7 +496,7 @@ So numbers bigger than $-3$ work, and the arrow points right.
 \end{tcbraster}
 \vfill\centerline{\color{good}\bfseries \ding{51}\ Check your answers at the back. Fix any you got wrong.}
 \newpage
-\banner{6}{Writing Linear Rules}{Learn}{accent}
+\banner{8}{Writing Linear Rules}{Learn}{accent}
 \begin{tcolorbox}[enhanced, colback=accentlight, colframe=accent, boxrule=0pt, leftrule=1.5mm, arc=0mm, top=1.5mm, bottom=1.5mm]\textbf{Goal:} I can write a rule like $y = 2x + 3$ from a table of values or a story\end{tcolorbox}
 \large
 
@@ -404,21 +515,21 @@ A linear rule looks like $y = mx + c$.
 \end{stepsbox}
 
 \begin{examples}
-\example{\begin{tabular}{c|cccc}$x$&0&1&2&3\\\hline$y$&3&5&7&9\end{tabular}}{Goes up by 2: $m = 2$\\At $x = 0$, $y = 3$: $c = 3$}{$= y = 2x + 3$}
-\example{\begin{tabular}{c|cccc}$x$&1&2&3&4\\\hline$y$&7&10&13&16\end{tabular}}{Goes up by 3: $m = 3$\\Back one step: $7 - 3 = 4$}{$= y = 3x + 4$}
-\example{\begin{tabular}{c|cccc}$x$&0&1&2&3\\\hline$y$&10&8&6&4\end{tabular}}{Goes \textbf{down} by 2: $m = -2$\\At $x = 0$, $y = 10$}{$= y = -2x + 10$}
+\example{\begin{tabular}{c|cccc}$x$&0&1&2&3\\\hline$y$&3&5&7&9\end{tabular}}{Goes up by 2: $m = 2$\\At $x = 0$, $y = 3$: $c = 3$}{$y = 2x + 3$}
+\example{\begin{tabular}{c|cccc}$x$&1&2&3&4\\\hline$y$&7&10&13&16\end{tabular}}{Goes up by 3: $m = 3$\\Back one step: $7 - 3 = 4$}{$y = 3x + 4$}
+\example{\begin{tabular}{c|cccc}$x$&0&1&2&3\\\hline$y$&10&8&6&4\end{tabular}}{Goes \textbf{down} by 2: $m = -2$\\At $x = 0$, $y = 10$}{$y = -2x + 10$}
 \end{examples}
 
 \subsection*{From a story}
 The \textbf{fixed amount} (a starting fee or starting value) is $c$. The amount \textbf{per} hour, week, km\ldots{} is $m$.
 \begin{examples}
-\example{\text{Gym}}{\$60 joining fee plus \$15 per week. Cost $C$ after $w$ weeks.}{$= C = 15w + 60$}
-\example{\text{Candle}}{30 cm tall, burns down 2 cm every hour. Height $h$ after $t$ hours.}{$= h = 30 - 2t$}
-\example{\text{Phone}}{\$20 a month plus \$5 per GB of data. Cost $C$ for $g$ GB.}{$= C = 5g + 20$}
+\example{\text{Gym}}{\$60 joining fee plus \$15 per week. Cost $C$ after $w$ weeks.}{$C = 15w + 60$}
+\example{\text{Candle}}{30 cm tall, burns down 2 cm every hour. Height $h$ after $t$ hours.}{$h = 30 - 2t$}
+\example{\text{Phone}}{\$20 a month plus \$5 per GB of data. Cost $C$ for $g$ GB.}{$C = 5g + 20$}
 \end{examples}
 
 \newpage\normalsize
-\banner{6}{Writing Linear Rules}{Practice}{accent}
+\banner{8}{Writing Linear Rules}{Practice}{accent}
 {\large\textbf{Write the rule for each table. For the stories, write an equation.}} {\color{muted}Show your working in each box.}\par\vspace{1mm}
 \begin{tcbraster}[raster columns=2, raster column skip=4mm, raster row skip=3mm]
 \pbox{1}{3.6cm}{\hspace{2mm}{\large\renewcommand{\arraystretch}{1.25}\begin{tabular}{|c|c|c|c|c|}\hline$x$ & 0 & 1 & 2 & 3 \\ \hline $y$ & 1 & 4 & 7 & 10 \\ \hline\end{tabular}}\par\vfill{\Large $y =$}\hspace{2mm}\ansline{0.75}}
@@ -458,30 +569,47 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \end{tcbraster}
 \newpage
 \banner{\ding{51}}{Skill Checks}{Continued}{checkcol}
-{\large Name: \fillline{8cm}}\hfill\fcolorbox{checkcol}{white}{\parbox[c][8mm][c]{4.2cm}{\centering\color{checkcol}\bfseries\large Total: \underline{\hspace{9mm}} / 18}}\par\vspace{1mm}
+{\large Name: \fillline{8cm}}\hfill\par\vspace{1mm}
 Do these \textbf{on your own --- no notes}. Show your working, and write your final answer on the line.
-\checkhead{4}{Equations with Brackets}{Solve.}{3}
+\checkhead{4}{Solving Equations}{Solve.}{4}
+\begin{tcbraster}[raster columns=4, raster column skip=3mm]
+\kbox{1}{4.4cm}{{\large $3x + 4 = 25$}\par\vfill{\large $x =$}\hspace{2mm}\ansline{0.7}}
+\kbox{2}{4.4cm}{{\large $5x - 6 = -21$}\par\vfill{\large $x =$}\hspace{2mm}\ansline{0.7}}
+\kbox{3}{4.4cm}{{\large $18 - 2x = 8$}\par\vfill{\large $x =$}\hspace{2mm}\ansline{0.7}}
+\kbox{4}{4.4cm}{{\large $\frac{x}{3} + 4 = 1$}\par\vfill{\large $x =$}\hspace{2mm}\ansline{0.7}}
+\end{tcbraster}
+\checkhead{5}{Equations with Brackets}{Solve.}{3}
 \begin{tcbraster}[raster columns=4, raster column skip=3mm]
 \kbox{1}{5.6cm}{{\large $3(x - 4) = 18$}\par\vfill{\large $x =$}\hspace{2mm}\ansline{0.7}}
 \kbox{2}{5.6cm}{{\large $4(2x + 3) = 4$}\par\vfill{\large $x =$}\hspace{2mm}\ansline{0.7}}
 \kbox[raster multicolumn=2]{3}{5.6cm}{{\normalsize Tama thinks of a number, adds 7, then multiplies by 3. The answer is 39. Write an equation and solve it.}\par\vfill Equation:\ \ansline{0.7}\par\vspace{4mm}Answer:\ \ansline{0.4}}
 \end{tcbraster}
-\checkhead{5}{Inequalities}{Solve, then show on the number line.}{2}
+\checkhead{6}{$x$ on Both Sides}{Solve.}{4}
+\begin{tcbraster}[raster columns=4, raster column skip=3mm]
+\kbox{1}{4.4cm}{{\large $6x + 1 = 2x + 13$}\par\vfill{\large $x =$}\hspace{2mm}\ansline{0.7}}
+\kbox{2}{4.4cm}{{\large $5x - 2 = 8x + 10$}\par\vfill{\large $x =$}\hspace{2mm}\ansline{0.7}}
+\kbox{3}{4.4cm}{{\large $4(x - 1) = x + 11$}\par\vfill{\large $x =$}\hspace{2mm}\ansline{0.7}}
+\kbox{4}{4.4cm}{{\large $2(x + 5) = 4x - 2$}\par\vfill{\large $x =$}\hspace{2mm}\ansline{0.7}}
+\end{tcbraster}
+\newpage
+\banner{\ding{51}}{Skill Checks}{Continued}{checkcol}
+{\large Name: \fillline{8cm}}\hfill\fcolorbox{checkcol}{white}{\parbox[c][8mm][c]{4.2cm}{\centering\color{checkcol}\bfseries\large Total: \underline{\hspace{9mm}} / 26}}\par\vspace{1mm}
+Do these \textbf{on your own --- no notes}. Show your working, and write your final answer on the line.
+\checkhead{7}{Inequalities}{Solve, then show on the number line.}{2}
 \begin{tcbraster}[raster columns=4, raster column skip=3mm]
 \kbox[raster multicolumn=2]{1}{5.6cm}{{\large $3x - 4 > 8$}\par\vfill Answer:\ \ansline{0.4}\par\vspace{4mm}\centering \begin{tikzpicture}[x=0.349cm, baseline=-1mm]\draw[thick,<->,>=stealth] (-10.6,0) -- (10.6,0);\foreach \k in {-10,...,10} \draw (\k,0.09) -- (\k,-0.09);\foreach \k in {-10,-8,...,10} \node[below=-1pt, font=\scriptsize] at (\k,-0.09) {$\k$};\end{tikzpicture}}
 \kbox[raster multicolumn=2]{2}{5.6cm}{{\large $6 - 2x \le  10$}\par\vfill Answer:\ \ansline{0.4}\par\vspace{4mm}\centering \begin{tikzpicture}[x=0.349cm, baseline=-1mm]\draw[thick,<->,>=stealth] (-10.6,0) -- (10.6,0);\foreach \k in {-10,...,10} \draw (\k,0.09) -- (\k,-0.09);\foreach \k in {-10,-8,...,10} \node[below=-1pt, font=\scriptsize] at (\k,-0.09) {$\k$};\end{tikzpicture}}
 \end{tcbraster}
-\checkhead{6}{Writing Linear Rules}{Write the rule.}{2}
+\checkhead{8}{Writing Linear Rules}{Write the rule.}{2}
 \begin{tcbraster}[raster columns=4, raster column skip=3mm]
 \kbox[raster multicolumn=2]{1}{5.6cm}{\hspace{2mm}{\large\renewcommand{\arraystretch}{1.25}\begin{tabular}{|c|c|c|c|c|}\hline$x$ & 1 & 2 & 3 & 4 \\ \hline $y$ & 1 & 4 & 7 & 10 \\ \hline\end{tabular}}\par\vfill{\large $y =$}\hspace{2mm}\ansline{0.75}}
 \kbox[raster multicolumn=2]{2}{5.6cm}{{\normalsize A school trip costs \$200 for the bus plus \$12 per student. Write an equation for the total cost $C$ when $n$ students go.}\par\vfill\ansline{0.95}}
 \end{tcbraster}
 \newpage
-\setlength{\multicolsep}{3pt plus 1pt}\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\setlength{\multicolsep}{3pt plus 1pt}\titlespacing*{\subsection}{0pt}{5pt}{1pt}\small
 {\LARGE\bfseries\color{accent} Answers to the Practice Questions}\par\vspace{1mm}
 {\small\color{muted} Terms can be in a different order and still be right --- e.g. $2b + 3a$ is the same as $3a + 2b$.}\par
 \subsection*{1. Factorising Fully}
-\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $10(x + 3)$
 \item $8(2a - 3)$
@@ -498,7 +626,6 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \end{enumerate}\end{multicols}
 
 \subsection*{2. Substituting Negatives}
-\textbf{\color{muted}}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $5$
 \item $-20$
@@ -530,7 +657,23 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \item When dividing powers with the same base, keep the base and subtract the indices: $a^m \div  a^n = a^{m-n}$. The base stays 5, so $5^{8} \div  5^{2} = 5^{6}$, not $1^{4}$.
 \end{enumerate}
 
-\subsection*{4. Equations with Brackets}
+\subsection*{4. Solving Equations}
+\begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
+\item $x = 6$
+\item $x = 7$
+\item $x = -2$
+\item $x = -4$
+\item $x = 20$
+\item $x = 12$
+\item $x = 3$
+\item $x = -3$
+\item $x = -6$
+\item $x = -3$
+\item $x = -10$
+\item $x = -0.5$
+\end{enumerate}\end{multicols}
+
+\subsection*{5. Equations with Brackets}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $x = 4$
 \item $x = 9$
@@ -545,7 +688,23 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \item $5(t + 3) = 85$, so $t = 14$
 \end{enumerate}
 
-\subsection*{5. Inequalities}
+\subsection*{6. $x$ on Both Sides}
+\begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
+\item $x = 4$
+\item $x = 5$
+\item $x = 6$
+\item $x = 3$
+\item $x = 4$
+\item $x = -5$
+\item $x = -3$
+\item $x = -3$
+\item $x = 3$
+\item $x = 3$
+\item $x = 6$
+\item $x = -7$
+\end{enumerate}\end{multicols}
+
+\subsection*{7. Inequalities}
 \begin{multicols}{2}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $x > 3$\quad \begin{tikzpicture}[x=0.543cm, baseline=-1mm]\draw[thick,<->,>=stealth] (-1.6,0) -- (7.6,0);\foreach \k in {-1,...,7} \draw (\k,0.09) -- (\k,-0.09);\foreach \k in {-1,1,...,7} \node[below=-1pt, font=\scriptsize] at (\k,-0.09) {$\k$};\draw[accent, line width=2pt, ->, >=stealth] (3,0) -- (7.55,0);\draw[accent, thick, fill=white] (3,0) circle (2.4pt);\end{tikzpicture}
 \item $x \le  4$\quad \begin{tikzpicture}[x=0.543cm, baseline=-1mm]\draw[thick,<->,>=stealth] (-0.6,0) -- (8.6,0);\foreach \k in {0,...,8} \draw (\k,0.09) -- (\k,-0.09);\foreach \k in {0,2,...,8} \node[below=-1pt, font=\scriptsize] at (\k,-0.09) {$\k$};\draw[accent, line width=2pt, ->, >=stealth] (4,0) -- (-0.55,0);\draw[accent, thick, fill=accent] (4,0) circle (2.4pt);\end{tikzpicture}
@@ -557,7 +716,7 @@ Do these \textbf{on your own --- no notes}. Show your working, and write your fi
 \item $x \le  -3$\quad \begin{tikzpicture}[x=0.543cm, baseline=-1mm]\draw[thick,<->,>=stealth] (-7.6,0) -- (1.6,0);\foreach \k in {-7,...,1} \draw (\k,0.09) -- (\k,-0.09);\foreach \k in {-7,-5,...,1} \node[below=-1pt, font=\scriptsize] at (\k,-0.09) {$\k$};\draw[accent, line width=2pt, ->, >=stealth] (-3,0) -- (-7.55,0);\draw[accent, thick, fill=accent] (-3,0) circle (2.4pt);\end{tikzpicture}
 \end{enumerate}\end{multicols}
 
-\subsection*{6. Writing Linear Rules}
+\subsection*{8. Writing Linear Rules}
 \begin{multicols}{4}\begin{enumerate}[nosep, label=\arabic*., start=1]
 \item $y = 3x + 1$
 \item $y = 2x + 5$
